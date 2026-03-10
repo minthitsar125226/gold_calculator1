@@ -1,8 +1,5 @@
 import streamlit as st
 from utils import format_gold_weight, calculate_pe, to_pe, from_pe
-
-st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
-
 # Sidebar တည်ဆောက်ခြင်း
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #D4AF37;'>🛠 မီနူးများ</h2>", unsafe_allow_html=True)
