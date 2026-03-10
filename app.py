@@ -27,48 +27,6 @@ elif menu == "💰 ရွှေ နှင့် ငွေ":
 
 elif menu == "📏 အချိုးအစားတွက်စက်":
     st.subheader("📏 အချိုးအစားတွက်စက်")
-    # ဒီနေရာမှာ Tab 2 ရဲ့ code တွေကို ထည့်ပါ
-
-elif menu == "🌍 ကမ္ဘာ့ရွှေဈေး":
-    st.subheader("🌍 ကမ္ဘာ့ရွှေဈေး")
-    # ဒီနေရာမှာ Tab 3 ရဲ့ code တွေကို ထည့်ပါ
-
-elif menu == "💍 လက်စွပ်/လက်ကောက်":
-    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
-    # ဒီနေရာမှာ Tab 4 ရဲ့ code တွေကို ထည့်ပါ
-# Session State စတင်ခြင်း
-if 'gold_price' not in st.session_state:
-    st.session_state.gold_price = 10900000
-
-st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
-
-tab1, tab2, tab3, tab4 = st.tabs(["💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်တိုင်း"])
-
-with tab1:
-    st.subheader("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
-    st.session_state.gold_price = st.number_input("ယနေ့ အခေါက်ရွှေပေါက်ဈေး (ကျပ်):", value=st.session_state.gold_price, step=10000)
-    
-    sub1, sub2 = st.tabs(["ရွှေမှ ငွေတွက်ရန်", "ငွေမှ ရွှေတွက်ရန်"])
-    
-    with sub1:
-        c1, c2, c3, c4 = st.columns(4)
-        k1 = c1.number_input("ကျပ်", value=0, key="k1")
-        p1 = c2.number_input("ပဲ", value=0, key="p1")
-        y1 = c3.number_input("ရွေး", value=0, key="y1")
-        pt1 = c4.number_input("Point", value=0, key="pt1")
-        purity = st.selectbox("ရွှေအရည်အသွေး (ပဲရည်):", [16, 15, 14.2, 14, 13], index=0)
-        
-        total_pe_val = calculate_pe(k1, p1, y1, pt1)
-        total_cost = (st.session_state.gold_price / 16) * (purity / 16) * total_pe_val
-        st.success(f"စုစုပေါင်းကျသင့်ငွေ: {int(total_cost):,} ကျပ်")
-
-    with sub2:
-        budget = st.number_input("ရှိသောငွေ (ကျပ်):", value=1000000, step=10000)
-        purity2 = st.selectbox("ဝယ်ယူမည့် ပဲရည်:", [16, 15, 14.2, 14, 13], index=0, key="pur2")
-        one_pe_price = (st.session_state.gold_price / 16) * (purity2 / 16)
-        total_pe_possible = budget / one_pe_price if one_pe_price > 0 else 0
-        st.info(f"ရရှိမည့်ရွှေအသား: {format_gold_weight(total_pe_possible)}")
-
 with tab2:
     st.subheader("📏 ပန်းတိမ်သုံး အလျားနှင့် အလေးချိန်")
     
@@ -122,6 +80,48 @@ with tab2:
     
     st.success(f"ပေါင်းလဒ်: {res_add[0]} ကျပ် {res_add[1]} ပဲ {res_add[2]} ရွေး {res_add[3]} Point")
     st.info(f"နုတ်လဒ်: {res_sub[0]} ကျပ် {res_sub[1]} ပဲ {res_sub[2]} ရွေး {res_sub[3]} Point")
+
+elif menu == "🌍 ကမ္ဘာ့ရွှေဈေး":
+    st.subheader("🌍 ကမ္ဘာ့ရွှေဈေး")
+    # ဒီနေရာမှာ Tab 3 ရဲ့ code တွေကို ထည့်ပါ
+
+elif menu == "💍 လက်စွပ်/လက်ကောက်":
+    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
+    # ဒီနေရာမှာ Tab 4 ရဲ့ code တွေကို ထည့်ပါ
+# Session State စတင်ခြင်း
+if 'gold_price' not in st.session_state:
+    st.session_state.gold_price = 10900000
+
+st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
+
+tab1, tab2, tab3, tab4 = st.tabs(["💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်တိုင်း"])
+
+with tab1:
+    st.subheader("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
+    st.session_state.gold_price = st.number_input("ယနေ့ အခေါက်ရွှေပေါက်ဈေး (ကျပ်):", value=st.session_state.gold_price, step=10000)
+    
+    sub1, sub2 = st.tabs(["ရွှေမှ ငွေတွက်ရန်", "ငွေမှ ရွှေတွက်ရန်"])
+    
+    with sub1:
+        c1, c2, c3, c4 = st.columns(4)
+        k1 = c1.number_input("ကျပ်", value=0, key="k1")
+        p1 = c2.number_input("ပဲ", value=0, key="p1")
+        y1 = c3.number_input("ရွေး", value=0, key="y1")
+        pt1 = c4.number_input("Point", value=0, key="pt1")
+        purity = st.selectbox("ရွှေအရည်အသွေး (ပဲရည်):", [16, 15, 14.2, 14, 13], index=0)
+        
+        total_pe_val = calculate_pe(k1, p1, y1, pt1)
+        total_cost = (st.session_state.gold_price / 16) * (purity / 16) * total_pe_val
+        st.success(f"စုစုပေါင်းကျသင့်ငွေ: {int(total_cost):,} ကျပ်")
+
+    with sub2:
+        budget = st.number_input("ရှိသောငွေ (ကျပ်):", value=1000000, step=10000)
+        purity2 = st.selectbox("ဝယ်ယူမည့် ပဲရည်:", [16, 15, 14.2, 14, 13], index=0, key="pur2")
+        one_pe_price = (st.session_state.gold_price / 16) * (purity2 / 16)
+        total_pe_possible = budget / one_pe_price if one_pe_price > 0 else 0
+        st.info(f"ရရှိမည့်ရွှေအသား: {format_gold_weight(total_pe_possible)}")
+
+
 
 with tab3:
     st.subheader("🌍 World Gold to Myanmar")
