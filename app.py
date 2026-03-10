@@ -251,5 +251,28 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
             </div>
         """, unsafe_allow_html=True)
 
+# --- ပြေစာထုတ်ရန် ခလုတ် ---
+        st.write("---")
+        if st.button("📄 ပြေစာပုံစံကြည့်ရန် / Save ရန်"):
+            receipt_html = f"""
+            <div style="background-color: white; color: black; padding: 20px; border: 2px solid #D4AF37; border-radius: 10px; font-family: 'Pyidaungsu', sans-serif; text-align: left;">
+                <h2 style="text-align: center; color: #D4AF37;">အထည်ယူ/အပ် ပြေစာ</h2>
+                <p><b>နေ့စွဲ:</b> {st.date_input("Date", key="d").strftime('%d-%m-%Y')}</p>
+                <p><b>အမျိုးအမည်:</b> {item_name}</p>
+                <p><b>တင်ရမည့်အလေးချိန်:</b> {target_weight}</p>
+                <hr>
+                <p>📥 <b>ပေးရွှေ (အသားတင်):</b> {format_gold_weight(give_gold_total)}</p>
+                <p>📤 <b>ပြန်အပ်ရွှေ (အသားတင်):</b> {format_gold_weight(return_net_pe)}</p>
+                <p>➕ <b>ရရှိသည့် အလျော့တွက်:</b> {format_gold_weight(wastage_pe)}</p>
+                <hr>
+                <h3 style="color: {'red' if diff_pe > 0 else 'green'};">
+                    {'ကျန်ရှိ:' if diff_pe > 0 else 'ပိုအပ်:'} {format_gold_weight(abs(diff_pe))}
+                </h3>
+                <p style="text-align: center; font-size: 12px;">App by MinThitSarAung</p>
+            </div>
+            """
+            st.markdown(receipt_html, unsafe_allow_html=True)
+            st.info("💡 ဖုန်းဖြင့် သိမ်းဆည်းရန် Screenshot ရိုက်ပါ သို့မဟုတ် Browser ၏ 'Print to PDF' ကို အသုံးပြုပါ။")
+
 st.markdown("<div class='main-footer'>App by MinThitSarAung</div>", unsafe_allow_html=True)
     
