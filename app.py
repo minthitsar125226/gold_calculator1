@@ -1,40 +1,43 @@
 import streamlit as st
 from utils import format_gold_weight, calculate_pe, to_pe, from_pe
+
+st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
+
 # Sidebar တည်ဆောက်ခြင်း
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #D4AF37;'>🛠 မီနူးများ</h2>", unsafe_allow_html=True)
     st.write("---")
-    # Sidebar ထဲတွင် Radio button သုံး၍ Tab များကဲ့သို့ လုပ်ဆောင်ခြင်း
+    
+    # ရွေးချယ်စရာ မီနူးများ
     menu = st.radio(
         "ရွေးချယ်ရန်:",
-        ["💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်/လက်ကောက်"],
-        index=0,
-        format_func=lambda x: f"{x}"
+        ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်/လက်ကောက်"],
+        index=0
     )
     st.write("---")
     st.info("App by MinThitSarAung")
 
-# ပင်မ ခေါင်းစဉ်
-st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
+# ပင်မ စာမျက်နှာကို အလွတ်ထားရန် Logic
+if menu == "🏠 ပင်မ စာမျက်နှာ":
+    st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
+    st.write("### ဘယ်ဘက်ခြမ်းရှိ မီနူးများမှတစ်ဆင့် လိုအပ်သောတွက်ချက်မှုများကို ရွေးချယ်ပါ။")
+    
 
-# ရွေးချယ်ထားသော မီနူးအလိုက် Logic များ
-if menu == "💰 ရွှေ နှင့် ငွေ":
+elif menu == "💰 ရွှေ နှင့် ငွေ":
     st.subheader("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
-    # (သင်၏ Tab 1 Logic များ)
+    # (ဒီနေရာမှာ သင်၏ ရွှေတွက်ချက်မှု Code များ ထည့်ပါ)
 
 elif menu == "📏 အချိုးအစားတွက်စက်":
     st.subheader("📏 အချိုးအစားတွက်စက်")
-    # (သင်၏ Tab 2 Logic များ)
+    # (ဒီနေရာမှာ သင်၏ အချိုးအစားတွက်ချက်မှု Code များ ထည့်ပါ)
 
 elif menu == "🌍 ကမ္ဘာ့ရွှေဈေး":
     st.subheader("🌍 ကမ္ဘာ့ရွှေဈေး")
-    # (သင်၏ Tab 3 Logic များ)
+    # (ဒီနေရာမှာ သင်၏ ကမ္ဘာ့ရွှေဈေး Code များ ထည့်ပါ)
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
-    # (သင်၏ Tab 4 Logic များ)
-st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="centered")
-
+    # (ဒီနေရာမှာ သင်၏ လက်စွပ်တိုင်းတာမှု Code များ ထည့်ပါ)
 # Session State စတင်ခြင်း
 if 'gold_price' not in st.session_state:
     st.session_state.gold_price = 10900000
