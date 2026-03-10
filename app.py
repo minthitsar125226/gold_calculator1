@@ -1,8 +1,6 @@
 import streamlit as st
-# utils.py ထဲက Function တွေကို အခုလို Import လုပ်ပေးရပါမယ်
-from utils import format_gold_weight, to_pe, from_pe
-
-# ကျန်တဲ့ code တွေ...
+# utils.py ထဲက Function တွေကို လှမ်းခေါ်သုံးခြင်း
+from utils import format_gold_weight, calculate_pe, to_pe, from_pe
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="centered")
 
 # Session State စတင်ခြင်း
