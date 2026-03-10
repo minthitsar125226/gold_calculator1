@@ -33,3 +33,16 @@ def from_pe(total_pe):
     y = int(total_points // 10)
     pt = int(total_points % 10)
     return k, p, y, pt
+
+def mm_to_inch_pe(mm):
+    """မီလီမီတာမှ လက်မ နှင့် ပဲ သို့ ပြောင်းခြင်း (1 inch = 25.4 mm)"""
+    total_inches = mm / 25.4
+    inches = int(total_inches)
+    rem_inches = total_inches - inches
+    pe = round(rem_inches * 16)
+    return inches, pe
+
+def inch_pe_to_mm(inch, pe):
+    """လက်မ နှင့် ပဲ မှ မီလီမီတာ သို့ ပြောင်းခြင်း"""
+    total_inches = inch + (pe / 16)
+    return total_inches * 25.4
