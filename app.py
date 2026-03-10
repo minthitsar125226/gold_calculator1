@@ -250,29 +250,46 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
                 <p>ပြန်အပ် (အသား + အလျော့): {format_gold_weight(total_return_with_wastage)}</p>
             </div>
         """, unsafe_allow_html=True)
-
-# --- ပြေစာထုတ်ရန် ခလုတ် ---
+        
+# --- ကျစ်လျစ်သော ပြေစာပုံစံ ---
         st.write("---")
-        if st.button("📄 ပြေစာပုံစံကြည့်ရန် / Save ရန်"):
+        if st.button("📄 ပြေစာထုတ်ရန် (Preview)"):
+            # ပြေစာ Size ကို width: 300px ပတ်ချာလည်အထိ ချုံ့ထားပါတယ်
             receipt_html = f"""
-            <div style="background-color: white; color: black; padding: 20px; border: 2px solid #D4AF37; border-radius: 10px; font-family: 'Pyidaungsu', sans-serif; text-align: left;">
-                <h2 style="text-align: center; color: #D4AF37;">အထည်ယူ/အပ် ပြေစာ</h2>
-                <p><b>နေ့စွဲ:</b> {st.date_input("Date", key="d").strftime('%d-%m-%Y')}</p>
-                <p><b>အမျိုးအမည်:</b> {item_name}</p>
-                <p><b>တင်ရမည့်အလေးချိန်:</b> {target_weight}</p>
-                <hr>
-                <p>📥 <b>ပေးရွှေ (အသားတင်):</b> {format_gold_weight(give_gold_total)}</p>
-                <p>📤 <b>ပြန်အပ်ရွှေ (အသားတင်):</b> {format_gold_weight(return_net_pe)}</p>
-                <p>➕ <b>ရရှိသည့် အလျော့တွက်:</b> {format_gold_weight(wastage_pe)}</p>
-                <hr>
-                <h3 style="color: {'red' if diff_pe > 0 else 'green'};">
-                    {'ကျန်ရှိ:' if diff_pe > 0 else 'ပိုအပ်:'} {format_gold_weight(abs(diff_pe))}
-                </h3>
-                <p style="text-align: center; font-size: 12px;">App by MinThitSarAung</p>
+            <div id="receipt" style="
+                background-color: white; 
+                color: black; 
+                padding: 15px; 
+                border: 3px double #D4AF37; 
+                border-radius: 8px; 
+                font-family: 'Pyidaungsu', sans-serif; 
+                width: 280px; 
+                margin: auto;
+                line-height: 1.4;
+            ">
+                <h4 style="text-align: center; color: #D4AF37; margin-bottom: 5px;">အထည်ယူ/အပ် ပြေစာ</h4>
+                <p style="font-size: 12px; text-align: center; margin-top: 0;">နေ့စွဲ: {st.date_input("Date", key="d_final").strftime('%d-%m-%Y')}</p>
+                <hr style="border: 0.5px solid #eee;">
+                <div style="font-size: 13px;">
+                    <p><b>အမျိုးအမည်:</b> {item_name if item_name else '-'}</p>
+                    <p><b>တင်ရမည့်ချိန်:</b> {target_weight if target_weight else '-'}</p>
+                    <p>📥 <b>ပေးရွှေ:</b> {format_gold_weight(give_gold_total)}</p>
+                    <p>📤 <b>ပြန်အပ်:</b> {format_gold_weight(return_net_pe)}</p>
+                    <p>➕ <b>အလျော့:</b> {format_gold_weight(wastage_pe)}</p>
+                </div>
+                <hr style="border: 0.5px solid #eee;">
+                <div style="text-align: center; background: #f9f9f9; padding: 5px; border-radius: 5px;">
+                    <b style="font-size: 14px; color: {'red' if diff_pe > 0 else 'green'};">
+                        {'ကျန်ရှိ:' if diff_pe > 0 else 'ပိုအပ်:'} {format_gold_weight(abs(diff_pe))}
+                    </b>
+                </div>
+                <p style="text-align: center; font-size: 10px; color: #888; margin-top: 10px;">App by MinThitSarAung</p>
             </div>
             """
             st.markdown(receipt_html, unsafe_allow_html=True)
-            st.info("💡 ဖုန်းဖြင့် သိမ်းဆည်းရန် Screenshot ရိုက်ပါ သို့မဟုတ် Browser ၏ 'Print to PDF' ကို အသုံးပြုပါ။")
+            
+            # Image သိမ်းရန် လမ်းညွှန်
+            st.success("အပေါ်က ပြေစာကတ်လေးကို Screenshot ရိုက်၍ သိမ်းဆည်းနိုင်ပါပြီ။")
 
 st.markdown("<div class='main-footer'>App by MinThitSarAung</div>", unsafe_allow_html=True)
     
