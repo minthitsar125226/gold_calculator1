@@ -147,17 +147,79 @@ elif menu == "🌍 ကမ္ဘာ့ရွှေဈေး":
     st.markdown(f"<div class='result-card'><h2>ခန့်မှန်းအခေါက်ရွှေဈေး: {int(mm_price):,} ကျပ်</h2></div>", unsafe_allow_html=True)
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
-    st.header("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
-    mode = st.radio("အမျိုးအစား:", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"], horizontal=True)
-    inch = st.selectbox("လက်မ:", [1, 2], index=1)
-    pe_size = st.selectbox("ပဲ:", list(range(16)), index=4)
-    size_total = inch + (pe_size / 16)
+    st.header("💍 လက်ဝတ်ရတနာ တိုင်းတာခြင်းစနစ်သစ်")
     
-    if mode == "လက်စွပ် (Ring)":
-        r_no = 4 if size_total < 1.75 else 18
-        st.markdown(f"<div class='result-card'><h3>လက်စွပ်နံပါတ်: {r_no}</h3><p>လုံးပတ်: {size_total:.2f} လက်မ</p></div>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<div class='result-card'><h3>အချင်း: {size_total:.2f} လက်မ</h3></div>", unsafe_allow_html=True)
+    sub_menu = st.radio("အမျိုးအစား ရွေးပါ:", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)", "ယူနစ် အပြန်အလှန်ပြောင်းခြင်း"], horizontal=True)
 
+    if sub_menu == "လက်စွပ် (Ring)":
+        mode = st.selectbox("တွက်ချက်ပုံ ရွေးပါ:", ["လက်စွပ်နံပါတ်မှ တိုင်းတာချက်သို့", "တိုင်းတာချက်မှ လက်စွပ်နံပါတ်သို့"])
+        
+        if mode == "လက်စွပ်နံပါတ်မှ တိုင်းတာချက်သို့":
+            ring_no = st.number_input("လက်စွပ်နံပါတ် (Ring Size):", value=15, step=1)
+            # Standard Ring Size Logic (US Scale approximation)
+            mm_val = 11.63 + (ring_no * 0.8128) 
+            inch_v, pe_v = mm_to_inch_pe(mm_val)
+            st.markdown(f"""<div class='result-card'>
+                <h4>လုံးပတ်ရလဒ်</h4>
+                <h2>{mm_val:.2f} mm</h2>
+                <h3>{inch_v} လက်မ {pe_v} ပဲ</h3>
+            </div>""", unsafe_allow_html=True)
+
+        else:
+            c1, c2 = st.columns(2)
+            in_v = c1.selectbox("လက်မ:", [1, 2], index=1)
+            p_v = c2.selectbox("ပဲ:", list(range(16)), index=4)
+            mm_res = inch_pe_to_mm(in_v, p_v)
+            # Ring No Calculation based on your original logic
+            if in_v == 1: r_no = p_v - 8
+            else: r_no = p_v + 8
+            st.markdown(f"""<div class='result-card'>
+                <h4>လက်စွပ်နံပါတ်ရလဒ်</h4>
+                <h1 style='font-size: 50px;'>No. {max(1, r_no)}</h1>
+                <p>မီလီမီတာ: {mm_res:.2f} mm</p>
+            </div>""", unsafe_allow_html=True)
+
+    elif sub_menu == "လက်ကောက် (Bangle)":
+        b_mode = st.selectbox("ရွေးချယ်ပါ:", ["အချင်းသိ၍ လက်တိုင်း/အလျားတွက်ရန်", "လက်တိုင်းနံပါတ်သိ၍ အလျားတွက်ရန်"])
+        
+        if b_mode == "အချင်းသိ၍ လက်တိုင်း/အလျားတွက်ရန်":
+            c1, c2 = st.columns(2)
+            b_in = c1.selectbox("အချင်း လက်မ:", [1, 2], index=1)
+            b_pe = c2.selectbox("အချင်း ပဲ:", list(range(16)), index=4)
+            
+            diameter_mm = inch_pe_to_mm(b_in, b_pe)
+            circumference_mm = diameter_mm * 3.14159 # အလျား (ပတ်လည်)
+            st.markdown(f"""<div class='result-card'>
+                <h4>လက်ကောက် တိုင်းတာချက်</h4>
+                <p>အချင်း: {diameter_mm:.2f} mm</p>
+                <h2>အလျား (ပတ်လည်): {circumference_mm:.2f} mm</h2>
+                <p>လက်တိုင်း (Diameter): {b_in} လက်မ {b_pe} ပဲ</p>
+            </div>""", unsafe_allow_html=True)
+            
+        else:
+            b_size = st.number_input("လက်ကောက် လက်တိုင်း (ဥပမာ- ၂.၄, ၂.၆):", value=2.4, step=0.1)
+            # လက်တိုင်းနံပါတ်မှ အလျားတွက်ခြင်း (Diameter * Pi)
+            b_mm = b_size * 25.4
+            b_circum = b_mm * 3.14159
+            st.markdown(f"""<div class='result-card'>
+                <h4>လိုအပ်မည့် အလျား</h4>
+                <h1 style='font-size: 40px;'>{b_circum:.2f} mm</h1>
+                <p>အချင်း: {b_mm:.2f} mm</p>
+            </div>""", unsafe_allow_html=True)
+
+    elif sub_menu == "ယူနစ် အပြန်အလှန်ပြောင်းခြင်း":
+        st.write("#### 📏 မီလီမီတာ မှ လက်မ/ပဲ/ပေ သို့ ပြောင်းခြင်း")
+        input_mm = st.number_input("မီလီမီတာ (mm) ထည့်ပါ:", value=50.0)
+        
+        total_in = input_mm / 25.4
+        ft = int(total_in // 12)
+        rem_in = int(total_in % 12)
+        rem_pe = round((total_in % 1) * 16)
+        
+        st.markdown(f"""<div class='result-card'>
+            <h4>ပြောင်းလဲပြီး ရလဒ်</h4>
+            <h3>{ft} ပေ | {rem_in} လက်မ | {rem_pe} ပဲ</h3>
+            <p>စုစုပေါင်းလက်မ: {total_in:.2f} in</p>
+        </div>""", unsafe_allow_html=True)
 # Static Footer
 st.markdown("<div class='main-footer'>App by MinThitSarAung</div>", unsafe_allow_html=True)
