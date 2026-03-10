@@ -15,8 +15,11 @@ st.markdown("""
 # Sidebar
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #D4AF37;'>⚒️ မီနူးများ</h2>", unsafe_allow_html=True)
-    menu = st.radio("ရွေးချယ်ရန်:", ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်/လက်ကောက်"])
-    st.write("---")
+    menu = st.radio(
+    "လုပ်ဆောင်ချက် ရွေးချယ်ပါ:",
+    ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်/လက်ကောက်", "📋 အထည်ယူ/အထည်အပ်"],
+    index=0
+    )
     st.info("App by MinThitSarAung")
 
 # ၁။ ပင်မစာမျက်နှာ
@@ -181,6 +184,69 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
         else:
             b_size = st.number_input("လက်ကောက် လက်တိုင်း (ဥပမာ ၂.၄):", value=2.4)
             st.markdown(f"<div class='result-card'><h2>လိုအပ်မည့်အလျား: {b_size*25.4*3.14159:.2f} mm</h2></div>", unsafe_allow_html=True)
+
+# --- အထည်ယူ/အထည်အပ် ---
+elif menu == "📋 အထည်ယူ/အထည်အပ်":
+    st.header("📋 အထည်ယူ နှင့် အထည်အပ်နှံခြင်း")
+    
+    col_order, col_return = st.columns(2)
+    
+    with col_order:
+        st.subheader("📦 အထည်ယူ (Job Order)")
+        item_name = st.text_input("အမျိုးအမည် (ဥပမာ- နေတိုးကြိုး):", key="item_name")
+        target_weight = st.text_input("တင်ရမည့် ရွှေချိန် (ဥပမာ- ၁ ကျပ်):", key="target_w")
+        item_length = st.text_input("ကြိုးအရှည် (ဥပမာ- ၁၈ လက်မ):", key="item_len")
+        
+        st.write("---")
+        st.write("📥 **ပေးရွှေ (အသားတင်)**")
+        oc1, oc2, oc3, oc4 = st.columns(4)
+        ok = oc1.number_input("ကျပ်", 0, key="ok")
+        op = oc2.number_input("ပဲ", 0, 15, key="op")
+        oy = oc3.number_input("ရွေး", 0, 7, key="oy")
+        opt = oc4.number_input("Point", 0, 9, key="opt")
+        
+        st.write("➕ **အလျော့တွက်**")
+        wc1, wc2, wc3, wc4 = st.columns(4)
+        wk = wc1.number_input("ကျပ်", 0, key="wk")
+        wp = wc2.number_input("ပဲ", 0, 15, key="wp")
+        wy = wc3.number_input("ရွေး", 0, 7, key="wy")
+        wpt = wc4.number_input("Point", 0, 9, key="wpt")
+        
+        # ပေးရွှေ စုစုပေါင်း (အသား + အလျော့)
+        give_gold_total = calculate_pe(ok, op, oy, opt) + calculate_pe(wk, wp, wy, wpt)
+        st.markdown(f"<div class='result-card'><h4>စုစုပေါင်း ပေးရွှေ (ရလဒ်):</h4><h3>{format_gold_weight(give_gold_total)}</h3></div>", unsafe_allow_html=True)
+
+    with col_return:
+        st.subheader("📤 ပြန်အပ် (Job Return)")
+        st.info(f"အမျိုးအမည်: {item_name if item_name else '-'}")
+        st.info(f"တင်ရမည့်ချိန်: {target_weight if target_weight else '-'}")
+        
+        st.write("---")
+        st.write("📤 **ပြန်အပ်ရွှေ (အသားတင်)**")
+        rc1, rc2, rc3, rc4 = st.columns(4)
+        rk = rc1.number_input("ကျပ်", 0, key="rk")
+        rp = rc2.number_input("ပဲ", 0, 15, key="rp")
+        ry = rc3.number_input("ရွေး", 0, 7, key="ry")
+        rpt = rc4.number_input("Point", 0, 9, key="rpt")
+        
+        return_gold_pe = calculate_pe(rk, rp, ry, rpt)
+        
+        # နောက်ဆုံးတွက်ချက်မှု (ပေးရွှေ - ပြန်အပ်ရွှေ)
+        diff_pe = give_gold_total - return_gold_pe
+        
+        st.write("---")
+        st.subheader("⚖️ နောက်ဆုံးရလဒ်")
+        if diff_pe >= 0:
+            st.warning(f"အပ်ရန်ကျန်ရှိသည့် အလေးချိန်: \n {format_gold_weight(diff_pe)}")
+        else:
+            st.success(f"ပိုအပ်သည့် အလေးချိန်: \n {format_gold_weight(abs(diff_pe))}")
+
+        st.markdown(f"""
+            <div class='result-card' style='border-color: #00FF00;'>
+                <p>ပေးရွှေ စုစုပေါင်း: {format_gold_weight(give_gold_total)}</p>
+                <p>ပြန်အပ်ရွှေ: {format_gold_weight(return_gold_pe)}</p>
+            </div>
+        """, unsafe_allow_html=True)
 
 st.markdown("<div class='main-footer'>App by MinThitSarAung</div>", unsafe_allow_html=True)
     
