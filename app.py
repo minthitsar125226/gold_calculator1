@@ -1,6 +1,41 @@
 import streamlit as st
-# utils.py ထဲက Function တွေကို လှမ်းခေါ်သုံးခြင်း
 from utils import format_gold_weight, calculate_pe, to_pe, from_pe
+
+st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
+
+# Sidebar တည်ဆောက်ခြင်း
+with st.sidebar:
+    st.markdown("<h2 style='text-align: center; color: #D4AF37;'>🛠 မီနူးများ</h2>", unsafe_allow_html=True)
+    st.write("---")
+    # Sidebar ထဲတွင် Radio button သုံး၍ Tab များကဲ့သို့ လုပ်ဆောင်ခြင်း
+    menu = st.radio(
+        "ရွေးချယ်ရန်:",
+        ["💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်/လက်ကောက်"],
+        index=0,
+        format_func=lambda x: f"{x}"
+    )
+    st.write("---")
+    st.info("App by MinThitSarAung")
+
+# ပင်မ ခေါင်းစဉ်
+st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
+
+# ရွေးချယ်ထားသော မီနူးအလိုက် Logic များ
+if menu == "💰 ရွှေ နှင့် ငွေ":
+    st.subheader("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
+    # (သင်၏ Tab 1 Logic များ)
+
+elif menu == "📏 အချိုးအစားတွက်စက်":
+    st.subheader("📏 အချိုးအစားတွက်စက်")
+    # (သင်၏ Tab 2 Logic များ)
+
+elif menu == "🌍 ကမ္ဘာ့ရွှေဈေး":
+    st.subheader("🌍 ကမ္ဘာ့ရွှေဈေး")
+    # (သင်၏ Tab 3 Logic များ)
+
+elif menu == "💍 လက်စွပ်/လက်ကောက်":
+    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
+    # (သင်၏ Tab 4 Logic များ)
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="centered")
 
 # Session State စတင်ခြင်း
