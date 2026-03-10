@@ -1,6 +1,8 @@
 import streamlit as st
-from utils import format_gold_weight, calculate_pe
+# utils.py ထဲက Function တွေကို အခုလို Import လုပ်ပေးရပါမယ်
+from utils import format_gold_weight, to_pe, from_pe
 
+# ကျန်တဲ့ code တွေ...
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="centered")
 
 # Session State စတင်ခြင်း
@@ -37,6 +39,33 @@ with tab1:
         st.info(f"ရရှိမည့်ရွှေအသား: {format_gold_weight(total_pe_possible)}")
 
 with tab2:
+    st.subheader("⚖️ ရွှေအလေးချိန် ပေါင်း/နုတ် တွက်ချက်ရန်")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.write("ပထမအလေးချိန်")
+        k1 = st.number_input("ကျပ်", 0, key="k1_add")
+        p1 = st.number_input("ပဲ", 0, 15, key="p1_add")
+        y1 = st.number_input("ရွေး", 0, 7, key="y1_add")
+        pt1 = st.number_input("Point", 0, 9, key="pt1_add")
+    
+    with col2:
+        st.write("ဒုတိယအလေးချိန်")
+        k2 = st.number_input("ကျပ်", 0, key="k2_add")
+        p2 = st.number_input("ပဲ", 0, 15, key="p2_add")
+        y2 = st.number_input("ရွေး", 0, 7, key="y2_add")
+        pt2 = st.number_input("Point", 0, 9, key="pt2_add")
+
+    # utils.py ထဲက to_pe နဲ့ from_pe ကို သုံးခြင်း
+    val1 = to_pe(k1, p1, y1, pt1)
+    val2 = to_pe(k2, p2, y2, pt2)
+    
+    # ပေါင်း/နုတ် တွက်ချက်ခြင်း
+    res_add = from_pe(val1 + val2)
+    res_sub = from_pe(max(0, val1 - val2))
+    
+    st.success(f"ပေါင်းလဒ်: {res_add[0]} ကျပ် {res_add[1]} ပဲ {res_add[2]} ရွေး {res_add[3]} Point")
+    st.info(f"နုတ်လဒ်: {res_sub[0]} ကျပ် {res_sub[1]} ပဲ {res_sub[2]} ရွေး {res_sub[3]} Point")
     st.subheader("📏 ပန်းတိမ်သုံး အလျားနှင့် အလေးချိန်")
     base_unit = st.number_input("အချိုး:", value=7.0)
     multiplier = st.number_input("အရှည်:", value=20.0)
