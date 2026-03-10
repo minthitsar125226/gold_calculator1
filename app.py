@@ -3,12 +3,11 @@ from utils import format_gold_weight, calculate_pe, to_pe, from_pe
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
-# Sidebar တည်ဆောက်ခြင်း
+# Sidebar မီနူး တည်ဆောက်ခြင်း
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #D4AF37;'>🛠 မီနူးများ</h2>", unsafe_allow_html=True)
     st.write("---")
-    
-    # ရွေးချယ်စရာ မီနူးများ
+    # မီနူးရွေးချယ်စရာများ
     menu = st.radio(
         "ရွေးချယ်ရန်:",
         ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်/လက်ကောက်"],
@@ -17,27 +16,26 @@ with st.sidebar:
     st.write("---")
     st.info("App by MinThitSarAung")
 
-# ပင်မ စာမျက်နှာကို အလွတ်ထားရန် Logic
+# ပင်မ Screen Logic (ရွေးချယ်ထားသော မီနူးအလိုက်သာ ပေါ်မည်)
 if menu == "🏠 ပင်မ စာမျက်နှာ":
     st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
     st.write("### ဘယ်ဘက်ခြမ်းရှိ မီနူးများမှတစ်ဆင့် လိုအပ်သောတွက်ချက်မှုများကို ရွေးချယ်ပါ။")
-    
 
 elif menu == "💰 ရွှေ နှင့် ငွေ":
     st.subheader("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
-    # (ဒီနေရာမှာ သင်၏ ရွှေတွက်ချက်မှု Code များ ထည့်ပါ)
+    # ဒီနေရာမှာ Tab 1 ရဲ့ code တွေကို ထည့်ပါ
 
 elif menu == "📏 အချိုးအစားတွက်စက်":
     st.subheader("📏 အချိုးအစားတွက်စက်")
-    # (ဒီနေရာမှာ သင်၏ အချိုးအစားတွက်ချက်မှု Code များ ထည့်ပါ)
+    # ဒီနေရာမှာ Tab 2 ရဲ့ code တွေကို ထည့်ပါ
 
 elif menu == "🌍 ကမ္ဘာ့ရွှေဈေး":
     st.subheader("🌍 ကမ္ဘာ့ရွှေဈေး")
-    # (ဒီနေရာမှာ သင်၏ ကမ္ဘာ့ရွှေဈေး Code များ ထည့်ပါ)
+    # ဒီနေရာမှာ Tab 3 ရဲ့ code တွေကို ထည့်ပါ
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
-    # (ဒီနေရာမှာ သင်၏ လက်စွပ်တိုင်းတာမှု Code များ ထည့်ပါ)
+    # ဒီနေရာမှာ Tab 4 ရဲ့ code တွေကို ထည့်ပါ
 # Session State စတင်ခြင်း
 if 'gold_price' not in st.session_state:
     st.session_state.gold_price = 10900000
