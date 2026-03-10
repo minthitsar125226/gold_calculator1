@@ -87,7 +87,8 @@ elif menu == "💰 ရွှေ နှင့် ငွေ":
 elif menu == "📏 အချိုးအစားတွက်စက်":
     st.header("📏 အချိုးအစားနှင့် အလေးချိန်ပေါင်း/နုတ်")
     
-    st.markdown("#### ၁။ အလေးချိန် ပေါင်း/နုတ်")
+    # ၁။ အလေးချိန် ပေါင်း/နုတ်
+    st.markdown("#### ၁။ ရွှေအလေးချိန် ပေါင်း/နုတ် တွက်ချက်ရန်")
     col1, col2 = st.columns(2)
     with col1:
         st.write("ပထမအလေးချိန်")
@@ -108,12 +109,35 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     val1 = to_pe(v_k1, v_p1, v_y1, v_pt1)
     val2 = to_pe(v_k2, v_p2, v_y2, v_pt2)
     
-    res_add = from_pe(val1 + val2)
-    res_sub = from_pe(max(0, val1 - val2))
-    
     c_a, c_s = st.columns(2)
     c_a.success(f"ပေါင်းလဒ်: {format_gold_weight(val1 + val2)}")
     c_s.info(f"နုတ်လဒ်: {format_gold_weight(max(0, val1 - val2))}")
+
+    st.write("---")
+
+    # ၂။ အလျားမြှောက်ခြင်း (မူရင်း Logic)
+    st.markdown("#### ၂။ အလျားမြှောက်ခြင်း")
+    col_a, col_b = st.columns(2)
+    base_unit = col_a.number_input("အချိုး (ဥပမာ- ၇):", value=7.0, key="base_unit")
+    multiplier = col_b.number_input("မြှောက်မည့် အရှည် (ဥပမာ- ၂၀):", value=20.0, key="multiplier")
+    total_inches = base_unit * multiplier
+    ft = int(total_inches // 12)
+    rem_in = total_inches % 12
+    st.markdown(f"<div class='result-card'><h4>စုစုပေါင်းအရှည်: {ft} ပေ {rem_in:.1f} လက်မ</h4></div>", unsafe_allow_html=True)
+    
+    st.write("---")
+    
+    # ၃။ လက်မအလိုက် ရွှေအလေးချိန် (မူရင်း Logic)
+    st.markdown("#### ၃။ လက်မအလိုက် ရွှေအလေးချိန်")
+    col_c, col_d, col_e = st.columns(3)
+    inch_in = col_c.number_input("အရှည် (လက်မ):", value=20.0, key="inch_in")
+    y_per_in = col_d.number_input("၁ လက်မစာ ရွေး:", value=0, key="y_per_in")
+    pt_per_in = col_e.number_input("၁ လက်မစာ Point:", value=1, key="pt_per_in")
+    
+    # ၁ လက်မစာ အလေးချိန်ကို ပဲစနစ်ပြောင်း၍ မြှောက်ခြင်း
+    one_inch_pe = (y_per_in / 8) + (pt_per_in / 80)
+    total_pe_inch = inch_in * one_inch_pe
+    st.markdown(f"<div class='result-card'><h4>ရလဒ် အလေးချိန်: <br>{format_gold_weight(total_pe_inch)}</h4></div>", unsafe_allow_html=True)
 
 elif menu == "🌍 ကမ္ဘာ့ရွှေဈေး":
     st.header("🌍 ကမ္ဘာ့ရွှေဈေး တွက်ချက်ခြင်း")
