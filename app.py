@@ -39,7 +39,33 @@ with tab1:
         st.info(f"ရရှိမည့်ရွှေအသား: {format_gold_weight(total_pe_possible)}")
 
 with tab2:
-    st.subheader("⚖️ ရွှေအလေးချိန် ပေါင်း/နုတ် တွက်ချက်ရန်")
+    st.subheader("📏 ပန်းတိမ်သုံး အလျားနှင့် အလေးချိန်")
+    
+    # ၁။ အလျားမြှောက်ခြင်း
+    st.markdown("#### ၁။ အလျားမြှောက်ခြင်း")
+    col_a, col_b = st.columns(2)
+    base_unit = col_a.number_input("အချိုး (ဥပမာ- ၇):", value=7.0)
+    multiplier = col_b.number_input("မြှောက်မည့် အရှည် (ဥပမာ- ၂၀):", value=20.0)
+    total_inches = base_unit * multiplier
+    ft = int(total_inches // 12)
+    rem_in = total_inches % 12
+    st.markdown(f"<div class='result-card'><h4>စုစုပေါင်းအရှည်: {ft} ပေ {rem_in:.1f} လက်မ</h4></div>", unsafe_allow_html=True)
+    
+    st.divider()
+    
+    # ၂။ လက်မအလိုက် ရွှေအလေးချိန်
+    st.markdown("#### ၂။ လက်မအလိုက် ရွှေအလေးချိန်")
+    col_c, col_d, col_e = st.columns(3)
+    inch_in = col_c.number_input("အရှည် (လက်မ):", value=20.0, key="inch_in")
+    y_per_in = col_d.number_input("၁ လက်မစာ ရွေး:", value=0, key="y_per_in")
+    pt_per_in = col_e.number_input("၁ လက်မစာ Point:", value=1, key="pt_per_in")
+    total_pe_inch = inch_in * ((y_per_in / 8) + (pt_per_in / 80))
+    st.markdown(f"<div class='result-card'><h4>ရလဒ် အလေးချိန်: <br>{format_gold_weight(total_pe_inch)}</h4></div>", unsafe_allow_html=True)
+    
+    st.divider()
+    
+    # ၃။ ရွှေအလေးချိန် ပေါင်း/နုတ် တွက်ချက်ခြင်း (အသစ်ထည့်လိုက်သည့် Logic)
+    st.markdown("#### ⚖️ ရွှေအလေးချိန် ပေါင်း/နုတ် တွက်ချက်ရန်")
     
     col1, col2 = st.columns(2)
     with col1:
@@ -56,20 +82,15 @@ with tab2:
         y2 = st.number_input("ရွေး", 0, 7, key="y2_add")
         pt2 = st.number_input("Point", 0, 9, key="pt2_add")
 
-    # utils.py ထဲက to_pe နဲ့ from_pe ကို သုံးခြင်း
+    # utils.py က to_pe နဲ့ from_pe ကို ခေါ်သုံးခြင်း
     val1 = to_pe(k1, p1, y1, pt1)
     val2 = to_pe(k2, p2, y2, pt2)
     
-    # ပေါင်း/နုတ် တွက်ချက်ခြင်း
     res_add = from_pe(val1 + val2)
     res_sub = from_pe(max(0, val1 - val2))
     
     st.success(f"ပေါင်းလဒ်: {res_add[0]} ကျပ် {res_add[1]} ပဲ {res_add[2]} ရွေး {res_add[3]} Point")
     st.info(f"နုတ်လဒ်: {res_sub[0]} ကျပ် {res_sub[1]} ပဲ {res_sub[2]} ရွေး {res_sub[3]} Point")
-    st.subheader("📏 ပန်းတိမ်သုံး အလျားနှင့် အလေးချိန်")
-    base_unit = st.number_input("အချိုး:", value=7.0)
-    multiplier = st.number_input("အရှည်:", value=20.0)
-    st.write(f"စုစုပေါင်း: {base_unit * multiplier:.1f}")
 
 with tab3:
     st.subheader("🌍 World Gold to Myanmar")
