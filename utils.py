@@ -41,3 +41,20 @@ def mm_to_inch_pe(mm):
 def inch_pe_to_mm(inch, pe):
     """လက်မ နှင့် ပဲ မှ မီလီမီတာ သို့ ပြောင်းခြင်း"""
     return (inch + (pe / 16)) * 25.4
+
+def format_length_inches(total_inches):
+    """စုစုပေါင်းလက်မမှ ပေ၊ လက်မ၊ ပဲ သို့ ပြောင်းခြင်း"""
+    ft = int(total_inches // 12)
+    rem_in = int(total_inches % 12)
+    pe = round((total_inches % 1) * 16)
+    
+    # ပဲ ၁၆ ပြည့်သွားရင် လက်မထဲပေါင်း
+    if pe == 16:
+        rem_in += 1
+        pe = 0
+    # လက်မ ၁၂ ပြည့်သွားရင် ပေထဲပေါင်း
+    if rem_in == 12:
+        ft += 1
+        rem_in = 0
+        
+    return f"{ft} ပေ {rem_in} လက်မ {pe} ပဲ"
