@@ -1,6 +1,9 @@
 import streamlit as st
-from utils import format_gold_weight, calculate_pe, to_pe, from_pe, mm_to_inch_pe, inch_pe_to_mm
-
+from datetime import datetime
+from utils import (
+    format_gold_weight, calculate_pe, 
+    mm_to_inch_pe, inch_pe_to_mm, format_length_inches
+)
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
 # Theme CSS
