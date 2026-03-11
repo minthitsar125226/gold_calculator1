@@ -1,6 +1,7 @@
 # utils.py
 
 def format_gold_weight(total_pe):
+    """ပဲ ယူနစ်မှ ကျပ်၊ ပဲ၊ ရွေး၊ Point သို့ ပြောင်းလဲခြင်း"""
     if total_pe <= 0: return "၀ ကျပ်၊ ၀ ပဲ၊ ၀ ရွေး၊ ၀ Point"
     k = int(total_pe // 16)
     p = int(total_pe % 16)
@@ -10,23 +11,8 @@ def format_gold_weight(total_pe):
     pt = int(total_points % 10)
     return f"{k} ကျပ်၊ {p} ပဲ၊ {y} ရွေး၊ {pt} Point"
 
-def calculate_pe(k, p, y, pt):
-    return (k * 16) + p + (y / 8) + (pt / 80)
-
-# to_pe ဆိုပြီးခေါ်ရင်လည်း calculate_pe ကိုပဲ သုံးအောင် လုပ်ထားပါတယ်
-def to_pe(k, p, y, pt):
-    return calculate_pe(k, p, y, pt)
-
-def mm_to_inch_pe(mm):
-    total_inches = mm / 25.4
-    inches = int(total_inches)
-    pe = round((total_inches - inches) * 16)
-    return inches, pe
-
-def inch_pe_to_mm(inch, pe):
-    return (inch + (pe / 16)) * 25.4
-
 def format_length_inches(total_inches):
+    """လက်မမှ ပေ၊ လက်မ၊ ပဲ သို့ ပြောင်းလဲခြင်း"""
     if total_inches <= 0: return "၀ ပေ၊ ၀ လက်မ၊ ၀ ပဲ"
     ft = int(total_inches // 12)
     rem_in = int(total_inches % 12)
@@ -37,4 +23,12 @@ def format_length_inches(total_inches):
     if rem_in >= 12:
         ft += 1
         rem_in -= 12
-    return f"{ft} ပေ {rem_in} လက်မ {pe} ပဲ"
+    return f"{ft} ပေ၊ {rem_in} လက်မ၊ {pe} ပဲ"
+
+def calculate_pe(k, p, y, pt):
+    """ကျပ်၊ ပဲ၊ ရွေး၊ Point မှ ပဲ ယူနစ်သို့ ပြောင်းခြင်း"""
+    return (k * 16) + p + (y / 8) + (pt / 80)
+
+def to_pe(k, p, y, pt):
+    """calculate_pe နှင့် အတူတူပင်ဖြစ်သည်"""
+    return calculate_pe(k, p, y, pt)
