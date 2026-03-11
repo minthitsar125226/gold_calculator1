@@ -137,28 +137,20 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     """, unsafe_allow_html=True)
 
 # ၄။ အလျားမြှောက်စက် (အလီ)
-    st.write("---")
     st.subheader("📏 ၄။ အလျားမြှောက်စက် (အလီ)")
+    ca1, ca2, ca3 = st.columns(3)
+    in_m = ca1.number_input("လက်မ (Inch):", value=6, key="in_m_ali")
+    pe_m = ca2.selectbox("ပဲ (Pe):", list(range(16)), index=2, key="pe_m_ali")
+    times = ca3.number_input("မြှောက်မည့်အလီ (ဥပမာ- ၃):", value=3, key="times_ali")
     
-    col_a1, col_a2, col_a3 = st.columns(3)
-    with col_a1:
-        in_mult = st.number_input("လက်မ (Inch):", value=6, key="in_mult")
-    with col_a2:
-        pe_mult = st.selectbox("ပဲ (Pe):", list(range(16)), index=2, key="pe_mult")
-    with col_a3:
-        times = st.number_input("မြှောက်မည့်အလီ (ဥပမာ- ၃):", value=3, key="times")
+    # တွက်ချက်မှု
+    total_len = (in_m + (pe_m/16)) * times
     
-    # တွက်ချက်မှု logic
-    one_part_inches = in_mult + (pe_mult / 16)
-    total_len_inches = one_part_inches * times
-    
-    from utils import format_length_inches # utils ထဲက function ကို ခေါ်သုံးခြင်း
-
+    # ရလဒ်ပြသခြင်း (utils ထဲက function ကို ခေါ်သုံးထားပါတယ်)
     st.markdown(f"""
-        <div class='result-card' style='border-color: #D4AF37;'>
+        <div class='result-card'>
             <h4>စုစုပေါင်းအလျား ရလဒ်:</h4>
-            <h2 style='color: #D4AF37;'>{format_length_inches(total_len_inches)}</h2>
-            <p style='font-size: 14px;'>({in_mult} လက်မ {pe_mult} ပဲ × {times} အလီ)</p>
+            <h2>{format_length_inches(total_len)}</h2>
         </div>
     """, unsafe_allow_html=True)
 
