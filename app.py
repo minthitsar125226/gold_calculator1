@@ -90,7 +90,6 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
-
 st.subheader("💍 လက်စွပ် အရွယ်အစား တွက်ချက်မှု")
 
 # နံပါတ်ရွေးချယ်ခြင်း
