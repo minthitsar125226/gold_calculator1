@@ -120,7 +120,7 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
             </div>
         """, unsafe_allow_html=True)
         
-    elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
+ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
         st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
         
         col1, col2 = st.columns(2)
@@ -138,7 +138,7 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
             g_point = st.number_input("ရွှေ (Point):", min_value=0.0, max_value=9.9, step=0.1)
             gold_price = st.number_input("ယနေ့ ရွှေဈေး (ကျပ်):", value=10000000)
 
-        # တွက်ချက်မှုများ
+        # တွက်ချက်ခြင်း
         res = logic.gem_to_gold_units(user_carat)
         gem_cost = user_carat * price_per_carat
         gold_cost = logic.calculate_gold_price_comprehensive(g_kyat, g_pae, g_yway, g_point, gold_price)
@@ -147,7 +147,7 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
         with col2:
             st.success("📊 တွက်ချက်မှုရလဒ်")
             
-            # ၁။ ကျောက်မျက်အလေးချိန်
+            # ကျောက်မျက်အလေးချိန်ပြခြင်း
             st.markdown(f"""
                 <div style='border: 2px solid #D4AF37; padding: 15px; border-radius: 10px; background-color: #1a1a1a; margin-bottom: 10px;'>
                     <h4 style='color: #D4AF37; text-align: center;'>📏 ကျောက်မျက် အလေးချိန်</h4>
@@ -162,7 +162,7 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
                 </div>
             """, unsafe_allow_html=True)
 
-            # ၂။ ရွှေထည်အလေးချိန်
+            # ရွှေထည်အလေးချိန်နှင့်ဈေး
             st.markdown(f"""
                 <div style='border: 2px solid #C0C0C0; padding: 15px; border-radius: 10px; background-color: #1a1a1a; margin-bottom: 10px;'>
                     <h4 style='color: #C0C0C0; text-align: center;'>✨ ရွှေထည် အချက်အလက်</h4>
@@ -171,13 +171,13 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
                 </div>
             """, unsafe_allow_html=True)
 
-            # ၃။ စုစုပေါင်း
+            # စုစုပေါင်း
             st.markdown(f"""
-                <div class='kanote-border'>
+                <div style='border: 2px solid #FFD700; padding: 15px; border-radius: 10px; background-color: #000000;'>
                     <h2 style='color: #D4AF37; text-align: center;'>စုစုပေါင်းကျသင့်ငွေ</h2>
                     <h1 style='color: #FFD700; text-align: center;'>{total_sum:,.0f} ကျပ်</h1>
                 </div>
-            """, unsafe_allow_html=True)
-
+            """, unsafe_allow_html=True)  
+    
     # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
 st.markdown("<p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
