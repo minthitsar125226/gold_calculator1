@@ -106,3 +106,10 @@ def calculate_gem_price(carat, price_per_carat, gold_weight_pae, gold_price):
     gold_cost = (gold_weight_pae / 16) * gold_price
     total_cost = gem_cost + gold_cost
     return gem_cost, gold_cost, total_cost
+
+def calculate_gold_price_comprehensive(kyat, pae, yway, point, gold_price):
+    # အလေးချိန်အားလုံးကို ပဲ (pae) အဖြစ် ပြောင်းလဲခြင်း
+    total_pae = (kyat * 16) + pae + (yway / 8) + (point / 80)
+    # ရွှေဖိုး = (စုစုပေါင်း ပဲ / 16) * ရွှေဈေး
+    gold_cost = (total_pae / 16) * gold_price
+    return gold_cost
