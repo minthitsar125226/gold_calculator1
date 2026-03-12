@@ -97,7 +97,6 @@ elif menu == "လက်စွပ်/လက်ကောက်":
     mode = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
     
     if mode == "လက်စွပ် (Ring)":
-        # လက်စွပ်တွက်ချက်မှု (အရင်က လုပ်ထားပြီးသားအတိုင်း)
         r_no = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
         details = logic.get_ring_details(r_no)
         st.markdown(f"""
@@ -113,7 +112,7 @@ elif menu == "လက်စွပ်/လက်ကောက်":
         b_inch = st.number_input("အချင်း (လက်မ):", min_value=1, value=2)
         b_pe = st.number_input("အချင်း (ပဲ):", min_value=0, max_value=15, value=0)
         
-        # Logic ကို ခေါ်သုံးခြင်း (Circumference တွက်နည်း)
+        # Logic တွင် bangle_diameter_to_length function ရှိရပါမည်
         c_inch, c_pe = logic.bangle_diameter_to_length(b_inch, b_pe)
         
         st.markdown(f"""
