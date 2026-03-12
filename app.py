@@ -129,5 +129,37 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
     w_pe = calculate_pe(col_b.number_input("ကျပ်(လျော့)",0), col_b.number_input("ပဲ(လျော့)",0), col_b.number_input("ရွေး(လျော့)",0), col_b.number_input("Pt(လျော့)",0))
     diff = logic.job_comparison(g_pe, r_pe, w_pe)
     st.markdown(f"<div class='result-card'><h2>{'ကျန်:' if diff > 0 else 'ပို:'} {format_gold_weight(abs(diff))}</h2></div>", unsafe_allow_html=True)
+
+elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
+    st.subheader("💎 စိန်၊ ကျောက် နှင့် ပုလဲ အသေးစိတ်တွက်ချက်ခြင်း")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.info("💎 ကျောက်မျက် အချက်အလက်")
+        gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"])
+        carat = st.number_input("အလေးချိန် (Carat/ကာရက်) ရိုက်ထည့်ပါ:", min_value=0.0, step=0.01)
+        price_per_carat = st.number_input(f"တစ် {gem_type} (1 Carat) ဈေးနှုန်း:", min_value=0, step=10000)
+        
+        st.warning("✨ ရွှေထည် အချက်အလက်")
+        gold_price = st.number_input("ယနေ့ ရွှေဈေး (ကျပ်):", value=10000000)
+        gold_used_pae = st.number_input("အသုံးပြုထားသော ရွှေချိန် (ပဲ):", min_value=0.0, step=0.5)
+
+    # logic.py ထဲက function များကို ခေါ်သုံးခြင်း
+    gem_gold_weight = logic.gem_to_gold_units(carat)
+    gem_cost, gold_cost, total_sum = logic.calculate_gem_price(carat, price_per_carat, gold_used_pae, gold_price)
+
+    with col2:
+        st.success("📊 တွက်ချက်မှုရလဒ်")
+        st.markdown(f"""
+            <div class='kanote-border'>
+                <p style='color: #D4AF37;'><b>{gem_type} အလေးချိန် (ရွှေချိန်ဖြင့်):</b></p>
+                <h3>{gem_gold_weight['pae']} ပဲ {gem_gold_weight['yway']} ရွေး {gem_gold_weight['point']} Point</h3>
+                <hr>
+                <p>ကျောက်ဖိုး: <b>{gem_cost:,.0f} ကျပ်</b></p>
+                <p>ရွှေဖိုး: <b>{gold_cost:,.0f} ကျပ်</b></p>
+                <h2 style='color: #D4AF37;'>စုစုပေါင်း: {total_sum:,.0f} ကျပ်</h2>
+            </div>
+        """, unsafe_allow_html=True)
     # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
 st.markdown("<p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
