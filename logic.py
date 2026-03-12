@@ -24,23 +24,39 @@ def length_multiplier_ali(in_m, pe_m, times):
     """အလျားအလီမြှောက်ခြင်း (အလီ)"""
     return (in_m + (pe_m/16)) * times
 
-# --- ၃။ လက်စွပ်/လက်ကောက် Logic ---
-def ring_no_to_mm(ring_no):
-    return 11.63 + (ring_no * 0.8128)
 
-def inch_pe_to_mm(inch, pe):
-    return (inch + (pe / 16)) * 25.4
+# U HTON Chart ဇယားပါ တန်ဖိုးများအားလုံး
+RING_SIZE_DATA = {
+    1: 13.05, 2: 13.37, 3: 13.69, 4: 14.01, 5: 14.32, 6: 14.64, 
+    7: 14.96, 8: 15.28, 9: 15.60, 10: 15.92, 11: 16.23, 12: 16.55,
+    13: 16.87, 14: 17.19, 15: 17.56, 16: 17.83, 17: 18.14, 18: 18.46,
+    19: 18.78, 20: 19.10, 21: 19.42, 22: 19.74, 23: 20.05, 24: 20.37,
+    25: 20.69, 26: 21.01, 27: 21.33, 28: 21.65, 29: 19.96, 30: 22.28,
+    31: 22.60, 32: 22.92
+}
 
-def mm_to_inch_pe(mm):
-    total_inches = mm / 25.4
-    inches = int(total_inches)
-    pe = round((total_inches - inches) * 16)
-    return inches, pe
+def mm_to_inch_pe(mm_value):
+    """mm မှ လက်မနှင့် ပဲ သို့ပြောင်းရန်"""
+    # 1 inch = 25.4 mm
+    total_inch = mm_value / 25.4
+    inch = int(total_inch)
+    # 1 လက်မ = 16 ပဲ
+    pe = round((total_inch - inch) * 16)
+    return inch, pe
 
-def bangle_circumference(inch, pe):
-    """အချင်းမှ ပတ်လည်အလျားတွက်ခြင်း"""
-    d_mm = inch_pe_to_mm(inch, pe)
-    return d_mm * 3.14159
+def get_ring_details(ring_no):
+    """လက်တိုင်းနံပါတ်မှ အချက်အလက်အပြည့်အစုံထုတ်ပေးရန်"""
+    diameter_mm = RING_SIZE_DATA.get(ring_no, 0)
+    circumference_mm = diameter_mm * 3.14159
+    
+    diameter_inch, diameter_pe = mm_to_inch_pe(diameter_mm)
+    
+    return {
+        "mm": diameter_mm,
+        "inch": diameter_inch,
+        "pe": diameter_pe,
+        "circ": circumference_mm
+    }
 
 # --- ၄။ အထည်ယူ/အပ် Logic ---
 def job_comparison(give_total_pe, return_net_pe, wastage_pe):
