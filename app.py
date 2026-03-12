@@ -131,8 +131,4 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
     diff = logic.job_comparison(g_pe, r_pe, w_pe)
     st.markdown(f"<div class='result-card'><h2>{'ကျန်:' if diff > 0 else 'ပို:'} {format_gold_weight(abs(diff))}</h2></div>", unsafe_allow_html=True)
     # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
-st.markdown("""
-    <div class="footer-kanote">
-        ✧ App by MinThitSarAung ✧
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
