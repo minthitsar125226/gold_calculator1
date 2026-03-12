@@ -89,24 +89,39 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     total_l = logic.length_multiplier_ali(la.number_input("လက်မ", 6), lb.selectbox("ပဲ", list(range(16))), lc.number_input("အလီ", 3))
     st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
 
-elif menu == "💍 လက်စွပ်/လက်ကောက်":
-st.subheader("💍 လက်စွပ် အရွယ်အစား တွက်ချက်မှု")
-
-# နံပါတ်ရွေးချယ်ခြင်း
-selected_ring = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
-
-# တွက်ချက်ခြင်း
-details = logic.get_ring_details(selected_ring)
-
-# ရလဒ်ပြသခြင်း
-st.markdown(f"""
-    <div class='kanote-border'>
-        <h3>လက်တိုင်း နံပါတ်: {selected_ring}</h3>
-        <p><b>Diameter:</b> {details['mm']} mm</p>
-        <p><b>လက်မ/ပဲ စနစ်:</b> {details['inch']} လက်မ {details['pe']} ပဲ</p>
-        <p><b>Circumference:</b> {details['circ']:.2f} mm</p>
-    </div>
-""", unsafe_allow_html=True)
+elif sub == "လက်စွပ်/လက်ကောက်":
+    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
+    
+    # လက်စွပ်လား၊ လက်ကောက်လား ရွေးရန်
+    mode = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
+    
+    if mode == "လက်စွပ် (Ring)":
+        # လက်စွပ်တွက်ချက်မှု (အရင်က လုပ်ထားပြီးသားအတိုင်း)
+        r_no = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
+        details = logic.get_ring_details(r_no)
+        st.markdown(f"""
+            <div class='kanote-border'>
+                <h3>လက်တိုင်း နံပါတ်: {r_no}</h3>
+                <p>Diameter: {details['mm']} mm</p>
+                <p>အလျား: {details['inch']} လက်မ {details['pe']} ပဲ</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+    elif mode == "လက်ကောက် (Bangle)":
+        # လက်ကောက်တွက်ချက်မှု (လက်ကောက်အချင်းမှ အလျားသို့)
+        b_inch = st.number_input("အချင်း (လက်မ):", min_value=1, value=2)
+        b_pe = st.number_input("အချင်း (ပဲ):", min_value=0, max_value=15, value=0)
+        
+        # Logic ကို ခေါ်သုံးခြင်း (Circumference တွက်နည်း)
+        c_inch, c_pe = logic.bangle_diameter_to_length(b_inch, b_pe)
+        
+        st.markdown(f"""
+            <div class='kanote-border'>
+                <h3>လက်ကောက် အလျား</h3>
+                <p>အချင်း: {b_inch} လက်မ {b_pe} ပဲ</p>
+                <p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p>
+            </div>
+        """, unsafe_allow_html=True)
 
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.header("📋 အထည်ယူ/အပ် နှိုင်းယှဉ်ချက်")
