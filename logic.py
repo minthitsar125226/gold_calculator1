@@ -113,3 +113,15 @@ def calculate_gold_price_comprehensive(kyat, pae, yway, point, gold_price):
     # ရွှေဖိုး = (စုစုပေါင်း ပဲ / 16) * ရွှေဈေး
     gold_cost = (total_pae / 16) * gold_price
     return gold_cost
+
+def gem_to_gold_units(carat):
+    # 1 Carat လျှင် ရွှေချိန် Point ပေါင်း ၁၉.၂၆၄ ဝန်းကျင်ရှိသည်ဟု တွက်ချက်ထားခြင်း
+    total_gold_points = carat * 19.264
+    
+    kyat = int(total_gold_points // 120)
+    pae = int((total_gold_points % 120) // 7.5)
+    yway = int((total_gold_points % 7.5) // 1)
+    point = round((total_gold_points % 1) * 10, 1)
+    
+    # ဒီ return ပြန်တဲ့နေရာမှာ အောက်ပါအတိုင်း နာမည်တွေ အကုန်ပါရပါမယ်
+    return {"kyat": kyat, "pae": pae, "yway": yway, "point": point}
