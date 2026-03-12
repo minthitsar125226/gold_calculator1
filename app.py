@@ -121,11 +121,11 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
         """, unsafe_allow_html=True)
         
  elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
-        st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
+      st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
         
         col1, col2 = st.columns(2)
         
-        with col1:
+    with col1:
             st.info("💎 ကျောက်မျက် အချက်အလက်")
             gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"])
             user_carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01, format="%.2f")
