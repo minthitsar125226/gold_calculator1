@@ -89,11 +89,20 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     la, lb, lc = st.columns(3)
     total_l = logic.length_multiplier_ali(la.number_input("လက်မ", 6), lb.selectbox("ပဲ", list(range(16))), lc.number_input("အလီ", 3))
     st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
+# sidebar မှာ ရွေးချယ်မှုလုပ်တဲ့နေရာ (အရင်ကအတိုင်း ရှိရပါမယ်)
+menu = st.sidebar.radio("ရွေးချယ်ရန်:", ["Home", "💍 လက်စွပ်/လက်ကောက်", "အခြား..."])
+
+# Menu အလိုက် လုပ်ဆောင်ချက် (ဤအပိုင်းကို အစားထိုးပါ)
+if menu == "Home":
+    st.write("ကြိုဆိုပါတယ်")
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
-     subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
+    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
     
+    # mode ကို အရင်သတ်မှတ်ပါ
+    mode = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
     
+    # Indentation (အကွာအဝေး) ညီညာစွာ ရေးပါ
     if mode == "လက်စွပ် (Ring)":
         r_no = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
         details = logic.get_ring_details(r_no)
@@ -106,11 +115,10 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
         """, unsafe_allow_html=True)
         
     elif mode == "လက်ကောက် (Bangle)":
-        # လက်ကောက်တွက်ချက်မှု (လက်ကောက်အချင်းမှ အလျားသို့)
         b_inch = st.number_input("အချင်း (လက်မ):", min_value=1, value=2)
         b_pe = st.number_input("အချင်း (ပဲ):", min_value=0, max_value=15, value=0)
         
-        # Logic တွင် bangle_diameter_to_length function ရှိရပါမည်
+        # Logic ကို ခေါ်သုံးခြင်း
         c_inch, c_pe = logic.bangle_diameter_to_length(b_inch, b_pe)
         
         st.markdown(f"""
