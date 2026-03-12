@@ -131,34 +131,57 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.markdown(f"<div class='result-card'><h2>{'ကျန်:' if diff > 0 else 'ပို:'} {format_gold_weight(abs(diff))}</h2></div>", unsafe_allow_html=True)
 
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
-    st.subheader("💎 စိန်၊ ကျောက် နှင့် ပုလဲ အသေးစိတ်တွက်ချက်ခြင်း")
+    st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
     
     col1, col2 = st.columns(2)
     
     with col1:
         st.info("💎 ကျောက်မျက် အချက်အလက်")
         gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"])
-        carat = st.number_input("အလေးချိန် (Carat/ကာရက်) ရိုက်ထည့်ပါ:", min_value=0.0, step=0.01)
+        carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01)
         price_per_carat = st.number_input(f"တစ် {gem_type} (1 Carat) ဈေးနှုန်း:", min_value=0, step=10000)
         
-        st.warning("✨ ရွှေထည် အချက်အလက်")
+        st.warning("✨ ရွှေထည် အလေးချိန်ထည့်ရန်")
+        g_kyat = st.number_input("ရွှေ (ကျပ်):", min_value=0, step=1)
+        g_pae = st.number_input("ရွှေ (ပဲ):", min_value=0, max_value=15, step=1)
+        g_yway = st.number_input("ရွှေ (ရွေး):", min_value=0, max_value=7, step=1)
+        g_point = st.number_input("ရွှေ (Point):", min_value=0.0, max_value=9.9, step=0.1)
         gold_price = st.number_input("ယနေ့ ရွှေဈေး (ကျပ်):", value=10000000)
-        gold_used_pae = st.number_input("အသုံးပြုထားသော ရွှေချိန် (ပဲ):", min_value=0.0, step=0.5)
 
-    # logic.py ထဲက function များကို ခေါ်သုံးခြင်း
+    # တွက်ချက်မှုများ
     gem_gold_weight = logic.gem_to_gold_units(carat)
-    gem_cost, gold_cost, total_sum = logic.calculate_gem_price(carat, price_per_carat, gold_used_pae, gold_price)
+    gem_cost = carat * price_per_carat
+    gold_cost = logic.calculate_gold_price_comprehensive(g_kyat, g_pae, g_yway, g_point, gold_price)
+    total_sum = gem_cost + gold_cost
 
     with col2:
         st.success("📊 တွက်ချက်မှုရလဒ်")
+        
+        # ၁။ ကျောက်မျက်အလေးချိန် (ရွှေချိန်ဖြင့်ပြခြင်း)
+        st.markdown(f"""
+            <div style='border: 2px solid #D4AF37; padding: 15px; border-radius: 10px; background-color: #1a1a1a; margin-bottom: 10px;'>
+                <h4 style='color: #D4AF37; text-align: center;'>📏 ကျောက်မျက် အလေးချိန် (ရွှေချိန်ဖြင့်)</h4>
+                <p style='text-align: center; font-size: 18px;'>
+                    <b>{gem_gold_weight['kyat']} ကျပ် {gem_gold_weight['pae']} ပဲ {gem_gold_weight['yway']} ရွေး {gem_gold_weight['point']} Point</b>
+                </p>
+                <p style='text-align: center; color: #ffffff;'>ကျောက်ဖိုး: {gem_cost:,.0f} ကျပ်</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # ၂။ ရွှေထည်အလေးချိန်နှင့် ဈေးနှုန်း
+        st.markdown(f"""
+            <div style='border: 2px solid #C0C0C0; padding: 15px; border-radius: 10px; background-color: #1a1a1a; margin-bottom: 10px;'>
+                <h4 style='color: #C0C0C0; text-align: center;'>✨ ရွှေထည် အချက်အလက်</h4>
+                <p style='text-align: center;'>အလေးချိန်: <b>{g_kyat} ကျပ် {g_pae} ပဲ {g_yway} ရွေး {g_point} Point</b></p>
+                <p style='text-align: center;'>ရွှေဖိုး: <b>{gold_cost:,.0f} ကျပ်</b></p>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # ၃။ စုစုပေါင်း
         st.markdown(f"""
             <div class='kanote-border'>
-                <p style='color: #D4AF37;'><b>{gem_type} အလေးချိန် (ရွှေချိန်ဖြင့်):</b></p>
-                <h3>{gem_gold_weight['pae']} ပဲ {gem_gold_weight['yway']} ရွေး {gem_gold_weight['point']} Point</h3>
-                <hr>
-                <p>ကျောက်ဖိုး: <b>{gem_cost:,.0f} ကျပ်</b></p>
-                <p>ရွှေဖိုး: <b>{gold_cost:,.0f} ကျပ်</b></p>
-                <h2 style='color: #D4AF37;'>စုစုပေါင်း: {total_sum:,.0f} ကျပ်</h2>
+                <h2 style='color: #D4AF37; text-align: center;'>စုစုပေါင်းကျသင့်ငွေ</h2>
+                <h1 style='color: #FFD700; text-align: center;'>{total_sum:,.0f} ကျပ်</h1>
             </div>
         """, unsafe_allow_html=True)
     # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
