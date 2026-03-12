@@ -104,8 +104,7 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
             <div class='kanote-border'>
                 <h3>လက်တိုင်း နံပါတ်: {r_no}</h3>
                 <p>Diameter: {details['mm']} mm</p>
-                <p>အလျား: {f'{details["inch"]} လက်မ' if details["inch"] > 0 else ''} {details["pe"]} ပဲ</p>
-        """, unsafe_allow_html=True)
+                <p>အလျား: {details['inch']} လက်မ {details['pe']} ပဲ</p>
         
     elif mode == "လက်ကောက် (Bangle)":
         b_inch = st.number_input("အချင်း (လက်မ):", min_value=1, value=2)
