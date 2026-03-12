@@ -5,8 +5,40 @@ import logic
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
-# Theme CSS
-st.markdown("<style>.stApp { background-color: #000; color: #fff; } .result-card { background-color: #1a1a1a; padding: 20px; border: 2px solid #D4AF37; border-radius: 12px; color: #D4AF37; text-align: center; margin: 10px 0; }</style>", unsafe_allow_html=True)
+# app.py အတွက် CSS
+st.markdown("""
+    <style>
+    /* တစ်ခုလုံးအတွက် ရွှေရောင် စာသား */
+    .stApp { background-color: #000000; color: #D4AF37; }
+    
+    /* ရွှေရောင် ခေါင်းစဉ်များ */
+    h1, h2, h3 { color: #D4AF37 !important; }
+
+    /* ကနုတ်ဒီဇိုင်း (Border Style) */
+    .kanote-border {
+        border: 3px double #D4AF37;
+        padding: 20px;
+        border-radius: 15px;
+        background-color: #0a0a0a;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    /* App by MinThitSarAung အတွက် ကနုတ်ဖောင့်ပုံစံ */
+    .footer-kanote {
+        position: fixed;
+        left: 0; bottom: 0; width: 100%;
+        background-color: #000000;
+        color: #D4AF37;
+        text-align: center;
+        padding: 10px;
+        border-top: 2px solid #D4AF37;
+        font-family: 'Georgia', serif;
+        font-style: italic;
+        letter-spacing: 2px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # Sidebar
 menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "💍 လက်စွပ်/လက်ကောက်", "📋 အထည်ယူ/အထည်အပ်"])
@@ -82,3 +114,9 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
     w_pe = calculate_pe(col_b.number_input("ကျပ်(လျော့)",0), col_b.number_input("ပဲ(လျော့)",0), col_b.number_input("ရွေး(လျော့)",0), col_b.number_input("Pt(လျော့)",0))
     diff = logic.job_comparison(g_pe, r_pe, w_pe)
     st.markdown(f"<div class='result-card'><h2>{'ကျန်:' if diff > 0 else 'ပို:'} {format_gold_weight(abs(diff))}</h2></div>", unsafe_allow_html=True)
+    # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
+st.markdown("""
+    <div class="footer-kanote">
+        ✧ App by MinThitSarAung ✧
+    </div>
+    """, unsafe_allow_html=True)
