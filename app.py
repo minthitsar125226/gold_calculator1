@@ -90,7 +90,7 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     total_l = logic.length_multiplier_ali(la.number_input("လက်မ", 6), lb.selectbox("ပဲ", list(range(16))), lc.number_input("အလီ", 3))
     st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
 
-elif sub == "လက်စွပ်/လက်ကောက်":
+elif menu == "လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
     
     # လက်စွပ်လား၊ လက်ကောက်လား ရွေးရန်
