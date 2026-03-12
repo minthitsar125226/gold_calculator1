@@ -89,12 +89,6 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     la, lb, lc = st.columns(3)
     total_l = logic.length_multiplier_ali(la.number_input("လက်မ", 6), lb.selectbox("ပဲ", list(range(16))), lc.number_input("အလီ", 3))
     st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
-# sidebar မှာ ရွေးချယ်မှုလုပ်တဲ့နေရာ (အရင်ကအတိုင်း ရှိရပါမယ်)
-menu = st.sidebar.radio("ရွေးချယ်ရန်:", ["Home", "💍 လက်စွပ်/လက်ကောက်", "အခြား..."])
-
-# Menu အလိုက် လုပ်ဆောင်ချက် (ဤအပိုင်းကို အစားထိုးပါ)
-if menu == "Home":
-    st.write("ကြိုဆိုပါတယ်")
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
