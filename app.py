@@ -119,29 +119,18 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
                 <p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p>
             </div>
         """, unsafe_allow_html=True)
-        
-elif menu == "📋 အထည်ယူ/အထည်အပ်":
-    st.header("📋 အထည်ယူ/အပ် နှိုင်းယှဉ်ချက်")
-    col_a, col_b = st.columns(2)
-    name = col_a.text_input("အမျိုးအမည်:")
-    g_pe = calculate_pe(col_a.number_input("ကျပ်(ယူ)",0), col_a.number_input("ပဲ(ယူ)",0), col_a.number_input("ရွေး(ယူ)",0), col_a.number_input("Pt(ယူ)",0))
-    r_pe = calculate_pe(col_b.number_input("ကျပ်(အပ်)",0), col_b.number_input("ပဲ(အပ်)",0), col_b.number_input("ရွေး(အပ်)",0), col_b.number_input("Pt(အပ်)",0))
-    w_pe = calculate_pe(col_b.number_input("ကျပ်(လျော့)",0), col_b.number_input("ပဲ(လျော့)",0), col_b.number_input("ရွေး(လျော့)",0), col_b.number_input("Pt(လျော့)",0))
-    diff = logic.job_comparison(g_pe, r_pe, w_pe)
-    st.markdown(f"<div class='result-card'><h2>{'ကျန်:' if diff > 0 else 'ပို:'} {format_gold_weight(abs(diff))}</h2></div>", unsafe_allow_html=True)
-
-elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
+   elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
     
     col1, col2 = st.columns(2)
     
     with col1:
         st.info("💎 ကျောက်မျက် အချက်အလက်")
-        gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"]) 
-        carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01, format="%.2f")
+        gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"])
+        user_carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01, format="%.2f")
         price_per_carat = st.number_input(f"တစ် {gem_type} (1 Carat) ဈေးနှုန်း:", min_value=0, step=10000)
         
-        st.warning("✨ ရွှေထည် အလေးချိန်ထည့်ရန်")
+        st.warning("✨ ရွှေထည် အလေးချိန်")
         g_kyat = st.number_input("ရွှေ (ကျပ်):", min_value=0, step=1)
         g_pae = st.number_input("ရွှေ (ပဲ):", min_value=0, max_value=15, step=1)
         g_yway = st.number_input("ရွှေ (ရွေး):", min_value=0, max_value=7, step=1)
@@ -149,26 +138,30 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
         gold_price = st.number_input("ယနေ့ ရွှေဈေး (ကျပ်):", value=10000000)
 
     # တွက်ချက်မှုများ
-    gem_gold_weight = logic.gem_to_gold_units(carat)
-    gem_cost = carat * price_per_carat
+    res = logic.gem_to_gold_units(user_carat)
+    gem_cost = user_carat * price_per_carat
     gold_cost = logic.calculate_gold_price_comprehensive(g_kyat, g_pae, g_yway, g_point, gold_price)
     total_sum = gem_cost + gold_cost
 
     with col2:
         st.success("📊 တွက်ချက်မှုရလဒ်")
         
-        # ၁။ ကျောက်မျက်အလေးချိန် (ရွှေချိန်ဖြင့်ပြခြင်း)
+        # ၁။ ကျောက်မျက်အလေးချိန် (ကာရက် နှင့် ရတီ နှစ်မျိုးလုံးပြခြင်း)
         st.markdown(f"""
             <div style='border: 2px solid #D4AF37; padding: 15px; border-radius: 10px; background-color: #1a1a1a; margin-bottom: 10px;'>
-                <h4 style='color: #D4AF37; text-align: center;'>📏 ကျောက်မျက် အလေးချိန် (ရွှေချိန်ဖြင့်)</h4>
-                <p style='text-align: center; font-size: 18px;'>
-                    <b>{gem_gold_weight['kyat']} ကျပ် {gem_gold_weight['pae']} ပဲ {gem_gold_weight['yway']} ရွေး {gem_gold_weight['point']} Point</b>
+                <h4 style='color: #D4AF37; text-align: center;'>📏 ကျောက်မျက် အလေးချိန်</h4>
+                <p style='text-align: center; font-size: 18px; color: #FFD700;'>
+                    <b>{user_carat} Carat | {res['ratti']} Ratti</b>
                 </p>
-                <p style='text-align: center; color: #ffffff;'>ကျောက်ဖိုး: {gem_cost:,.0f} ကျပ်</p>
+                <p style='text-align: center; font-size: 16px; color: #ffffff;'>
+                    ရွှေချိန်: {res['kyat']} ကျပ် {res['pae']} ပဲ {res['yway']} ရွေး {res['point']} Point
+                </p>
+                <hr>
+                <p style='text-align: center;'>ကျောက်ဖိုး: <b>{gem_cost:,.0f} ကျပ်</b></p>
             </div>
         """, unsafe_allow_html=True)
 
-        # ၂။ ရွှေထည်အလေးချိန်နှင့် ဈေးနှုန်း
+        # ၂။ ရွှေထည်အလေးချိန်
         st.markdown(f"""
             <div style='border: 2px solid #C0C0C0; padding: 15px; border-radius: 10px; background-color: #1a1a1a; margin-bottom: 10px;'>
                 <h4 style='color: #C0C0C0; text-align: center;'>✨ ရွှေထည် အချက်အလက်</h4>
@@ -183,6 +176,7 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
                 <h2 style='color: #D4AF37; text-align: center;'>စုစုပေါင်းကျသင့်ငွေ</h2>
                 <h1 style='color: #FFD700; text-align: center;'>{total_sum:,.0f} ကျပ်</h1>
             </div>
-        """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)     
+
     # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
 st.markdown("<p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
