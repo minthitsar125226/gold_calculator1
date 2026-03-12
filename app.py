@@ -90,20 +90,24 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
     st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
-    st.header("💍 လက်ဝတ်ရတနာ တိုင်းတာခြင်း")
-    sub = st.radio("အမျိုးအစား:", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)", "ယူနစ် ပြောင်းလဲခြင်း"])
-    if sub == "ယူနစ် ပြောင်းလဲခြင်း":
-        in_v = st.number_input("လက်မ:", value=20.0)
-        p_v = st.selectbox("ပဲ:", list(range(16)))
-        st.markdown(f"<div class='result-card'><h2>{format_length_inches(in_v + (p_v/16))}</h2></div>", unsafe_allow_html=True)
-    elif sub == "လက်စွပ် (Ring)":
-        r_no = st.number_input("Ring Size:", value=15)
-        mm = logic.ring_no_to_mm(r_no)
-        i, p = logic.mm_to_inch_pe(mm)
-        st.markdown(f"<div class='result-card'><h2>{mm:.2f} mm</h2><h3>{i} လက်မ {p} ပဲ</h3></div>", unsafe_allow_html=True)
-    elif sub == "လက်ကောက် (Bangle)":
-        b_size = st.number_input("လက်တိုင်း (ဥပမာ ၂.၄):", value=2.4)
-        st.markdown(f"<div class='result-card'><h2>အလျား: {b_size*25.4*3.14159:.2f} mm</h2></div>", unsafe_allow_html=True)
+
+st.subheader("💍 လက်စွပ် အရွယ်အစား တွက်ချက်မှု")
+
+# နံပါတ်ရွေးချယ်ခြင်း
+selected_ring = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
+
+# တွက်ချက်ခြင်း
+details = logic.get_ring_details(selected_ring)
+
+# ရလဒ်ပြသခြင်း
+st.markdown(f"""
+    <div class='kanote-border'>
+        <h3>လက်တိုင်း နံပါတ်: {selected_ring}</h3>
+        <p><b>Diameter:</b> {details['mm']} mm</p>
+        <p><b>လက်မ/ပဲ စနစ်:</b> {details['inch']} လက်မ {details['pe']} ပဲ</p>
+        <p><b>Circumference:</b> {details['circ']:.2f} mm</p>
+    </div>
+""", unsafe_allow_html=True)
 
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.header("📋 အထည်ယူ/အပ် နှိုင်းယှဉ်ချက်")
