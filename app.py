@@ -2,21 +2,7 @@ import streamlit as st
 from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
-import streamlit as st
-import logic
 
-# --- ဤနေရာတွင် 'sub' ကို စတင်သတ်မှတ်ပေးပါ ---
-# Sidebar မှ ရွေးချယ်မှုများကို ဤ variable ထဲသို့ ထည့်သွင်းခြင်းဖြစ်သည်
-sub = st.sidebar.selectbox("Menu ရွေးချယ်ရန်", ["Home", "လက်စွပ်/လက်ကောက်", "အခြား..."])
-# -------------------------------------------
-
-# ယခုမှ သင်၏ elif များ အလုပ်လုပ်ပါလိမ့်မည်
-if sub == "Home":
-    st.write("Home Page")
-
-elif sub == "လက်စွပ်/လက်ကောက်":
-    # သင်၏ လက်စွပ်/လက်ကောက် Code များ...
-    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
