@@ -71,3 +71,19 @@ def job_comparison(give_total_pe, return_net_pe, wastage_pe):
     """ပေးရွှေ နှင့် (ပြန်အပ် + အလျော့) နှိုင်းယှဉ်ခြင်း"""
     total_return = return_net_pe + wastage_pe
     return give_total_pe - total_return
+
+def get_ring_details(r_no):
+    # ၁။ Diameter ရှာခြင်း (ဥပမာ Formula)
+    diameter_mm = 14.01 + (r_no - 4) * 0.5 
+    # ၂။ ပတ်လည်အလျား (Circumference) ကို mm နဲ့ အရင်ရှာ
+    length_mm = diameter_mm * 3.14159
+    
+    # ၃။ mm ကို လက်မ အပြည့်အစုံပြောင်း (25.4 နဲ့ စား)
+    total_inch = length_mm / 25.4  
+    
+    # ၄။ လက်မ နှင့် ပဲ ခွဲထုတ်ခြင်း
+    inch = int(total_inch) # လက်မ အပြည့် (ဥပမာ - 0 သို့မဟုတ် 1)
+    # ကျန်တဲ့ ဓာတ်သမကို ၁၆ နဲ့မြှောက်ပြီး "ပဲ" ရှာခြင်း
+    pe = round((total_inch - inch) * 16) 
+    
+    return {'mm': round(diameter_mm, 2), 'inch': inch, 'pe': pe}
