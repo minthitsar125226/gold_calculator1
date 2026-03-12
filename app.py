@@ -93,10 +93,8 @@ elif menu == "📏 အချိုးအစားတွက်စက်":
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
     
-    # mode ကို အရင်သတ်မှတ်ပါ
     mode = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
     
-    # Indentation (အကွာအဝေး) ညီညာစွာ ရေးပါ
     if mode == "လက်စွပ် (Ring)":
         r_no = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
         details = logic.get_ring_details(r_no)
@@ -105,12 +103,13 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
                 <h3>လက်တိုင်း နံပါတ်: {r_no}</h3>
                 <p>Diameter: {details['mm']} mm</p>
                 <p>အလျား: {details['inch']} လက်မ {details['pe']} ပဲ</p>
+            </div>
+        """, unsafe_allow_html=True)
         
     elif mode == "လက်ကောက် (Bangle)":
         b_inch = st.number_input("အချင်း (လက်မ):", min_value=1, value=2)
         b_pe = st.number_input("အချင်း (ပဲ):", min_value=0, max_value=15, value=0)
         
-        # Logic ကို ခေါ်သုံးခြင်း
         c_inch, c_pe = logic.bangle_diameter_to_length(b_inch, b_pe)
         
         st.markdown(f"""
@@ -118,8 +117,9 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
                 <h3>လက်ကောက် အလျား</h3>
                 <p>အချင်း: {b_inch} လက်မ {b_pe} ပဲ</p>
                 <p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p>
-            </div>""", unsafe_allow_html=True)
-
+            </div>
+        """, unsafe_allow_html=True)
+        
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.header("📋 အထည်ယူ/အပ် နှိုင်းယှဉ်ချက်")
     col_a, col_b = st.columns(2)
