@@ -58,6 +58,14 @@ def get_ring_details(ring_no):
         "circ": circumference_mm
     }
 
+def bangle_diameter_to_length(inch, pe):
+    total_inch = inch + (pe / 16)
+    circ_mm = (total_inch * 25.4) * 3.14159
+    total_inch_res = circ_mm / 25.4
+    c_inch = int(total_inch_res)
+    c_pe = round((total_inch_res - c_inch) * 16)
+    return c_inch, c_pe
+
 # --- ၄။ အထည်ယူ/အပ် Logic ---
 def job_comparison(give_total_pe, return_net_pe, wastage_pe):
     """ပေးရွှေ နှင့် (ပြန်အပ် + အလျော့) နှိုင်းယှဉ်ခြင်း"""
