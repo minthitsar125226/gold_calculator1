@@ -87,3 +87,22 @@ def get_ring_details(r_no):
     pe = round((total_inch - inch) * 16) 
     
     return {'mm': round(diameter_mm, 2), 'inch': inch, 'pe': pe}
+
+def gem_to_gold_units(carat):
+    # 1 Carat = 100 Points
+    # ရွှေချိန်နှင့် နှိုင်းယှဉ်လျှင် 1 Carat လျှင် ခန့်မှန်းခြေ 1.76 ရွေး (သို့မဟုတ်) 22 Points ခန့် ရှိတတ်သည်
+    total_points = carat * 22  # ရွှေချိန် point အနေဖြင့် ပြောင်းလဲခြင်း
+    
+    pae = int(total_points // 7.5)
+    yway = int((total_points % 7.5) // 1)
+    point = round((total_points % 1) * 10, 1)
+    
+    return {"pae": pae, "yway": yway, "point": point}
+
+def calculate_gem_price(carat, price_per_carat, gold_weight_pae, gold_price):
+    # ကျောက်ဖိုး = ကာရက် x တစ်ကာရက်ဈေး
+    gem_cost = carat * price_per_carat
+    # ရွှေဖိုး = (ရွှေချိန် ပဲ / 16) x ရွှေဈေး
+    gold_cost = (gold_weight_pae / 16) * gold_price
+    total_cost = gem_cost + gold_cost
+    return gem_cost, gold_cost, total_cost
