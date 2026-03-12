@@ -137,8 +137,8 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     
     with col1:
         st.info("💎 ကျောက်မျက် အချက်အလက်")
-        gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"])
-        carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01)
+        gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"]) 
+        carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01, format="%.2f")
         price_per_carat = st.number_input(f"တစ် {gem_type} (1 Carat) ဈေးနှုန်း:", min_value=0, step=10000)
         
         st.warning("✨ ရွှေထည် အလေးချိန်ထည့်ရန်")
