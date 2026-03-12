@@ -119,10 +119,11 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
                 <p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p>
             </div>
         """, unsafe_allow_html=True)
-   elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
-    st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
+        
+    elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
+        st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
     
-    col1, col2 = st.columns(2)
+        col1, col2 = st.columns(2)
     
     with col1:
         st.info("💎 ကျောက်မျက် အချက်အလက်")
