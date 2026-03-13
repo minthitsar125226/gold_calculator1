@@ -144,6 +144,64 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
         c_inch, c_pe = logic.bangle_diameter_to_length(b_inch, b_pe)
         st.markdown(f"<div class='kanote-border'><h3>လက်ကောက် အလျား</h3><p>အချင်း: {b_inch} လက်မ {b_pe} ပဲ</p><p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p></div>", unsafe_allow_html=True)
 
+elif menu == "📋 အထည်ယူ/အထည်အပ်":
+    st.header("📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း")
+    
+    tab1, tab2 = st.tabs(["📥 အထည်ယူ (စာရင်းသွင်း)", "📤 အထည်အပ် (တွက်ချက်မှု)"])
+    
+    with tab1:
+        st.subheader("📥 အထည်လက်ခံဖြတ်ပိုင်း")
+        item_name = st.text_input("အထည်အမည်")
+        target_w = st.text_input("ပြုလုပ်ရမည့် အလေးချိန် (ဥပမာ-၁ကျပ် ၂ပဲ)")
+        target_l = st.text_input("ပြုလုပ်ရမည့် အရှည် (ဥပမာ-၁၈ လက်မ)")
+        
+        st.write("---")
+        st.write("💰 **ပေးရွှေ**")
+        gk, gp, gy, gpt = st.columns(4)
+        g_k = gk.number_input("ကျပ်", 0, key="g_k")
+        g_p = gp.number_input("ပဲ", 0, 15, key="g_p")
+        g_y = gy.number_input("ရွေး", 0, 7, key="g_y")
+        g_pt = gpt.number_input("Point", 0.0, 9.9, key="g_pt")
+        
+        note1 = st.text_area("မှတ်ချက် (အထည်ယူ)", key="n1")
+        if st.button("ယူသည့်ပြေစာ ထုတ်ရန်"):
+            st.info(f"📍 {item_name} အတွက် ရွှေ {g_k} ကျပ် {g_p} ပဲ {g_y} ရွေး {g_pt} Pt လက်ခံရရှိပါသည်။")
+
+    with tab2:
+        st.subheader("📤 အထည်အပ်နှံခြင်း")
+        st.write("💍 **ပြန်အပ်သည့် ရွှေအသား**")
+        rk, rp, ry, rpt = st.columns(4)
+        ret_k = rk.number_input("ကျပ်", 0, key="ret_k")
+        ret_p = rp.number_input("ပဲ", 0, 15, key="ret_p")
+        ret_y = ry.number_input("ရွေး", 0, 7, key="ret_y")
+        ret_pt = rpt.number_input("Point", 0.0, 9.9, key="ret_pt")
+        
+        st.write("🔥 **အလျော့တွက်**")
+        wk, wp, wy, wpt = st.columns(4)
+        was_k = wk.number_input("ကျပ်", 0, key="was_k")
+        was_p = wp.number_input("ပဲ", 0, 15, key="was_p")
+        was_y = wy.number_input("ရွေး", 0, 7, key="was_y")
+        was_pt = wpt.number_input("Point", 0.0, 9.9, key="was_pt")
+        
+        note2 = st.text_area("မှတ်ချက် (အထည်အပ်)", key="n2")
+
+        if st.button("အပ်သည့်ပြေစာ/တွက်ချက်ရန်"):
+            diff_res = logic.calculate_gold_difference(g_k, g_p, g_y, g_pt, ret_k, ret_p, ret_y, ret_pt, was_k, was_p, was_y, was_pt)
+            
+            color = "#D4AF37" if diff_res['status'] == "ပိုအပ်" else "#FF4B4B"
+            
+            st.markdown(f"""
+                <div class='kanote-border'>
+                    <h3>📋 အထည်အပ် ပြေစာ</h3>
+                    <p>အထည်အမည်: <b>{item_name}</b></p>
+                    <p>ပြန်အပ်ရွှေစုစုပေါင်း: {ret_k}ကျပ် {ret_p}ပဲ {ret_y}ရွေး {ret_pt}Pt + အလျော့ {was_k}ကျပ် {was_p}ပဲ {was_y}ရွေး {was_pt}Pt</p>
+                    <hr>
+                    <h2 style='color: {color};'>{diff_res['status']}ရွှေ</h2>
+                    <h1>{diff_res['kyat']} ကျပ် {diff_res['pae']} ပဲ {diff_res['yway']} ရွေး {diff_res['point']} Pt</h1>
+                    <p>မှတ်ချက်: {note2}</p>
+                </div>
+            """, unsafe_allow_html=True)
+
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
     col1, col2 = st.columns(2)
