@@ -89,7 +89,6 @@ elif menu == "📐 အချိုးအစားတွက်ချက်ခြ�
             y2 = st.number_input("ရွေး(2)", min_value=0, max_value=7, key="by1")
             pt2 = st.number_input("Pt(2)", min_value=0.0, step=0.1, key="bpt2")
             
-        # တွက်ချက်ခြင်း
         res_add = logic.gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2)
         res_sub = logic.gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2)
         
@@ -99,7 +98,7 @@ elif menu == "📐 အချိုးအစားတွက်ချက်ခြ�
         if res_sub:
             st.warning(f"### ➖ အနုတ်လဒ်: {res_sub['kyat']} ကျပ် {res_sub['pae']} ပဲ {res_sub['yway']} ရွေး {res_sub['point']} Pt")
         else:
-            st.error("⚠️ အနုတ်လဒ်: ပထမရွှေချိန်သည် ဒုတိယရွှေချိန်ထက် နည်းနေပါသည်။")
+            st.error("⚠️ အနုတ်လဒ်: ပထမရွှေချိန် နည်းနေပါသည်။")
 
         # ၂။ လက်မအလိုက် ရွှေအလေးချိန်
         st.write("---")
@@ -117,7 +116,10 @@ elif menu == "📐 အချိုးအစားတွက်ချက်ခြ�
         st.subheader("📏 ၃။ အလျားမြှောက်စက် (အလီ)")
         la, lb, lc = st.columns(3)
         total_l = logic.length_multiplier_ali(la.number_input("လက်မ", 6, key="l_in"), lb.selectbox("ပဲ", list(range(16)), key="b_sel"), lc.number_input("အလီ", 3, key="ali_in"))
-        st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)        st.markdown(f"<div class='result-card'><h3>ရွှေအသား: <br>{format_gold_weight(res_g)}</h3></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
+        
+        # ၄။ ရွှေအသားတွက်ချက်မှု (သင့် code တွင် res_g ကို အဓိပ္ပာယ်ရှိအောင် သတ်မှတ်ပေးရန် လိုအပ်ပါသည်)
+        st.markdown(f"<div class='result-card'><h3>ရွှေအသား: <br>{format_gold_weight(res_pe)}</h3></div>", unsafe_allow_html=True)
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
