@@ -275,20 +275,21 @@ elif menu == "💎 3D ဖယောင်းတွက်စက်":
         k_no, p_no, y_no, pt_no = logic.gram_to_kyat_pae_yway(res_gold_grams)
         k_sp, p_sp, y_sp, pt_sp = logic.gram_to_kyat_pae_yway(res_gold_sprue)
         
+        # ဒီနေရာမှာ ရှေ့က Space တွေမပါစေရပါ
         st.markdown(f"""
-            <div class='kanote-border'>
-                <h4>📊 ရွှေချိန် ခန့်မှန်းချက်</h4>
-                <div style="text-align: left;">
-                    <p><b>၁။ အသားတင် ဖယောင်းအလေးချိန်သာ:</b><br>
-                    <span style='color: #888; font-size: 20px;'>{k_no} ကျပ် {p_no} ပဲ {y_no} ရွေး {pt_no} Pt</span></p>
-                    
-                    <hr style='border: 0.5px solid #D4AF37;'>
-                    
-                    <p><b>၂။ Sprue (ရွှေရည်ဝင်ပေါက်) အပိုထည့်တွက်ပြီး (15%):</b><br>
-                    <span style='color: #D4AF37; font-size: 24px;'><b>{k_sp} ကျပ် {p_sp} ပဲ {y_sp} ရွေး {pt_sp} Pt</b></span></p>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
+<div class='kanote-border'>
+    <h4>📊 ရွှေချိန် ခန့်မှန်းချက်</h4>
+    <div style="text-align: left;">
+        <p><b>၁။ အသားတင် ဖယောင်းအလေးချိန်သာ:</b><br>
+        <span style='color: #888; font-size: 20px;'>{k_no} ကျပ် {p_no} ပဲ {y_no} ရွေး {pt_no} Pt</span></p>
+        
+        <hr style='border: 0.5px solid #D4AF37;'>
+        
+        <p><b>၂။ Sprue (ရွှေရည်ဝင်ပေါက်) အပိုထည့်တွက်ပြီး (15%):</b><br>
+        <span style='color: #D4AF37; font-size: 24px;'><b>{k_sp} ကျပ် {p_sp} ပဲ {y_sp} ရွေး {pt_sp} Pt</b></span></p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
         
         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")
 
