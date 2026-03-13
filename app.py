@@ -212,19 +212,3 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     
     # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
 st.markdown("<p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
-
-# app.py ၏ အောက်ဆုံးတွင် ဤကုဒ်ကို ထည့်ပါ
-try:
-    st.write("---")
-    st.info("💡 Debugging Mode: အမှားရှာဖွေခြင်း...")
-    
-    # ဤနေရာတွင် logic.py ၏ function များကို စမ်းသပ်ခေါ်ယူကြည့်ခြင်း
-    st.write("Logic test: တွက်ချက်မှု Function များ အလုပ်လုပ်ခြင်း ရှိ/မရှိ စစ်ဆေးခြင်း")
-    
-    # ရိုးရှင်းသော test တစ်ခု
-    test_val = logic.gold_addition(0,0,0,0,0,0,0,0)
-    st.success(f"Logic Module အလုပ်လုပ်သည်: {test_val}")
-
-except Exception as e:
-    st.error(f"❌ အမှားတွေ့ရှိပါပြီ: {e}")
-    st.write("အထက်ပါ Error စာသားကို ကူးယူပြီး ကျွန်တော့်ထံ ပြန်ပို့ပေးပါ၊ ကျွန်တော် ချက်ချင်း ပြင်ပေးပါ့မယ်။")
