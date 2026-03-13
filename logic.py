@@ -133,3 +133,23 @@ def gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2):
     point = (diff % 10)
     
     return {"kyat": int(kyat), "pae": int(pae), "yway": int(yway), "point": point}
+    
+
+# logic.py ဖိုင်ထဲတွင် ဤသို့ ပြန်စစ်ပါ
+
+def gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2):
+    # ဒီနေရာမှာ သင်တွက်ချက်ထားတဲ့ ကုဒ်တွေ ရှိနေရမယ်
+    # ပြီးရင် result ကို return ပြန်ပေးရမယ်
+    return {"kyat": 0, "pae": 0, "yway": 0, "point": 0}
+
+def gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2):
+    # ဒီနေရာမှာ သင်တွက်ချက်ထားတဲ့ ကုဒ်တွေ ရှိနေရမယ်
+    return {"kyat": 0, "pae": 0, "yway": 0, "point": 0}
+
+def weight_per_inch(inch, yway, pt):
+    # ဒီနေရာမှာ သင်တွက်ချက်ထားတဲ့ ကုဒ်တွေ ရှိနေရမယ်
+    return {"kyat": 0, "pae": 0, "yway": 0}
+
+def length_multiplier_ali(inch, pae, ali):
+    # ဒီနေရာမှာ သင်တွက်ချက်ထားတဲ့ ကုဒ်တွေ ရှိနေရမယ်
+    return 0
