@@ -58,3 +58,19 @@ def gem_to_gold_units(carat):
 def calculate_gold_price_comprehensive(kyat, pae, yway, point, gold_price):
     total_pae = (kyat * 16) + pae + (yway / 8) + (point / 80)
     return (total_pae / 16) * gold_price
+
+def calculate_ratio_multiplication(target_inch, ratio_val):
+    """
+    target_inch: ၂၀ လက်မ
+    ratio_val: ၇ (၁ လက်မလျှင် ၇ လက်မနှုန်း)
+    """
+    total_inches = target_inch * ratio_val
+    
+    feet = int(total_inches // 12)
+    inches = int(total_inches % 12)
+    
+    return {
+        "total_in": total_inches,
+        "feet": feet,
+        "inches": inches
+    }
