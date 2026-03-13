@@ -289,7 +289,6 @@ elif menu == "💎 ၃D ဖယောင်းတွက်စက်":
                 </div>
             </div>
         """, unsafe_allow_html=True)
-        
-        st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")      st.markdown(f"<div class='kanote-border'><h2>စုစုပေါင်း</h2><h1>{total_sum:,.0f} ကျပ်</h1></div>", unsafe_allow_html=True)
+         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")      st.markdown(f"<div class='kanote-border'><h2>စုစုပေါင်း</h2><h1>{total_sum:,.0f} ကျပ်</h1></div>", unsafe_allow_html=True)
 
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
