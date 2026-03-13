@@ -157,3 +157,22 @@ def wax_to_gold_calculator(wax_weight, pae_ye):
     # ရွှေအလေးချိန် = ဖယောင်း * Factor + 15% (Sprue အတွက် အပိုထည့်တွက်ချက်)
     gold_weight = wax_weight * factor * 1.15
     return round(gold_weight, 2)
+
+# 3D ဖယောင်းတွက်စက်အတွက် Logic
+def wax_to_gold_calculator(wax_weight, pae_ye):
+    # ပဲရည်အလိုက် Factor နှုန်းထားများ
+    factors = {
+        12: 13.5, 13: 14.0, 14: 14.5, 14.2: 14.6, 
+        15: 15.0, 15.2: 15.2, 16: 15.8
+    }
+    factor = factors.get(pae_ye, 14.5)
+    return wax_weight * factor
+
+def gram_to_kyat_pae_yway(grams):
+    # ၁ ကျပ် = ၁၆.၆ ဂရမ် (မြန်မာ့ရွှေချိန်စနစ်)
+    total_pts = (grams / 16.6) * 1200
+    kyat = int(total_pts // 1200)
+    pae = int((total_pts % 1200) // 75)
+    yway = int((total_pts % 75) // 10)
+    point = round(total_pts % 10, 1)
+    return kyat, pae, yway, point
