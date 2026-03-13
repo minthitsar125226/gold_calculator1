@@ -207,26 +207,26 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
         note2 = st.text_area("မှတ်ချက်", key="note_ret")
 
         if st.button("ပြေစာထုတ်ရန်"):
-            # logic.py ထဲက function ကို ခေါ်ယူခြင်း
+            # logic.py ထဲက function ကို ခေါ်ယူနှိုင်းယှဉ်ခြင်း
             diff_res = logic.calculate_gold_difference(g_k, g_p, g_y, g_pt, ret_k, ret_p, ret_y, ret_pt, was_k, was_p, was_y, was_pt)
             now = datetime.now().strftime("%d/%m/%Y %I:%M %p")
+            
+            # ပိုအပ်လျှင် ရွှေရောင်၊ လိုအပ်လျှင် အနီရောင် ပြပါမည်
             status_color = "#D4AF37" if diff_res['status'] == "ပိုအပ်" else "#FF4B4B"
             
-            # ၁။ HTML code ကို variable တစ်ခုထဲ အရင်ထည့်မယ်
             receipt_html = f"""
             <div style="background-color: #000; border: 4px double #D4AF37; padding: 25px; border-radius: 15px; color: white;">
-                <h2 style="text-align: center; color: #D4AF37; margin-bottom: 2px;">💍 အထည်အပ်နှံမှုပြေစာ</h2>
-                <p style="text-align: center; color: #888; font-size: 12px; margin-top: 0;">နေ့စွဲ - {now}</p>
+                <h2 style="text-align: center; color: #D4AF37;">💍 အထည်အပ်နှံမှုပြေစာ</h2>
                 <hr style="border: 1px solid #D4AF37;">
-                <p>အထည်အမည် - <span style="color: #D4AF37;"><b>{item_name if item_name else '-'}</b></span></p>
+                <p>အထည်အမည်: <b>{item_name}</b></p>
                 <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
                     <tr style="border-bottom: 1px solid #333;">
-                        <td style="padding: 10px 0;">ပြန်အပ်ရွှေအသား</td>
-                        <td style="text-align: right; color: #D4AF37;">{ret_k} ကျပ် {ret_p} ပဲ {ret_y} ရွေး {ret_pt} Pt</td>
+                        <td style="padding: 10px 0;">ပေးရွှေစုစုပေါင်း</td>
+                        <td style="text-align: right;">{g_k}/{g_p}/{g_y}/{g_pt}</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #333;">
-                        <td style="padding: 10px 0;">အလျော့တွက်</td>
-                        <td style="text-align: right; color: #D4AF37;">{was_k} ကျပ် {was_p} ပဲ {was_y} ရွေး {was_pt} Pt</td>
+                        <td style="padding: 10px 0;">ပြန်အပ်ရွှေ (အသား+အလျော့)</td>
+                        <td style="text-align: right;">{ret_k+was_k} ကျပ် {(ret_p+was_p)%16} ပဲ ...</td>
                     </tr>
                     <tr>
                         <td style="padding: 20px 0; font-size: 18px; color: {status_color};"><b>{diff_res['status']}ရွှေ</b></td>
@@ -235,12 +235,9 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
                         </td>
                     </tr>
                 </table>
-                <p style="font-size: 14px; color: #aaa; margin-top: 15px;">မှတ်ချက် - {note2 if note2 else '-'}</p>
-                <p style="text-align: center; margin-top: 25px; font-size: 11px; color: #D4AF37;">✨ ကျေးဇူးတင်ပါသည် ✨</p>
+                <p style="text-align: center; margin-top: 25px; font-size: 11px; color: #D4AF37;">✨ {now} ✨</p>
             </div>
-            """ # ဒီမှာ quotes ပိတ်ရပါမယ်
-            
-            # ၂။ ပြီးမှ markdown နဲ့ ဖော်ပြရပါမယ် (Indentation ကို if ရဲ့ အောက်မှာ တည့်တည့်ထားပါ)
+            """
             st.markdown(receipt_html, unsafe_allow_html=True)
     
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
