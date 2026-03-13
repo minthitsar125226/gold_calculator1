@@ -1,320 +1,132 @@
-import streamlit as st
+ import streamlit as st
 from datetime import datetime
-from utils import (
-    format_gold_weight, 
-    calculate_pe, 
-    to_pe,
-    mm_to_inch_pe, 
-    inch_pe_to_mm, 
-    format_length_inches
-)
+from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
+import logic
+
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
-# Theme CSS
+# app.py အတွက် CSS
 st.markdown("""
     <style>
-    .stApp { background-color: #000000; color: #FFFFFF; }
-    .result-card { background-color: #1a1a1a; padding: 20px; border-radius: 12px; border: 2px solid #D4AF37; color: #D4AF37; text-align: center; margin: 10px 0px; }
-    .main-footer { position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: #D4AF37; text-align: center; padding: 5px; border-top: 1px solid #D4AF37; }
+    .stApp { background-color: #000000; color: #D4AF37; }
+    h1, h2, h3 { color: #D4AF37 !important; }
+    .kanote-border {
+        border: 3px double #D4AF37;
+        padding: 20px;
+        border-radius: 15px;
+        background-color: #0a0a0a;
+        margin: 20px 0;
+        text-align: center;
+    }
     </style>
     """, unsafe_allow_html=True)
 
 # Sidebar
-with st.sidebar:
-    st.markdown("<h2 style='text-align: center; color: #D4AF37;'>⚒️ မီနူးများ</h2>", unsafe_allow_html=True)
-    menu = st.radio(
-    "လုပ်ဆောင်ချက် ရွေးချယ်ပါ:",
-    ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📏 အချိုးအစားတွက်စက်", "🌍 ကမ္ဘာ့ရွှေဈေး", "💍 လက်စွပ်/လက်ကောက်", "📋 အထည်ယူ/အထည်အပ်"],
-    index=0
-    )
-    st.info("App by MinThitSarAung")
+menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📐 အချိုးအစားတွက်စက်", "💍 လက်စွပ်/လက်ကောက်", "📋 အထည်ယူ/အထည်အပ်", "💎 စိန်/ကျောက်/ပုလဲ"])
 
-# ၁။ ပင်မစာမျက်နှာ
 if menu == "🏠 ပင်မ စာမျက်နှာ":
     st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center;'>Sidebar မှတစ်ဆင့် လုပ်ဆောင်ချက်များကို ရွေးချယ်ပါ။</h3>", unsafe_allow_html=True)
 
-# ၂။ ရွှေ နှင့် ငွေ (ငွေမှရွှေတွက်ချက်ရာတွင် အလျော့တွက် ထည့်သွင်းထားသည်)
 elif menu == "💰 ရွှေ နှင့် ငွေ":
     st.header("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
-    gold_price = st.number_input("ယနေ့ အခေါက်ရွှေပေါက်ဈေး (ကျပ်):", value=10900000, step=10000)
+    gold_price = st.number_input("အခေါက်ရွှေဈေး:", value=10900000)
     col1, col2 = st.columns(2)
-    
     with col1:
-        st.subheader("⚖️ ရွှေမှ ငွေတွက်ရန်")
-        c1, c2, c3, c4 = st.columns(4)
-        k = c1.number_input("ကျပ်",0,key="k")
-        p = c2.number_input("ပဲ",0,key="p")
-        y = c3.number_input("ရွေး",0,key="y")
-        pt = c4.number_input("Point",0,key="pt")
+        st.subheader("⚖️ ရွှေမှ ငွေ")
+        k, p, y, pt = st.columns(4)
+        gk, gp, gy, gpt = k.number_input("ကျပ်",0,key="gk"), p.number_input("ပဲ",0,key="gp"), y.number_input("ရွေး",0,key="gy"), pt.number_input("Pt",0,key="gpt")
         st.write("အလျော့တွက်")
-        wc1, wc2, wc3, wc4 = st.columns(4)
-        wk = wc1.number_input("ကျပ်",0,key="wk")
-        wp = wc2.number_input("ပဲ",0,key="wp")
-        wy = wc3.number_input("ရွေး",0,key="wy")
-        wpt = wc4.number_input("Point",0,key="wpt")
-        purity = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13])
-        total_p = calculate_pe(k, p, y, pt) + calculate_pe(wk, wp, wy, wpt)
-        cost = (gold_price / 16) * (purity / 16) * total_p
-        st.markdown(f"<div class='result-card'><h3>ကျသင့်ငွေ: {int(cost):,} ကျပ်</h3></div>", unsafe_allow_html=True)
-
+        wk, wp, wy, wpt = st.columns(4)
+        awk, awp, awy, awpt = wk.number_input("ကျပ်",0,key="awk"), wp.number_input("ပဲ",0,key="awp"), wy.number_input("ရွေး",0,key="awy"), wpt.number_input("Pt",0,key="awpt")
+        pur = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13], key="p1")
+        cost = logic.gold_to_money(gk, gp, gy, gpt, awk, awp, awy, awpt, gold_price, pur)
+        st.markdown(f"<div class='kanote-border'><h3>ကျသင့်ငွေ: {int(cost):,} ကျပ်</h3></div>", unsafe_allow_html=True)
     with col2:
-        st.subheader("💵 ငွေမှ ရွှေတွက်ရန်")
-        budget = st.number_input("ရှိသောငွေ (ကျပ်):", value=1000000)
+        st.subheader("💵 ငွေမှ ရွှေ")
+        budget = st.number_input("ရှိသောငွေ:", value=1000000)
         st.write("နုတ်မည့် အလျော့တွက်")
-        nc1, nc2, nc3, nc4 = st.columns(4)
-        nk = nc1.number_input("ကျပ်",0,key="nk")
-        np = nc2.number_input("ပဲ",0,key="np")
-        ny = nc3.number_input("ရွေး",0,key="ny")
-        npt = nc4.number_input("Point",0,key="npt")
-        purity2 = st.selectbox("ဝယ်ယူမည့် ပဲရည်:", [16, 15, 14.2, 14, 13], key="p2")
-        
-        one_pe_price = (gold_price / 16) * (purity2 / 16)
-        total_pe_from_money = budget / one_pe_price if one_pe_price > 0 else 0
-        wastage_pe = calculate_pe(nk, np, ny, npt)
-        final_gold_pe = max(0, total_pe_from_money - wastage_pe)
-        
-        st.markdown(f"<div class='result-card'><h3>ရရှိမည့် ရွှေအသား: <br>{format_gold_weight(final_gold_pe)}</h3></div>", unsafe_allow_html=True)
+        nk, np, ny, npt = st.columns(4)
+        ank, anp, any, anpt = nk.number_input("ကျပ်",0,key="ank"), np.number_input("ပဲ",0,key="anp"), ny.number_input("ရွေး",0,key="any"), npt.number_input("Pt",0,key="anpt")
+        pur2 = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13], key="p2")
+        if st.button("ငွေမှရွှေ တွက်ရန်"):
+            res_g = logic.money_to_gold(budget, gold_price, pur2, ank, anp, any, anpt)
+            st.write(f"ရလဒ်: {res_g}")
 
-elif menu == "📏 အချိုးအစားတွက်စက်":
-    st.header("📏 အချိုးအစားနှင့် အလေးချိန် တွက်ချက်ခြင်း")
+elif menu == "📐 အချိုးအစားတွက်စက်":
+    st.subheader("📐 အချိုးအစားနှင့် ရွှေချိန်တွက်ချက်မှုများ")
     
-    # ၁။ အလေးချိန် ပေါင်း/နုတ်
-    st.subheader("⚖️ ၁။ ရွှေအလေးချိန် ပေါင်း/နုတ်")
+    st.subheader("⚖️ ၁။ ရွှေချိန် ပေါင်း/နုတ်")
+    r_col1, r_col2 = st.columns(2)
+    with r_col1:
+        st.write("ပထမ ရွှေချိန်")
+        k1, p1, y1, pt1 = st.number_input("ကျပ်(1)", 0, key="ak1"), st.number_input("ပဲ(1)", 0, 15, key="ap1"), st.number_input("ရွေး(1)", 0, 7, key="ay1"), st.number_input("Pt(1)", 0.0, step=0.1, key="apt1")
+    with r_col2:
+        st.write("ဒုတိယ ရွှေချိန်")
+        k2, p2, y2, pt2 = st.number_input("ကျပ်(2)", 0, key="bk1"), st.number_input("ပဲ(2)", 0, 15, key="bp1"), st.number_input("ရွေး(2)", 0, 7, key="by1"), st.number_input("Pt(2)", 0.0, step=0.1, key="bpt2")
+        
+    if st.button("ပေါင်း/နုတ် တွက်ရန်"):
+        res_add = logic.gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2)
+        res_sub = logic.gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2)
+        st.success(f"➕ ပေါင်းလဒ်: {res_add['kyat']} ကျပ် {res_add['pae']} ပဲ {res_add['yway']} ရွေး {res_add['point']} Pt")
+        if res_sub:
+            st.warning(f"➖ အနုတ်လဒ်: {res_sub['kyat']} ကျပ် {res_sub['pae']} ပဲ {res_sub['yway']} ရွေး {res_sub['point']} Pt")
+        else:
+            st.error("⚠️ အနုတ်လဒ်: ပထမရွှေချိန် နည်းနေပါသည်။")
+
+    st.write("---")
+    st.subheader("⚖️ ၂။ လက်မအလိုက် ရွှေအလေးချိန်")
+    ca, cb, cc = st.columns(3)
+    i_val = ca.number_input("အရှည်(လက်မ)", value=20.0, key="inch_in")
+    y_val = cb.number_input("၁လက်မစာရွေး", 0, key="yway_in")
+    pt_val = cc.number_input("၁လက်မစာPt", 1, key="pt_in")
+    
+    if st.button("လက်မအလိုက် တွက်ရန်"):
+        res_pe = logic.weight_per_inch(i_val, y_val, pt_val)
+        st.write(f"ရလဒ်: {res_pe}")
+
+    st.write("---")
+    st.subheader("📏 ၃။ အလျားမြှောက်စက် (အလီ)")
+    la, lb, lc = st.columns(3)
+    l_in = la.number_input("လက်မ", 6, key="l_in")
+    b_sel = lb.selectbox("ပဲ", list(range(16)), key="b_sel")
+    a_in = lc.number_input("အလီ", 3, key="ali_in")
+    
+    if st.button("အလီ တွက်ရန်"):
+        total_l = logic.length_multiplier_ali(l_in, b_sel, a_in)
+        st.write(f"ရလဒ်: {total_l}")
+
+elif menu == "💍 လက်စွပ်/လက်ကောက်":
+    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
+    mode = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
+    
+    if mode == "လက်စွပ် (Ring)":
+        r_no = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
+        details = logic.get_ring_details(r_no)
+        st.markdown(f"<div class='kanote-border'><h3>လက်တိုင်း နံပါတ်: {r_no}</h3><p>Diameter: {details['mm']} mm</p><p>အလျား: {details['inch']} လက်မ {details['pe']} ပဲ</p></div>", unsafe_allow_html=True)
+        
+    elif mode == "လက်ကောက် (Bangle)":
+        b_inch = st.number_input("အချင်း (လက်မ):", min_value=1, value=2)
+        b_pe = st.number_input("အချင်း (ပဲ):", min_value=0, max_value=15, value=0)
+        c_inch, c_pe = logic.bangle_diameter_to_length(b_inch, b_pe)
+        st.markdown(f"<div class='kanote-border'><h3>လက်ကောက် အလျား</h3><p>အချင်း: {b_inch} လက်မ {b_pe} ပဲ</p><p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p></div>", unsafe_allow_html=True)
+
+elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
+    st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
     col1, col2 = st.columns(2)
     with col1:
-        st.write("ပထမအလေးချိန်")
-        k1, p1, y1, pt1 = st.columns(4)
-        v_k1 = k1.number_input("ကျပ်", 0, key="v_k1")
-        v_p1 = p1.number_input("ပဲ", 0, 15, key="v_p1")
-        v_y1 = y1.number_input("ရွေး", 0, 7, key="v_y1")
-        v_pt1 = pt1.number_input("Point", 0, 9, key="v_pt1")
-    
+        gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"])
+        user_carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01, format="%.2f")
+        price_per_carat = st.number_input(f"တစ် {gem_type} (1 Carat) ဈေးနှုန်း:", min_value=0, step=10000)
+        g_kyat, g_pae, g_yway, g_point = st.number_input("ရွှေ (ကျပ်):", 0), st.number_input("ရွှေ (ပဲ):", 0, 15), st.number_input("ရွှေ (ရွေး):", 0, 7), st.number_input("ရွှေ (Point):", 0.0, 9.9, step=0.1)
+        gold_price_val = st.number_input("ယနေ့ ရွှေဈေး (ကျပ်):", value=10000000)
+
+    res = logic.gem_to_gold_units(user_carat)
+    gem_cost = user_carat * price_per_carat
+    gold_cost = logic.calculate_gold_price_comprehensive(g_kyat, g_pae, g_yway, g_point, gold_price_val)
+    total_sum = gem_cost + gold_cost
     with col2:
-        st.write("ဒုတိယအလေးချိန်")
-        k2, p2, y2, pt2 = st.columns(4)
-        v_k2 = k2.number_input("ကျပ်", 0, key="v_k2")
-        v_p2 = p2.number_input("ပဲ", 0, 15, key="v_p2")
-        v_y2 = y2.number_input("ရွေး", 0, 7, key="v_y2")
-        v_pt2 = pt2.number_input("Point", 0, 9, key="v_pt2")
+        st.success("📊 တွက်ချက်မှုရလဒ်")
+        st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")
+        st.markdown(f"<div class='kanote-border'><h2>စုစုပေါင်း</h2><h1>{total_sum:,.0f} ကျပ်</h1></div>", unsafe_allow_html=True)
 
-    val1 = to_pe(v_k1, v_p1, v_y1, v_pt1)
-    val2 = to_pe(v_k2, v_p2, v_y2, v_pt2)
-    
-    c_a, c_s = st.columns(2)
-    c_a.success(f"ပေါင်းလဒ်: {format_gold_weight(val1 + val2)}")
-    c_s.info(f"နုတ်လဒ်: {format_gold_weight(max(0, val1 - val2))}")
-
-    st.write("---")
-
-    # ၂။ အလျားမြှောက်ခြင်း (ဥပမာ- ကြိုးအရှည်တွက်ခြင်း)
-    st.subheader("📏 ၂။ အလျားမြှောက်ခြင်း")
-    col_x, col_y = st.columns(2)
-    with col_x:
-        base_unit = st.number_input("အချိုး (ဥပမာ- ၇):", value=7.0, key="base_unit")
-        multiplier = st.number_input("မြှောက်မည့်အရှည် (ဥပမာ- ၂၀):", value=20.0, key="multiplier")
-        total_inches = base_unit * multiplier
-        ft = int(total_inches // 12)
-        rem_in = total_inches % 12
-        st.markdown(f"<div class='result-card'><h4>စုစုပေါင်းအရှည်: <br>{ft} ပေ {rem_in:.1f} လက်မ</h4></div>", unsafe_allow_html=True)
-    
-    with col_y:
-        st.write("အလျားရှင်းလင်းချက်")
-        st.info(f"စုစုပေါင်း: {total_inches:.1f} လက်မ")
-
-    st.write("---")
-    
-    # ၃။ လက်မအလိုက် ရွှေအလေးချိန် (Gold weight per inch)
-    st.subheader("⚖️ ၃။ လက်မအလိုက် ရွှေအလေးချိန်")
-    col_c, col_d, col_e = st.columns(3)
-    inch_in = col_c.number_input("အရှည် (လက်မ):", value=20.0, key="inch_in")
-    y_per_in = col_d.number_input("၁ လက်မစာ ရွေး:", value=0, key="y_per_in")
-    pt_per_in = col_e.number_input("၁ လက်မစာ Point:", value=1, key="pt_per_in")
-    
-    # ၁ လက်မစာ အလေးချိန်ကို ပဲစနစ်ပြောင်း၍ မြှောက်ခြင်း
-    one_inch_pe = (y_per_in / 8) + (pt_per_in / 80)
-    total_pe_inch = inch_in * one_inch_pe
-    
-    st.markdown(f"""
-        <div class='result-card'>
-            <h4>ရလဒ် အလေးချိန်:</h4>
-            <h2>{format_gold_weight(total_pe_inch)}</h2>
-            <p>စုစုပေါင်း ပဲယူနစ်: {total_pe_inch:.4f}</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-# ၄။ အလျားမြှောက်စက် (အလီ)
-    st.subheader("📏 ၄။ အလျားမြှောက်စက် (အလီ)")
-    ca1, ca2, ca3 = st.columns(3)
-    in_m = ca1.number_input("လက်မ (Inch):", value=6, key="in_m_ali")
-    pe_m = ca2.selectbox("ပဲ (Pe):", list(range(16)), index=2, key="pe_m_ali")
-    times = ca3.number_input("မြှောက်မည့်အလီ (ဥပမာ- ၃):", value=3, key="times_ali")
-    
-    # တွက်ချက်မှု
-    total_len = (in_m + (pe_m/16)) * times
-    
-    # ရလဒ်ပြသခြင်း (utils ထဲက function ကို ခေါ်သုံးထားပါတယ်)
-    st.markdown(f"""
-        <div class='result-card'>
-            <h4>စုစုပေါင်းအလျား ရလဒ်:</h4>
-            <h2>{format_length_inches(total_len)}</h2>
-        </div>
-    """, unsafe_allow_html=True)
-
-# ၅။ လက်စွပ်/လက်ကောက် (ယူနစ်ပြောင်းလဲခြင်းတွင် ပေ တွက်ချက်မှု ထည့်သွင်းထားသည်)
-elif menu == "💍 လက်စွပ်/လက်ကောက်":
-    st.header("💍 လက်ဝတ်ရတနာ တိုင်းတာခြင်း")
-    sub = st.radio("အမျိုးအစား:", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)", "ယူနစ် ပြောင်းလဲခြင်း"], horizontal=True)
-    
-    if sub == "ယူနစ် ပြောင်းလဲခြင်း":
-        st.subheader("📏 လက်မ/ပဲ မှ ပေ သို့ တွက်ချက်ခြင်း")
-        c1, c2 = st.columns(2)
-        in_v = c1.number_input("လက်မ ထည့်ပါ:", value=20.0)
-        p_v = c2.selectbox("ပဲ ထည့်ပါ:", list(range(16)), key="up_pe")
-        
-        total_in = in_v + (p_v / 16)
-        ft = int(total_in // 12)
-        rem_in = int(total_in % 12)
-        rem_pe = round((total_in % 1) * 16)
-        
-        st.markdown(f"""<div class='result-card'>
-            <h4>ပြောင်းလဲပြီး ရလဒ်</h4>
-            <h2>{ft} ပေ | {rem_in} လက်မ | {rem_pe} ပဲ</h2>
-            <p>စုစုပေါင်း မီလီမီတာ: {total_in * 25.4:.2f} mm</p>
-        </div>""", unsafe_allow_html=True)
-    
-    # (ကျန်သည့် လက်စွပ် နှင့် လက်ကောက် logic များ ယခင်အတိုင်း)
-    elif sub == "လက်စွပ် (Ring)":
-        m = st.selectbox("တွက်ချက်ပုံ:", ["လက်စွပ်နံပါတ်မှ တိုင်းတာချက်သို့", "တိုင်းတာချက်မှ လက်စွပ်နံပါတ်သို့"])
-        if m == "လက်စွပ်နံပါတ်မှ တိုင်းတာချက်သို့":
-            r_no = st.number_input("Ring Size:", value=15)
-            mm = 11.63 + (r_no * 0.8128)
-            i, p = mm_to_inch_pe(mm)
-            st.markdown(f"<div class='result-card'><h2>{mm:.2f} mm</h2><h3>{i} လက်မ {p} ပဲ</h3></div>", unsafe_allow_html=True)
-        else:
-            in_v_r = st.selectbox("လက်မ:", [1,2], index=1, key="in_r")
-            p_v_r = st.selectbox("ပဲ:", list(range(16)), index=4, key="p_r")
-            mm_res = inch_pe_to_mm(in_v_r, p_v_r)
-            r_no = (p_v_r-8) if in_v_r==1 else (p_v_r+8)
-            st.markdown(f"<div class='result-card'><h1>No. {max(1, r_no)}</h1><p>{mm_res:.2f} mm</p></div>", unsafe_allow_html=True)
-    
-    elif sub == "လက်ကောက် (Bangle)":
-        bm = st.selectbox("ရွေးချယ်ပါ:", ["အချင်းသိ၍ လက်တိုင်း/အလျားတွက်ရန်", "လက်တိုင်းနံပါတ်သိ၍ အလျားတွက်ရန်"])
-        if bm == "အချင်းသိ၍ လက်တိုင်း/အလျားတွက်ရန်":
-            c1, c2 = st.columns(2)
-            b_in = c1.selectbox("အချင်း (လက်မ):", [1, 2], index=1)
-            b_pe = c2.selectbox("အချင်း (ပဲ):", list(range(16)), index=4)
-            d_mm = inch_pe_to_mm(b_in, b_pe)
-            st.markdown(f"<div class='result-card'><h2>အလျား (ပတ်လည်): {d_mm*3.14159:.2f} mm</h2><p>အချင်း: {d_mm:.2f} mm</p></div>", unsafe_allow_html=True)
-        else:
-            b_size = st.number_input("လက်ကောက် လက်တိုင်း (ဥပမာ ၂.၄):", value=2.4)
-            st.markdown(f"<div class='result-card'><h2>လိုအပ်မည့်အလျား: {b_size*25.4*3.14159:.2f} mm</h2></div>", unsafe_allow_html=True)
-
-elif menu == "📋 အထည်ယူ/အထည်အပ်":
-    st.header("📋 အထည်ယူ နှင့် အထည်အပ်နှံခြင်း")
-    
-    col_order, col_return = st.columns(2)
-    
-    with col_order:
-        st.subheader("📦 ၁။ အထည်ယူ (Job Order)")
-        item_name = st.text_input("အမျိုးအမည် (ဥပမာ- နေတိုးကြိုး):", key="item_name")
-        target_weight = st.text_input("တင်ရမည့် ရွှေချိန် (ဥပမာ- ၁ ကျပ်):", key="target_w")
-        item_length = st.text_input("ကြိုးအရှည် (ဥပမာ- ၁၈ လက်မ):", key="item_len")
-        
-        st.write("---")
-        st.write("📥 **ပေးရွှေ (အသားတင်)**")
-        oc1, oc2, oc3, oc4 = st.columns(4)
-        ok = oc1.number_input("ကျပ်", 0, key="ok")
-        op = oc2.number_input("ပဲ", 0, 15, key="op")
-        oy = oc3.number_input("ရွေး", 0, 7, key="oy")
-        opt = oc4.number_input("Point", 0, 9, key="opt")
-        
-        give_gold_total = calculate_pe(ok, op, oy, opt)
-        st.markdown(f"<div class='result-card'><h4>စုစုပေါင်း ပေးရွှေ:</h4><h3>{format_gold_weight(give_gold_total)}</h3></div>", unsafe_allow_html=True)
-
-    with col_return:
-        st.subheader("📤 ၂။ ပြန်အပ် (Job Return)")
-        st.info(f"အမျိုးအမည်: {item_name if item_name else '-'}")
-        
-        st.write("---")
-        st.write("📤 **ပြန်အပ်ရွှေ (အသားတင်)**")
-        rc1, rc2, rc3, rc4 = st.columns(4)
-        rk = rc1.number_input("ကျပ်", 0, key="rk")
-        rp = rc2.number_input("ပဲ", 0, 15, key="rp")
-        ry = rc3.number_input("ရွေး", 0, 7, key="ry")
-        rpt = rc4.number_input("Point", 0, 9, key="rpt")
-        
-        st.write("➕ **ရရှိမည့် အလျော့တွက်**")
-        wc1, wc2, wc3, wc4 = st.columns(4)
-        wk = wc1.number_input("ကျပ်", 0, key="wk")
-        wp = wc2.number_input("ပဲ", 0, 15, key="wp")
-        wy = wc3.number_input("ရွေး", 0, 7, key="wy")
-        wpt = wc4.number_input("Point", 0, 9, key="wpt")
-        
-        # ပြန်အပ်ရွှေ စုစုပေါင်း = အသားတင် + အလျော့တွက်
-        return_net_pe = calculate_pe(rk, rp, ry, rpt)
-        wastage_pe = calculate_pe(wk, wp, wy, wpt)
-        total_return_with_wastage = return_net_pe + wastage_pe
-        
-        # ပေးရွှေ နှင့် (ပြန်အပ်ရွှေ + အလျော့တွက်) နှိုင်းယှဉ်ခြင်း
-        diff_pe = give_gold_total - total_return_with_wastage
-        
-        st.write("---")
-        st.subheader("⚖️ တွက်ချက်မှုရလဒ်")
-        
-        if diff_pe > 0:
-            st.warning(f"အပ်ရန်ကျန်ရှိနေသေးသည်: \n {format_gold_weight(diff_pe)}")
-        elif diff_pe < 0:
-            st.success(f"ပိုအပ်ထားသည်: \n {format_gold_weight(abs(diff_pe))}")
-        else:
-            st.success("အလေးချိန် ကိုက်ညီမှုရှိပါသည်။")
-
-        st.markdown(f"""
-            <div class='result-card'>
-                <p>ပေးရွှေ: {format_gold_weight(give_gold_total)}</p>
-                <p>ပြန်အပ် (အသား + အလျော့): {format_gold_weight(total_return_with_wastage)}</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-# --- ကျစ်လျစ်သော ပြေစာပုံစံ ---
-        st.write("---")
-        if st.button("📄 ပြေစာထုတ်ရန် (Preview)"):
-            # ပြေစာ Size ကို width: 300px ပတ်ချာလည်အထိ ချုံ့ထားပါတယ်
-            receipt_html = f"""
-            <div id="receipt" style="
-                background-color: white; 
-                color: black; 
-                padding: 15px; 
-                border: 3px double #D4AF37; 
-                border-radius: 8px; 
-                font-family: 'Pyidaungsu', sans-serif; 
-                width: 280px; 
-                margin: auto;
-                line-height: 1.4;
-            ">
-                <h4 style="text-align: center; color: #D4AF37; margin-bottom: 5px;">အထည်ယူ/အပ် ပြေစာ</h4>
-                <p style="font-size: 12px; text-align: center; margin-top: 0;">နေ့စွဲ: {st.date_input("Date", key="d_final").strftime('%d-%m-%Y')}</p>
-                <hr style="border: 0.5px solid #eee;">
-                <div style="font-size: 13px;">
-                    <p><b>အမျိုးအမည်:</b> {item_name if item_name else '-'}</p>
-                    <p><b>တင်ရမည့်ချိန်:</b> {target_weight if target_weight else '-'}</p>
-                    <p>📥 <b>ပေးရွှေ:</b> {format_gold_weight(give_gold_total)}</p>
-                    <p>📤 <b>ပြန်အပ်:</b> {format_gold_weight(return_net_pe)}</p>
-                    <p>➕ <b>အလျော့:</b> {format_gold_weight(wastage_pe)}</p>
-                </div>
-                <hr style="border: 0.5px solid #eee;">
-                <div style="text-align: center; background: #f9f9f9; padding: 5px; border-radius: 5px;">
-                    <b style="font-size: 14px; color: {'red' if diff_pe > 0 else 'green'};">
-                        {'ကျန်ရှိ:' if diff_pe > 0 else 'ပိုအပ်:'} {format_gold_weight(abs(diff_pe))}
-                    </b>
-                </div>
-                <p style="text-align: center; font-size: 10px; color: #888; margin-top: 10px;">App by MinThitSarAung</p>
-            </div>
-            """
-            st.markdown(receipt_html, unsafe_allow_html=True)
-            
-            # Image သိမ်းရန် လမ်းညွှန်
-            st.success("အပေါ်က ပြေစာကတ်လေးကို Screenshot ရိုက်၍ သိမ်းဆည်းနိုင်ပါပြီ။")
-
-st.markdown("<div class='main-footer'>App by MinThitSarAung</div>", unsafe_allow_html=True)
-    
+st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
