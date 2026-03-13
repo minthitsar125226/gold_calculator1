@@ -258,8 +258,8 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
         st.success("📊 တွက်ချက်မှုရလဒ်")
         st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")  
 
-elif menu == "💎 ၃D ဖယောင်းတွက်စက်":
-    st.header("💎 ၃D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
+elif menu == "💎 3D ဖယောင်းတွက်စက်":
+    st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
     
     # Input များ
     wax_w = st.number_input("ဖယောင်းအလေးချိန် (Gram)", value=1.0, step=0.1)
@@ -289,6 +289,7 @@ elif menu == "💎 ၃D ဖယောင်းတွက်စက်":
                 </div>
             </div>
         """, unsafe_allow_html=True)
-         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")      st.markdown(f"<div class='kanote-border'><h2>စုစုပေါင်း</h2><h1>{total_sum:,.0f} ကျပ်</h1></div>", unsafe_allow_html=True)
+        
+        st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")
 
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
