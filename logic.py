@@ -139,3 +139,21 @@ def calculate_gold_difference(given_k, given_p, given_y, given_pt, return_k, ret
         "status": "ပိုအပ်" if diff > 0 else "လိုအပ်" if diff < 0 else "ကိုက်ညီ"
     }
     return res
+
+def wax_to_gold_calculator(wax_weight, pae_ye):
+    # ပဲရည်အလိုက် Factor နှုန်းထား (အကြမ်းဖျင်း)
+    factors = {
+        12: 13.5,
+        13: 14.0,
+        14: 14.5,
+        14.2: 14.6,
+        15: 15.0,
+        15.2: 15.2,
+        16: 15.8
+    }
+    # ရွေးထားတဲ့ပဲရည်မရှိရင် အလယ်အလတ် 14.5 ကို ယူမယ်
+    factor = factors.get(pae_ye, 14.5)
+    
+    # ရွှေအလေးချိန် = ဖယောင်း * Factor + 15% (Sprue အတွက် အပိုထည့်တွက်ချက်)
+    gold_weight = wax_weight * factor * 1.15
+    return round(gold_weight, 2)
