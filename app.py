@@ -71,14 +71,36 @@ elif menu == "💰 ရွှေ နှင့် ငွေ":
         res_g = logic.money_to_gold(budget, gold_price, pur2, ank, anp, any, anpt)
         st.markdown(f"<div class='result-card'><h3>ရွှေအသား: <br>{format_gold_weight(res_g)}</h3></div>", unsafe_allow_html=True)
 
-elif menu == "📏 အချိုးအစားတွက်စက်":
-    st.header("📏 အချိုးအစားနှင့် အလေးချိန် တွက်ချက်ခြင်း")
-    # ပေါင်း/နုတ်
-    st.subheader("⚖️ ၁။ ရွှေအလေးချိန် ပေါင်း/နုတ်")
-    c1, c2 = st.columns(2)
-    v1 = to_pe(c1.number_input("ကျပ်(1)",0), c1.number_input("ပဲ(1)",0), c1.number_input("ရွေး(1)",0), c1.number_input("Pt(1)",0))
-    v2 = to_pe(c2.number_input("ကျပ်(2)",0), c2.number_input("ပဲ(2)",0), c2.number_input("ရွေး(2)",0), c2.number_input("Pt(2)",0))
-    st.success(f"ပေါင်းလဒ်: {format_gold_weight(v1+v2)}")
+elif menu == "📐 အချိုးအစားတွက်ချက်ခြင်း":
+        st.subheader("⚖️ ရွှေချိန် ပေါင်း/နုတ် တွက်ချက်ခြင်း")
+        
+        # ရွှေချိန် ပေါင်း/နုတ်
+        r_col1, r_col2 = st.columns(2)
+        with r_col1:
+            st.write("### ပထမ ရွှေချိန်")
+            k1 = st.number_input("ကျပ်(1)", min_value=0, key="ak1")
+            p1 = st.number_input("ပဲ(1)", min_value=0, max_value=15, key="ap1")
+            y1 = st.number_input("ရွေး(1)", min_value=0, max_value=7, key="ay1")
+            pt1 = st.number_input("Pt(1)", min_value=0.0, step=0.1, key="apt1")
+        with r_col2:
+            st.write("### ဒုတိယ ရွှေချိန်")
+            k2 = st.number_input("ကျပ်(2)", min_value=0, key="bk1")
+            p2 = st.number_input("ပဲ(2)", min_value=0, max_value=15, key="bp1")
+            y2 = st.number_input("ရွေး(2)", min_value=0, max_value=7, key="by1")
+            pt2 = st.number_input("Pt(2)", min_value=0.0, step=0.1, key="bpt2")
+            
+        # တွက်ချက်ခြင်း (logic.py ထဲက function များ)
+        res_add = logic.gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2)
+        res_sub = logic.gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2)
+        
+        st.write("---")
+        st.success(f"### ➕ ပေါင်းလဒ်: {res_add['kyat']} ကျပ် {res_add['pae']} ပဲ {res_add['yway']} ရွေး {res_add['point']} Pt")
+        
+        if res_sub:
+            st.warning(f"### ➖ အနုတ်လဒ်: {res_sub['kyat']} ကျပ် {res_sub['pae']} ပဲ {res_sub['yway']} ရွေး {res_sub['point']} Pt")
+        else:
+            st.error("⚠️ အနုတ်လဒ်: ပထမရွှေချိန်သည် ဒုတိယရွှေချိန်ထက် နည်းနေပါသည်။")
+
     # လက်မအလိုက်
     st.subheader("⚖️ ၂။ လက်မအလိုက် ရွှေအလေးချိန်")
     ca, cb, cc = st.columns(3)
