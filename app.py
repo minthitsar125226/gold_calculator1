@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
+st.write("--- APP စတင်အလုပ်လုပ်ပါပြီ ---")
 
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
