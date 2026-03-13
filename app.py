@@ -188,7 +188,6 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
                     <p style="text-align: center; font-size: 12px; color: #D4AF37;">နေ့စွဲ - {now}</p>
                 </div>
             """, unsafe_allow_html=True)
-
     with tab2:
         st.subheader("📤 အထည်အပ်နှံခြင်း")
         st.write("💍 **ပြန်အပ်သည့် ရွှေအသား**")
@@ -208,47 +207,49 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
         note2 = st.text_area("မှတ်ချက်", key="note_ret")
 
         if st.button("အပ်သည့်ပြေစာ ထုတ်ရန်"):
-            # logic ထဲက တွက်ချက်မှုကို ခေါ်ယူခြင်း
+            # တွက်ချက်မှုအပိုင်း (logic.py ထဲက function ကို ခေါ်ခြင်း)
             diff_res = logic.calculate_gold_difference(g_k, g_p, g_y, g_pt, ret_k, ret_p, ret_y, ret_pt, was_k, was_p, was_y, was_pt)
-            now = datetime.now().strftime("%d/%m/%Y %H:%M")
+            now = datetime.now().strftime("%d/%m/%Y %I:%M %p")
             status_color = "#D4AF37" if diff_res['status'] == "ပိုအပ်" else "#FF4B4B"
             
-            st.markdown(f"""
-                <div style="background: #000; border: 4px double #D4AF37; padding: 30px; border-radius: 15px; color: white; box-shadow: 0px 10px 30px rgba(0,0,0,0.5);">
-                    <h2 style="text-align: center; color: #D4AF37; margin-bottom: 0px;">💍 အထည်အပ်နှံမှု မှတ်တမ်း</h2>
-                    <p style="text-align: center; color: #888; font-size: 14px;">Receipt No: {datetime.now().microsecond}</p>
-                    <hr style="border: 1px solid #D4AF37;">
-                    
-                    <div style="padding: 10px; background: #111; border-radius: 5px; margin-bottom: 10px;">
-                        <p style="margin: 0;">အထည်အမည် - <b>{item_name}</b></p>
-                        <p style="margin: 0; font-size: 14px; color: #aaa;">ပေးရွှေ: {g_k}ကျပ် {g_p}ပဲ {g_y}ရွေး {g_pt}Pt</p>
-                    </div>
-
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <tr style="border-bottom: 1px solid #333;">
-                            <td style="padding: 10px 0;">ပြန်အပ်ရွှေအသား:</td>
-                            <td style="text-align: right;">{ret_k} ကျပ် {ret_p} ပဲ {ret_y} ရွေး {ret_pt} Pt</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #333;">
-                            <td style="padding: 10px 0;">အလျော့တွက်:</td>
-                            <td style="text-align: right;">{was_k} ကျပ် {was_p} ပဲ {was_y} ရွေး {was_pt} Pt</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 20px 0; font-size: 20px; color: {status_color};"><b>{diff_res['status']}ရွှေ:</b></td>
-                            <td style="text-align: right; font-size: 24px; color: {status_color};">
-                                <b>{diff_res['kyat']} ကျပ် {diff_res['pae']} ပဲ {diff_res['yway']} ရွေး {diff_res['point']} Pt</b>
-                            </td>
-                        </tr>
-                    </table>
-                    
-                    <div style="margin-top: 15px; border-left: 3px solid #D4AF37; padding-left: 10px; font-style: italic; color: #ccc;">
-                        မှတ်ချက်: {note2}
-                    </div>
-                    
-                    <p style="text-align: center; margin-top: 30px; font-size: 12px; color: #D4AF37;">✨ ကျေးဇူးတင်ပါသည် ✨<br>{now}</p>
+            # ပြေစာ ဒီဇိုင်း (Screenshot ရိုက်ရန် အလှဆုံးပုံစံ)
+            receipt_html = f"""
+            <div style="background-color: #000; border: 4px double #D4AF37; padding: 25px; border-radius: 15px; color: white; font-family: sans-serif;">
+                <h2 style="text-align: center; color: #D4AF37; margin-bottom: 2px;">💍 အထည်အပ်နှံမှုပြေစာ</h2>
+                <p style="text-align: center; color: #888; font-size: 12px; margin-top: 0;">နေ့စွဲ - {now}</p>
+                <hr style="border: 1px solid #D4AF37;">
+                
+                <div style="margin-bottom: 15px;">
+                    <p style="margin: 5px 0;">အထည်အမည် - <span style="color: #D4AF37;"><b>{item_name if item_name else 'စစ်ဆေးဆဲ'}</b></span></p>
+                    <p style="margin: 5px 0; font-size: 14px; color: #aaa;">ပေးရွှေ: {g_k}ကျပ် {g_p}ပဲ {g_y}ရွေး {g_pt}Pt</p>
                 </div>
-            """, unsafe_allow_html=True)
 
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <tr style="border-bottom: 1px solid #333;">
+                        <td style="padding: 10px 0;">ပြန်အပ်ရွှေအသား</td>
+                        <td style="text-align: right; color: #D4AF37;">{ret_k} ကျပ် {ret_p} ပဲ {ret_y} ရွေး {ret_pt} Pt</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #333;">
+                        <td style="padding: 10px 0;">အလျော့တွက်</td>
+                        <td style="text-align: right; color: #D4AF37;">{was_k} ကျပ် {was_p} ပဲ {was_y} ရွေး {was_pt} Pt</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px 0; font-size: 18px; color: {status_color};"><b>{diff_res['status']}ရွှေ</b></td>
+                        <td style="text-align: right; font-size: 22px; color: {status_color};">
+                            <b>{diff_res['kyat']} ကျပ် {diff_res['pae']} ပဲ {diff_res['yway']} ရွေး {diff_res['point']} Pt</b>
+                        </td>
+                    </tr>
+                </table>
+                
+                <div style="margin-top: 20px; border-top: 1px dashed #444; padding-top: 10px;">
+                    <p style="font-size: 14px; color: #aaa;">မှတ်ချက် - {note2 if note2 else '-'}</p>
+                </div>
+                
+                <p style="text-align: center; margin-top: 25px; font-size: 11px; color: #D4AF37; letter-spacing: 2px;">✨ ကျေးဇူးတင်ပါသည် ✨</p>
+            </div>
+            """
+            st.markdown(receipt_html, unsafe_allow_html=True)
+    
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
     col1, col2 = st.columns(2)
