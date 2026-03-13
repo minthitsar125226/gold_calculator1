@@ -116,3 +116,20 @@ def calculate_gem_price(carat, price_per_carat, gold_weight_pae, gold_price):
     gold_cost = (gold_weight_pae / 16) * gold_price
     total_cost = gem_cost + gold_cost
     return gem_cost, gold_cost, total_cost
+
+def gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2):
+    # ရွှေချိန်များကို Point သို့ ပြောင်းလဲခြင်း
+    total_pt1 = (k1 * 1200) + (p1 * 75) + (y1 * 10) + pt1
+    total_pt2 = (k2 * 1200) + (p2 * 75) + (y2 * 10) + pt2
+    
+    diff = total_pt1 - total_pt2
+    
+    if diff < 0:
+        return None 
+    
+    kyat = diff // 1200
+    pae = (diff % 1200) // 75
+    yway = (diff % 75) // 10
+    point = (diff % 10)
+    
+    return {"kyat": int(kyat), "pae": int(pae), "yway": int(yway), "point": point}
