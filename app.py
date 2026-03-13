@@ -95,6 +95,28 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
         total_l = logic.length_multiplier_ali(l_in, b_sel, a_in)
         st.write(f"ရလဒ်: {total_l}")
 
+st.write("---")
+    st.subheader("📏 ၄။ အချိုးကျ အလျားမြှောက်စက်")
+    st.info("ဥပမာ - ၁ လက်မလျှင် ၇ လက်မနှုန်းဖြင့် လက်မ ၂၀ အတွက် တွက်ချက်ခြင်း")
+    
+    col_x, col_y = st.columns(2)
+    with col_x:
+        target_in = st.number_input("မူလ လက်မ (ဥပမာ-၂၀)", value=20.0, key="target_multi")
+    with col_y:
+        ratio_val = st.number_input("အချိုး (ဥပမာ-၇)", value=7.0, key="ratio_multi")
+        
+    if st.button("အလျားမြှောက်ရန်"):
+        res = logic.calculate_ratio_multiplication(target_in, ratio_val)
+        st.markdown(f"""
+            <div class='kanote-border'>
+                <h4>တွက်ချက်မှု ရလဒ်</h4>
+                <p style='font-size: 25px; color: #D4AF37;'>
+                    <b>{res['feet']} ပေ {res['inches']} လက်မ</b>
+                </p>
+                <p>စုစုပေါင်းလက်မ: {res['total_in']} inch</p>
+            </div>
+        """, unsafe_allow_html=True)
+
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
     mode = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
