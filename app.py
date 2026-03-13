@@ -74,52 +74,46 @@ elif menu == "📐 အချိုးအစားတွက်ချက်ခြ�
         st.subheader("📐 အချိုးအစားနှင့် ရွှေချိန်တွက်ချက်မှုများ")
         
         # ၁။ ရွှေချိန် ပေါင်း/နုတ်
-        st.subheader("⚖️ ၁။ ရွှေချိန် ပေါင်း/နုတ် တွက်ချက်ခြင်း")
-        r_col1, r_col2 = st.columns(2)
-        with r_col1:
-            st.write("### ပထမ ရွှေချိန်")
-            k1 = st.number_input("ကျပ်(1)", min_value=0, key="ak1")
-            p1 = st.number_input("ပဲ(1)", min_value=0, max_value=15, key="ap1")
-            y1 = st.number_input("ရွေး(1)", min_value=0, max_value=7, key="ay1")
-            pt1 = st.number_input("Pt(1)", min_value=0.0, step=0.1, key="apt1")
-        with r_col2:
-            st.write("### ဒုတိယ ရွှေချိန်")
-            k2 = st.number_input("ကျပ်(2)", min_value=0, key="bk1")
-            p2 = st.number_input("ပဲ(2)", min_value=0, max_value=15, key="bp1")
-            y2 = st.number_input("ရွေး(2)", min_value=0, max_value=7, key="by1")
-            pt2 = st.number_input("Pt(2)", min_value=0.0, step=0.1, key="bpt2")
+        with st.expander("⚖️ ရွှေချိန် ပေါင်း/နုတ်", expanded=True):
+            r_col1, r_col2 = st.columns(2)
+            k1 = r_col1.number_input("ကျပ်(1)", min_value=0, key="ak1")
+            p1 = r_col1.number_input("ပဲ(1)", min_value=0, max_value=15, key="ap1")
+            y1 = r_col1.number_input("ရွေး(1)", min_value=0, max_value=7, key="ay1")
+            pt1 = r_col1.number_input("Pt(1)", min_value=0.0, step=0.1, key="apt1")
             
-        res_add = logic.gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2)
-        res_sub = logic.gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2)
-        
-        st.write("---")
-        st.success(f"### ➕ ပေါင်းလဒ်: {res_add['kyat']} ကျပ် {res_add['pae']} ပဲ {res_add['yway']} ရွေး {res_add['point']} Pt")
-        
-        if res_sub:
-            st.warning(f"### ➖ အနုတ်လဒ်: {res_sub['kyat']} ကျပ် {res_sub['pae']} ပဲ {res_sub['yway']} ရွေး {res_sub['point']} Pt")
-        else:
-            st.error("⚠️ အနုတ်လဒ်: ပထမရွှေချိန် နည်းနေပါသည်။")
+            k2 = r_col2.number_input("ကျပ်(2)", min_value=0, key="bk1")
+            p2 = r_col2.number_input("ပဲ(2)", min_value=0, max_value=15, key="bp1")
+            y2 = r_col2.number_input("ရွေး(2)", min_value=0, max_value=7, key="by1")
+            pt2 = r_col2.number_input("Pt(2)", min_value=0.0, step=0.1, key="bpt2")
+            
+            if st.button("ပေါင်း/နုတ် တွက်မည်"):
+                res_add = logic.gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2)
+                res_sub = logic.gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2)
+                st.success(f"➕ ပေါင်းလဒ်: {res_add['kyat']} ကျပ် {res_add['pae']} ပဲ {res_add['yway']} ရွေး {res_add['point']} Pt")
+                if res_sub:
+                    st.warning(f"➖ အနုတ်လဒ်: {res_sub['kyat']} ကျပ် {res_sub['pae']} ပဲ {res_sub['yway']} ရွေး {res_sub['point']} Pt")
+                else:
+                    st.error("⚠️ အနုတ်လဒ်: ပထမရွှေချိန် နည်းနေပါသည်။")
 
         # ၂။ လက်မအလိုက် ရွှေအလေးချိန်
-        st.write("---")
-        st.subheader("⚖️ ၂။ လက်မအလိုက် ရွှေအလေးချိန်")
-        ca, cb, cc = st.columns(3)
-        val_inch = ca.number_input("အရှည်(လက်မ)", value=20.0, key="inch_in")
-        val_yway = cb.number_input("၁လက်မစာရွေး", 0, key="yway_in")
-        val_pt = cc.number_input("၁လက်မစာPt", 1, key="pt_in")
-        
-        res_pe = logic.weight_per_inch(val_inch, val_yway, val_pt)
-        st.markdown(f"<div class='result-card'><h2>{format_gold_weight(res_pe)}</h2></div>", unsafe_allow_html=True)
+        with st.expander("⚖️ လက်မအလိုက် ရွှေအလေးချိန်"):
+            val_inch = st.number_input("အရှည်(လက်မ)", value=20.0, key="inch_in")
+            val_yway = st.number_input("၁လက်မစာရွေး", 0, key="yway_in")
+            val_pt = st.number_input("၁လက်မစာPt", 1, key="pt_in")
+            
+            if st.button("လက်မအလိုက်တွက်မည်"):
+                res_pe = logic.weight_per_inch(val_inch, val_yway, val_pt)
+                st.markdown(f"**ရလဒ်:** {res_pe['kyat']} ကျပ် {res_pe['pae']} ပဲ {res_pe['yway']} ရွေး")
 
         # ၃။ အလျားမြှောက်စက် (အလီ)
-        st.write("---")
-        st.subheader("📏 ၃။ အလျားမြှောက်စက် (အလီ)")
-        la, lb, lc = st.columns(3)
-        total_l = logic.length_multiplier_ali(la.number_input("လက်မ", 6, key="l_in"), lb.selectbox("ပဲ", list(range(16)), key="b_sel"), lc.number_input("အလီ", 3, key="ali_in"))
-        st.markdown(f"<div class='result-card'><h2>{format_length_inches(total_l)}</h2></div>", unsafe_allow_html=True)
-        
-        # ၄။ ရွှေအသားတွက်ချက်မှု (သင့် code တွင် res_g ကို အဓိပ္ပာယ်ရှိအောင် သတ်မှတ်ပေးရန် လိုအပ်ပါသည်)
-        st.markdown(f"<div class='result-card'><h3>ရွှေအသား: <br>{format_gold_weight(res_pe)}</h3></div>", unsafe_allow_html=True)
+        with st.expander("📏 အလျားမြှောက်စက် (အလီ)"):
+            la = st.number_input("လက်မ", 6, key="l_in")
+            lb = st.selectbox("ပဲ", list(range(16)), key="b_sel")
+            lc = st.number_input("အလီ", 3, key="ali_in")
+            
+            if st.button("အလီတွက်မည်"):
+                total_l = logic.length_multiplier_ali(la, lb, lc)
+                st.markdown(f"**ရလဒ်:** {total_l}")
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
