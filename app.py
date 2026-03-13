@@ -256,26 +256,40 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     total_sum = gem_cost + gold_cost
     with col2:
         st.success("📊 တွက်ချက်မှုရလဒ်")
-        st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")
-        st.markdown(f"<div class='kanote-border'><h2>စုစုပေါင်း</h2><h1>{total_sum:,.0f} ကျပ်</h1></div>", unsafe_allow_html=True)
+        st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")  
 
-elif menu == "💎 3D ဖယောင်းတွက်စက်":
-    st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
+elif menu == "💎 ၃D ဖယောင်းတွက်စက်":
+    st.header("💎 ၃D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
     
+    # Input များ
     wax_w = st.number_input("ဖယောင်းအလေးချိန် (Gram)", value=1.0, step=0.1)
     pae_select = st.selectbox("ပဲရည် ရွေးချယ်ပါ:", [12, 13, 14, 14.2, 15, 15.2, 16])
     
     if st.button("ရွှေချိန်တွက်ရန်"):
-        res_gold = logic.wax_to_gold_calculator(wax_w, pae_select)
+        # အခြေခံ ရွှေချိန် (Sprue မပါ)
+        res_gold_grams = logic.wax_to_gold_calculator(wax_w, pae_select)
+        # Sprue ပါသည့် ရွှေချိန် (၁၅% အပို)
+        res_gold_sprue = res_gold_grams * 1.15
+        
+        # ကျပ်/ပဲ/ရွေး ပြောင်းခြင်း
+        k_no, p_no, y_no, pt_no = logic.gram_to_kyat_pae_yway(res_gold_grams)
+        k_sp, p_sp, y_sp, pt_sp = logic.gram_to_kyat_pae_yway(res_gold_sprue)
         
         st.markdown(f"""
             <div class='kanote-border'>
-                <h4>လိုအပ်မည့် ခန့်မှန်းခြေ ရွှေအလေးချိန်</h4>
-                <p style='font-size: 28px; color: #D4AF37;'><b>{res_gold} ဂရမ်</b></p>
-                <p style='font-size: 14px; color: #888;'>*(Sprue အပိုပါဝင်ပြီး တွက်ချက်ထားသည်)*</p>
+                <h4>📊 ရွှေချိန် ခန့်မှန်းချက်</h4>
+                <div style="text-align: left;">
+                    <p><b>၁။ အသားတင် ဖယောင်းအလေးချိန်သာ:</b><br>
+                    <span style='color: #888; font-size: 20px;'>{k_no} ကျပ် {p_no} ပဲ {y_no} ရွေး {pt_no} Pt</span></p>
+                    
+                    <hr style='border: 0.5px solid #D4AF37;'>
+                    
+                    <p><b>၂။ Sprue (ရွှေရည်ဝင်ပေါက်) အပိုထည့်တွက်ပြီး (15%):</b><br>
+                    <span style='color: #D4AF37; font-size: 24px;'><b>{k_sp} ကျပ် {p_sp} ပဲ {y_sp} ရွေး {pt_sp} Pt</b></span></p>
+                </div>
             </div>
         """, unsafe_allow_html=True)
         
-        # ရွှေချိန်ကို မြန်မာ့ရွှေချိန် (ကျပ်/ပဲ/ရွေး) ပြန်ပြောင်းချင်ရင်လည်း ထည့်ပေးလို့ရပါတယ်
-        st.info("အကြံပြုချက်: ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုဖြစ်သောကြောင့် အသုံးပြုနေကျ Factor နှင့် အနည်းငယ် ကွာခြားနိုင်ပါသည်။")
+        st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")      st.markdown(f"<div class='kanote-border'><h2>စုစုပေါင်း</h2><h1>{total_sum:,.0f} ကျပ်</h1></div>", unsafe_allow_html=True)
+
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
