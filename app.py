@@ -145,27 +145,49 @@ elif menu == "💍 လက်စွပ်/လက်ကောက်":
         st.markdown(f"<div class='kanote-border'><h3>လက်ကောက် အလျား</h3><p>အချင်း: {b_inch} လက်မ {b_pe} ပဲ</p><p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p></div>", unsafe_allow_html=True)
 
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
-    st.header("📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း")
+    st.markdown("<h2 style='text-align: center;'>📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း</h2>", unsafe_allow_html=True)
     
     tab1, tab2 = st.tabs(["📥 အထည်ယူ (စာရင်းသွင်း)", "📤 အထည်အပ် (တွက်ချက်မှု)"])
     
     with tab1:
         st.subheader("📥 အထည်လက်ခံဖြတ်ပိုင်း")
-        item_name = st.text_input("အထည်အမည်")
-        target_w = st.text_input("ပြုလုပ်ရမည့် အလေးချိန် (ဥပမာ-၁ကျပ် ၂ပဲ)")
-        target_l = st.text_input("ပြုလုပ်ရမည့် အရှည် (ဥပမာ-၁၈ လက်မ)")
+        item_name = st.text_input("အထည်အမည်", placeholder="ဥပမာ - ဟန်ဒီကြိုး")
+        target_w = st.text_input("ပြုလုပ်ရမည့် အလေးချိန်", placeholder="၁ကျပ် ၂ပဲ")
+        target_l = st.text_input("ပြုလုပ်ရမည့် အရှည်", placeholder="၁၈ လက်မ")
         
         st.write("---")
         st.write("💰 **ပေးရွှေ**")
         gk, gp, gy, gpt = st.columns(4)
-        g_k = gk.number_input("ကျပ်", 0, key="g_k")
-        g_p = gp.number_input("ပဲ", 0, 15, key="g_p")
-        g_y = gy.number_input("ရွေး", 0, 7, key="g_y")
-        g_pt = gpt.number_input("Point", 0.0, 9.9, key="g_pt")
+        g_k = gk.number_input("ကျပ်", 0, key="take_k")
+        g_p = gp.number_input("ပဲ", 0, 15, key="take_p")
+        g_y = gy.number_input("ရွေး", 0, 7, key="take_y")
+        g_pt = gpt.number_input("Point", 0.0, 9.9, key="take_pt")
         
-        note1 = st.text_area("မှတ်ချက် (အထည်ယူ)", key="n1")
+        note1 = st.text_area("မှတ်ချက်", key="note_take")
+        
         if st.button("ယူသည့်ပြေစာ ထုတ်ရန်"):
-            st.info(f"📍 {item_name} အတွက် ရွှေ {g_k} ကျပ် {g_p} ပဲ {g_y} ရွေး {g_pt} Pt လက်ခံရရှိပါသည်။")
+            now = datetime.now().strftime("%d/%m/%Y %H:%M")
+            st.markdown(f"""
+                <div style="background: #0a0a0a; border: 2px solid #D4AF37; padding: 30px; border-radius: 10px; color: white; font-family: 'Pyidaungsu', sans-serif; box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.3);">
+                    <h2 style="text-align: center; color: #D4AF37; margin-bottom: 5px;">✨ မြန်မာ့ရွှေပန်းတိမ် ✨</h2>
+                    <p style="text-align: center; color: #888; font-size: 14px;">အထည်လက်ခံဖြတ်ပိုင်း</p>
+                    <hr style="border: 0.5px solid #D4AF37;">
+                    <table style="width: 100%; color: white;">
+                        <tr><td>အထည်အမည်:</td><td style="text-align: right;"><b>{item_name}</b></td></tr>
+                        <tr><td>ရည်မှန်းအလေးချိန်:</td><td style="text-align: right;"><b>{target_w}</b></td></tr>
+                        <tr><td>ရည်မှန်းအရှည်:</td><td style="text-align: right;"><b>{target_l}</b></td></tr>
+                        <tr><td colspan="2"><br></td></tr>
+                        <tr style="color: #D4AF37; font-size: 18px;">
+                            <td><b>ပေးရွှေစုစုပေါင်း:</b></td>
+                            <td style="text-align: right;"><b>{g_k} ကျပ် {g_p} ပဲ {g_y} ရွေး {g_pt} Pt</b></td>
+                        </tr>
+                    </table>
+                    <br>
+                    <p style="font-size: 14px; color: #aaa;">မှတ်ချက်: {note1}</p>
+                    <hr style="border: 0.1px solid #444;">
+                    <p style="text-align: center; font-size: 12px; color: #D4AF37;">နေ့စွဲ - {now}</p>
+                </div>
+            """, unsafe_allow_html=True)
 
     with tab2:
         st.subheader("📤 အထည်အပ်နှံခြင်း")
@@ -183,22 +205,47 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
         was_y = wy.number_input("ရွေး", 0, 7, key="was_y")
         was_pt = wpt.number_input("Point", 0.0, 9.9, key="was_pt")
         
-        note2 = st.text_area("မှတ်ချက် (အထည်အပ်)", key="n2")
+        note2 = st.text_area("မှတ်ချက်", key="note_ret")
 
-        if st.button("အပ်သည့်ပြေစာ/တွက်ချက်ရန်"):
+        if st.button("အပ်သည့်ပြေစာ ထုတ်ရန်"):
+            # logic ထဲက တွက်ချက်မှုကို ခေါ်ယူခြင်း
             diff_res = logic.calculate_gold_difference(g_k, g_p, g_y, g_pt, ret_k, ret_p, ret_y, ret_pt, was_k, was_p, was_y, was_pt)
-            
-            color = "#D4AF37" if diff_res['status'] == "ပိုအပ်" else "#FF4B4B"
+            now = datetime.now().strftime("%d/%m/%Y %H:%M")
+            status_color = "#D4AF37" if diff_res['status'] == "ပိုအပ်" else "#FF4B4B"
             
             st.markdown(f"""
-                <div class='kanote-border'>
-                    <h3>📋 အထည်အပ် ပြေစာ</h3>
-                    <p>အထည်အမည်: <b>{item_name}</b></p>
-                    <p>ပြန်အပ်ရွှေစုစုပေါင်း: {ret_k}ကျပ် {ret_p}ပဲ {ret_y}ရွေး {ret_pt}Pt + အလျော့ {was_k}ကျပ် {was_p}ပဲ {was_y}ရွေး {was_pt}Pt</p>
-                    <hr>
-                    <h2 style='color: {color};'>{diff_res['status']}ရွှေ</h2>
-                    <h1>{diff_res['kyat']} ကျပ် {diff_res['pae']} ပဲ {diff_res['yway']} ရွေး {diff_res['point']} Pt</h1>
-                    <p>မှတ်ချက်: {note2}</p>
+                <div style="background: #000; border: 4px double #D4AF37; padding: 30px; border-radius: 15px; color: white; box-shadow: 0px 10px 30px rgba(0,0,0,0.5);">
+                    <h2 style="text-align: center; color: #D4AF37; margin-bottom: 0px;">💍 အထည်အပ်နှံမှု မှတ်တမ်း</h2>
+                    <p style="text-align: center; color: #888; font-size: 14px;">Receipt No: {datetime.now().microsecond}</p>
+                    <hr style="border: 1px solid #D4AF37;">
+                    
+                    <div style="padding: 10px; background: #111; border-radius: 5px; margin-bottom: 10px;">
+                        <p style="margin: 0;">အထည်အမည် - <b>{item_name}</b></p>
+                        <p style="margin: 0; font-size: 14px; color: #aaa;">ပေးရွှေ: {g_k}ကျပ် {g_p}ပဲ {g_y}ရွေး {g_pt}Pt</p>
+                    </div>
+
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr style="border-bottom: 1px solid #333;">
+                            <td style="padding: 10px 0;">ပြန်အပ်ရွှေအသား:</td>
+                            <td style="text-align: right;">{ret_k} ကျပ် {ret_p} ပဲ {ret_y} ရွေး {ret_pt} Pt</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #333;">
+                            <td style="padding: 10px 0;">အလျော့တွက်:</td>
+                            <td style="text-align: right;">{was_k} ကျပ် {was_p} ပဲ {was_y} ရွေး {was_pt} Pt</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 20px 0; font-size: 20px; color: {status_color};"><b>{diff_res['status']}ရွှေ:</b></td>
+                            <td style="text-align: right; font-size: 24px; color: {status_color};">
+                                <b>{diff_res['kyat']} ကျပ် {diff_res['pae']} ပဲ {diff_res['yway']} ရွေး {diff_res['point']} Pt</b>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <div style="margin-top: 15px; border-left: 3px solid #D4AF37; padding-left: 10px; font-style: italic; color: #ccc;">
+                        မှတ်ချက်: {note2}
+                    </div>
+                    
+                    <p style="text-align: center; margin-top: 30px; font-size: 12px; color: #D4AF37;">✨ ကျေးဇူးတင်ပါသည် ✨<br>{now}</p>
                 </div>
             """, unsafe_allow_html=True)
 
