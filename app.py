@@ -76,13 +76,23 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
     st.write("---")
     st.subheader("⚖️ ၂။ လက်မအလိုက် ရွှေအလေးချိန်")
     ca, cb, cc = st.columns(3)
-    i_val = ca.number_input("အရှည်(လက်မ)", value=20.0, key="inch_in")
-    y_val = cb.number_input("၁လက်မစာရွေး", 0, key="yway_in")
-    pt_val = cc.number_input("၁လက်မစာPt", 1, key="pt_in")
+    i_val = ca.number_input("အရှည်(လက်မ)", value=1.0, step=0.1, key="inch_in")
+    y_val = cb.number_input("၁လက်မစာ (ရွေး)", 0, 7, key="yway_in")
+    pt_val = cc.number_input("၁လက်မစာ (Point)", 0.0, 9.9, step=0.1, key="pt_in")
     
     if st.button("လက်မအလိုက် တွက်ရန်"):
-        res_pe = logic.weight_per_inch(i_val, y_val, pt_val)
-        st.write(f"ရလဒ်: {res_pe}")
+        # logic.py ထဲက function အသစ်ကို လှမ်းခေါ်ခြင်း
+        res = logic.weight_per_inch_comprehensive(i_val, y_val, pt_val)
+        
+        st.markdown(f"""
+            <div class='kanote-border'>
+                <h4 style='color: #D4AF37;'>စုစုပေါင်း ရွှေအလေးချိန်</h4>
+                <p style='font-size: 22px;'>
+                    <b>{res['kyat']} ကျပ် {res['pae']} ပဲ {res['yway']} ရွေး {res['point']} Point</b>
+                </p>
+                <p style='color: #888;'>စုစုပေါင်း Point: {res['total_pts']}</p>
+            </div>
+        """, unsafe_allow_html=True)
 
     st.write("---")
     st.subheader("📏 ၄။ အချိုးကျ အလျားမြှောက်စက်")
