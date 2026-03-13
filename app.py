@@ -2,7 +2,6 @@ import streamlit as st
 from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
-st.write("--- APP စတင်အလုပ်လုပ်ပါပြီ ---")
 
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
@@ -214,30 +213,3 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     # အောက်ဆုံးမှာ ဒါလေး ထည့်ပါ
 st.markdown("<p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
 
-# ဤကုဒ်ကို app.py ၏ အောက်ဆုံးတွင် ထည့်ပါ
-if menu == "📐 အချိုးအစားတွက်ချက်ခြင်း":
-    try:
-        st.write("---")
-        st.info("🔍 အမှားရှာဖွေခြင်း (Debugging):")
-        
-        # logic module ထဲက function တွေ ရှိမရှိ စစ်ဆေးခြင်း
-        st.write("Checking logic.gold_addition...")
-        if hasattr(logic, 'gold_addition'):
-            st.success("✅ logic.gold_addition ကို တွေ့ရှိသည်။")
-        else:
-            st.error("❌ Error: logic.py ထဲတွင် gold_addition ကို မတွေ့ရှိပါ။")
-            
-        st.write("Checking logic.weight_per_inch...")
-        if hasattr(logic, 'weight_per_inch'):
-            st.success("✅ logic.weight_per_inch ကို တွေ့ရှိသည်။")
-        else:
-            st.error("❌ Error: logic.py ထဲတွင် weight_per_inch ကို မတွေ့ရှိပါ။")
-            
-        st.write("Checking logic.length_multiplier_ali...")
-        if hasattr(logic, 'length_multiplier_ali'):
-            st.success("✅ logic.length_multiplier_ali ကို တွေ့ရှိသည်။")
-        else:
-            st.error("❌ Error: logic.py ထဲတွင် length_multiplier_ali ကို မတွေ့ရှိပါ။")
-
-    except Exception as e:
-        st.error(f"❌ အခြားအမှားတစ်ခုခု ဖြစ်နေသည်: {e}")
