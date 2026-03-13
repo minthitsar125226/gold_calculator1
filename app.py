@@ -85,17 +85,6 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
         st.write(f"ရလဒ်: {res_pe}")
 
     st.write("---")
-    st.subheader("📏 ၃။ အလျားမြှောက်စက် (အလီ)")
-    la, lb, lc = st.columns(3)
-    l_in = la.number_input("လက်မ", 6, key="l_in")
-    b_sel = lb.selectbox("ပဲ", list(range(16)), key="b_sel")
-    a_in = lc.number_input("အလီ", 3, key="ali_in")
-    
-    if st.button("အလီ တွက်ရန်"):
-        total_l = logic.length_multiplier_ali(l_in, b_sel, a_in)
-        st.write(f"ရလဒ်: {total_l}")
-
-st.write("---")
     st.subheader("📏 ၄။ အချိုးကျ အလျားမြှောက်စက်")
     st.info("ဥပမာ - ၁ လက်မလျှင် ၇ လက်မနှုန်းဖြင့် လက်မ ၂၀ အတွက် တွက်ချက်ခြင်း")
     
@@ -116,6 +105,19 @@ st.write("---")
                 <p>စုစုပေါင်းလက်မ: {res['total_in']} inch</p>
             </div>
         """, unsafe_allow_html=True)
+  
+    st.write("---")
+    st.subheader("📏 ၃။ အလျားမြှောက်စက် (အလီ)")
+    la, lb, lc = st.columns(3)
+    l_in = la.number_input("လက်မ", 6, key="l_in")
+    b_sel = lb.selectbox("ပဲ", list(range(16)), key="b_sel")
+    a_in = lc.number_input("အလီ", 3, key="ali_in")
+    
+    if st.button("အလီ တွက်ရန်"):
+        total_l = logic.length_multiplier_ali(l_in, b_sel, a_in)
+        st.write(f"ရလဒ်: {total_l}")
+
+
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
