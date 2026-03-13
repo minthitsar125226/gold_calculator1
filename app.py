@@ -21,8 +21,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Sidebar
-menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📐 အချိုးအစားတွက်စက်", "💍 လက်စွပ်/လက်ကောက်", "📋 အထည်ယူ/အထည်အပ်", "💎 စိန်/ကျောက်/ပုလဲ"])
+# ,
+menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📐 အချိုးအစားတွက်စက်", "💍 လက်စွပ်/လက်ကောက်", "📋 အထည်ယူ/အထည်အပ်", "💎 စိန်/ကျောက်/ပုလဲ", "💎 3D ဖယောင်းတွက်စက်"])
 
 if menu == "🏠 ပင်မ စာမျက်နှာ":
     st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
@@ -259,4 +259,23 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
         st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")
         st.markdown(f"<div class='kanote-border'><h2>စုစုပေါင်း</h2><h1>{total_sum:,.0f} ကျပ်</h1></div>", unsafe_allow_html=True)
 
+elif menu == "💎 3D ဖယောင်းတွက်စက်":
+    st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
+    
+    wax_w = st.number_input("ဖယောင်းအလေးချိန် (Gram)", value=1.0, step=0.1)
+    pae_select = st.selectbox("ပဲရည် ရွေးချယ်ပါ:", [12, 13, 14, 14.2, 15, 15.2, 16])
+    
+    if st.button("ရွှေချိန်တွက်ရန်"):
+        res_gold = logic.wax_to_gold_calculator(wax_w, pae_select)
+        
+        st.markdown(f"""
+            <div class='kanote-border'>
+                <h4>လိုအပ်မည့် ခန့်မှန်းခြေ ရွှေအလေးချိန်</h4>
+                <p style='font-size: 28px; color: #D4AF37;'><b>{res_gold} ဂရမ်</b></p>
+                <p style='font-size: 14px; color: #888;'>*(Sprue အပိုပါဝင်ပြီး တွက်ချက်ထားသည်)*</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # ရွှေချိန်ကို မြန်မာ့ရွှေချိန် (ကျပ်/ပဲ/ရွေး) ပြန်ပြောင်းချင်ရင်လည်း ထည့်ပေးလို့ရပါတယ်
+        st.info("အကြံပြုချက်: ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုဖြစ်သောကြောင့် အသုံးပြုနေကျ Factor နှင့် အနည်းငယ် ကွာခြားနိုင်ပါသည်။")
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
