@@ -74,3 +74,26 @@ def calculate_ratio_multiplication(target_inch, ratio_val):
         "feet": feet,
         "inches": inches
     }
+
+def weight_per_inch_comprehensive(inch_in, y_per_in, pt_per_in):
+    """လက်မအလိုက် ရွှေအလေးချိန်ကို ကျပ်၊ ပဲ၊ ရွေး၊ Point ဖြင့် တွက်ခြင်း"""
+    # ၁ လက်မစာ အလေးချိန်ကို Point ဖွဲ့ခြင်း (၁ ရွေး = ၁၀ point)
+    one_inch_pts = (y_per_in * 10) + pt_per_in
+    
+    # စုစုပေါင်း Point = လက်မ အရေအတွက် * ၁ လက်မစာ point
+    total_pts = inch_in * one_inch_pts
+    
+    # Point မှ ကျပ်၊ ပဲ၊ ရွေး ပြန်ခွဲခြင်း
+    # ၁ ကျပ် = ၁၂၀၀ pt, ၁ ပဲ = ၇၅ pt, ၁ ရွေး = ၁၀ pt
+    kyat = int(total_pts // 1200)
+    pae = int((total_pts % 1200) // 75)
+    yway = int((total_pts % 75) // 10)
+    point = round(total_pts % 10, 1)
+    
+    return {
+        "kyat": kyat,
+        "pae": pae,
+        "yway": yway,
+        "point": point,
+        "total_pts": round(total_pts, 2)
+    }
