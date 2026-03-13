@@ -97,3 +97,24 @@ def weight_per_inch_comprehensive(inch_in, y_per_in, pt_per_in):
         "point": point,
         "total_pts": round(total_pts, 2)
     }
+
+def calculate_gold_difference(given_k, given_p, given_y, given_pt, return_k, return_p, return_y, return_pt, waste_k, waste_p, waste_y, waste_pt):
+    # အကုန်လုံးကို Point ဖွဲ့ (၁ ကျပ် = ၁၂၀၀, ၁ ပဲ = ၇၅, ၁ ရွေး = ၁၀)
+    given_total = (given_k * 1200) + (given_p * 75) + (given_y * 10) + given_pt
+    
+    # ပြန်အပ်ရွှေ = အထည်အသား + အလျော့တွက်
+    return_total = (return_k * 1200) + (return_p * 75) + (return_y * 10) + return_pt
+    waste_total = (waste_k * 1200) + (waste_p * 75) + (waste_y * 10) + waste_pt
+    actual_return = return_total + waste_total
+    
+    diff = actual_return - given_total
+    
+    abs_diff = abs(diff)
+    res = {
+        "kyat": int(abs_diff // 1200),
+        "pae": int((abs_diff % 1200) // 75),
+        "yway": int((abs_diff % 75) // 10),
+        "point": round(abs_diff % 10, 1),
+        "status": "ပိုအပ်" if diff > 0 else "လိုအပ်" if diff < 0 else "ကိုက်ညီ"
+    }
+    return res
