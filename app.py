@@ -340,35 +340,41 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယ
     ppt = rpt.number_input("ရွှေPt")
 
     if st.button("ရလဒ်နှင့် ပြေစာထုတ်ရန်"):
-        # ၁။ ဇယားအတွက် Data တည်ဆောက်ခြင်း
         receipt_data = []
         for d in jewel_data:
+            # လိုအပ်တဲ့ အလေးချိန် format ကို အပေါ်က function နဲ့ သုံးပါ
+            weight_str = format_weight(d['k'], d['p'], d['y'], d['pt'])
             receipt_data.append({
                 "အမျိုးအစား": d['type'],
                 "အရေအတွက်": d['qty'],
                 "အရည်အသွေး": d['qual'],
-                "အလေးချိန်": f"{d['k']} ကျပ် {d['p']} ပဲ {d['y']} ရွေး {d['pt']} Pt"
+                "အလေးချိန်": weight_str
             })
         
+        # ပေးရွှေအတွက်လည်း format လုပ်ပါ
+        gold_str = format_weight(pk, pp, py, ppt)
         receipt_data.append({
             "အမျိုးအစား": "ပေးရွှေ",
             "အရေအတွက်": "-",
             "အရည်အသွေး": "-",
-            "အလေးချိန်": f"{pk} ကျပ် {pp} ပဲ {py} ရွေး {ppt} Pt"
+            "အလေးချိန်": gold_str
         })
 
-        # ၂။ ဇယားပုံစံဖြင့် ပြသခြင်း
-        st.markdown("### 📄 ကျောက်/ရွှေ ပြေစာဇယား")
+        # ဇယားထုတ်ခြင်း
+        st.markdown("<h2 style='text-align: center;'>📋 ရွှေနှင့်ကျောက် ပြေစာ</h2>", unsafe_allow_html=True)
         df = pd.DataFrame(receipt_data)
+        
+        # ဇယားကို ပိုလှအောင် ပြသခြင်း
         st.table(df)
 
-        # ၃။ စုစုပေါင်းတွက်ချက်ခြင်း
+        # စုစုပေါင်းတွက်ချက်ပြီး ပေါ်စေခြင်း
         total_k = pk + sum(d['k'] for d in jewel_data)
         total_p = pp + sum(d['p'] for d in jewel_data)
         total_y = py + sum(d['y'] for d in jewel_data)
         total_pt = ppt + sum(d['pt'] for d in jewel_data)
         
-        st.success(f"စုစုပေါင်း: {total_k} ကျပ် {total_p} ပဲ {total_y} ရွေး {total_pt} Pt")
+        final_weight = format_weight(total_k, total_p, total_y, total_pt)
+        st.success(f"စုစုပေါင်းအလေးချိန်: {final_weight}")
 
 elif menu == "💎 3D ဖယောင်းတွက်စက်":
     st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
