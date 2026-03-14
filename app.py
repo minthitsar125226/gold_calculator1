@@ -255,13 +255,12 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
                     <p style="text-align: center; font-size: 12px; color: #D4AF37;">နေ့စွဲ - {now}</p>
                 </div>
             """, unsafe_allow_html=True)
-            # ပြေစာသိမ်းရန်အတွက် session_state ထဲခေတ္တမှတ်ထားခြင်း
+            # ၁။ Tab 1 (အထည်ယူ) သိမ်းဆည်းရန်အတွက် ခေတ္တမှတ်သားခြင်း
         st.session_state['take_data'] = {
-            "details": f"အထည်ယူ: {item_name} | မှတ်ချက်: {note1}",
+            "details": f"အထည်ယူ: {item_name} | ဖောက်သည်: {target_l} | မှတ်ချက်: {note1}",
             "weight": f"{g_k} ကျပ် {g_p} ပဲ {g_y} ရွေး {g_pt} Pt"
         }
 
-    # "ယူသည့်ပြေစာ ထုတ်ရန်" Button ရဲ့ အပြင်ဘက် (Tab 1 ထဲမှာပဲ) ထည့်ပါ
     if st.button("💾 အထည်ယူစာရင်း သိမ်းဆည်းမည်", key="save_take"):
         if 'take_data' in st.session_state:
             data = st.session_state['take_data']
@@ -273,8 +272,6 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
             conn.close()
             st.success("✅ အထည်ယူစာရင်းကို သိမ်းဆည်းပြီးပါပြီ။")
             st.balloons()
-        else:
-            st.warning("⚠️ အရင်ဆုံး 'ယူသည့်ပြေစာ ထုတ်ရန်' ကို နှိပ်ပါ။")
     with tab2:
         st.subheader("📤 အထည်အပ်နှံခြင်း")
         st.write("💍 **ပြန်အပ်သည့် ရွှေအသား**")
@@ -327,44 +324,32 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
             """
             st.markdown(receipt_html, unsafe_allow_html=True)
 
-            # ပြေစာသိမ်းရန်အတွက် session_state ထဲခေတ္တမှတ်ထားခြင်း
-        st.session_state['ret_data'] = {
-            "details": f"အထည်အပ်: {item_name} (အလျော်/ပြန်ချက်) | {note2}",
-            "weight": f"ကျန်ရွှေ: {diff_res['diff_text']}" # logic.py ကလာတဲ့ ရလဒ်
-        }
+            # --- ၁။ သိမ်းဆည်းရန်အတွက် Data ကို ခေတ္တမှတ်သားခြင်း ---
+            # (ဒီအပိုင်းကို 'if st.button("ပြေစာထုတ်ရန်"): ' ရဲ့ အထဲမှာပဲ ထည့်ပါ)
+            st.session_state['ret_save_data'] = {
+                "details": f"အထည်အပ်: {item_name} | မှတ်ချက်: {note2}",
+                "weight": diff_res['diff_text']
+            }
 
-    # "ပြေစာထုတ်ရန်" Button ရဲ့ အပြင်ဘက် (Tab 2 ထဲမှာပဲ) ထည့်ပါ
-    if st.button("💾 အထည်အပ်စာရင်း သိမ်းဆည်းမည်", key="save_ret"):
-        if 'ret_data' in st.session_state:
-            data = st.session_state['ret_data']
-            conn = sqlite3.connect('jewelry_records.db')
-            c = conn.cursor()
-            c.execute("INSERT INTO receipts (date, details, total_weight) VALUES (?, ?, ?)",
-                      (datetime.now().strftime("%d/%m/%Y %H:%M"), data['details'], data['weight']))
-            conn.commit()
-            conn.close()
-            st.success("✅ အထည်အပ်စာရင်းကို သိမ်းဆည်းပြီးပါပြီ။")
-            st.balloons()
-        else:
-            st.warning("⚠️ အရင်ဆုံး 'ပြေစာထုတ်ရန်' ကို နှိပ်ပါ။")
-    
-elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
-    st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
-    col1, col2 = st.columns(2)
-    with col1:
-        gem_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက်မျက် (Gemstone)", "ပုလဲ (Pearl)"])
-        user_carat = st.number_input("ကျောက်အလေးချိန် (Carat):", min_value=0.0, step=0.01, format="%.2f")
-        price_per_carat = st.number_input(f"တစ် {gem_type} (1 Carat) ဈေးနှုန်း:", min_value=0, step=10000)
-        g_kyat, g_pae, g_yway, g_point = st.number_input("ရွှေ (ကျပ်):", 0), st.number_input("ရွှေ (ပဲ):", 0, 15), st.number_input("ရွှေ (ရွေး):", 0, 7), st.number_input("ရွှေ (Point):", 0.0, 9.9, step=0.1)
-        gold_price_val = st.number_input("ယနေ့ ရွှေဈေး (ကျပ်):", value=10000000)
-
-    res = logic.gem_to_gold_units(user_carat)
-    gem_cost = user_carat * price_per_carat
-    gold_cost = logic.calculate_gold_price_comprehensive(g_kyat, g_pae, g_yway, g_point, gold_price_val)
-    total_sum = gem_cost + gold_cost
-    with col2:
-        st.success("📊 တွက်ချက်မှုရလဒ်")
-        st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")  
+        # --- ၂။ Database ထဲသို့ အပြီးအပိုင် သိမ်းဆည်းသည့် ခလုတ် ---
+        # (ဒီအပိုင်းကို 'if st.button("ပြေစာထုတ်ရန်"): ' ရဲ့ အပြင်ဘက် (with tab2: ရဲ့ အထဲ) မှာ ထားပါ)
+        st.write("") # နေရာလွတ်လေး ခံပေးခြင်း
+        if st.button("💾 အထည်အပ်စာရင်း သိမ်းဆည်းမည်", key="btn_save_ret"):
+            if 'ret_save_data' in st.session_state:
+                try:
+                    data = st.session_state['ret_save_data']
+                    conn = sqlite3.connect('jewelry_records.db')
+                    c = conn.cursor()
+                    c.execute("INSERT INTO receipts (date, details, total_weight) VALUES (?, ?, ?)",
+                              (datetime.now().strftime("%d/%m/%Y %H:%M"), data['details'], data['weight']))
+                    conn.commit()
+                    conn.close()
+                    st.success("✅ အထည်အပ်မှတ်တမ်းကို သိမ်းဆည်းပြီးပါပြီ။")
+                    st.balloons()
+                except Exception as e:
+                    st.error(f"Error: {e}")
+            else:
+                st.warning("⚠️ အရင်ဆုံး 'ပြေစာထုတ်ရန်' ကို နှိပ်ပေးပါ။")
 
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)":
     st.header("💎 စိန်၊ ကျောက်၊ ပုလဲ အထည်ယူ/အပ်")
