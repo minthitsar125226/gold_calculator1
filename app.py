@@ -446,4 +446,11 @@ elif menu == "💎 3D ဖယောင်းတွက်စက်":
         
         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")
 
+elif menu == "📋 ပြေစာမှတ်တမ်း":
+    st.header("📋 သိမ်းဆည်းထားသော ပြေစာများ")
+    conn = sqlite3.connect('jewelry_records.db')
+    df_records = pd.read_sql_query("SELECT * FROM receipts", conn)
+    conn.close()
+    st.table(df_records)
+
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
