@@ -80,6 +80,7 @@ with st.sidebar:
         "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)",
         "📋 ပြေစာမှတ်တမ်း"
     ])
+    
     with st.sidebar:
     st.write("---")
     # Visitor အရေအတွက်ကို Database ကနေ ပြန်ဖတ်ခြင်း
