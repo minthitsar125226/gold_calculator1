@@ -4,6 +4,14 @@ from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 
+def format_weight(k, p, y, pt):
+    parts = []
+    if k > 0: parts.append(f"{k} ကျပ်")
+    if p > 0: parts.append(f"{p} ပဲ")
+    if y > 0: parts.append(f"{y} ရွေး")
+    if pt > 0: parts.append(f"{pt} Pt")
+    return " ".join(parts) if parts else "0"
+
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
 # app.py အတွက် CSS
