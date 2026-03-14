@@ -5,6 +5,19 @@ from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 
+# Google Analytics အလုပ်လုပ်စေမည့် ကုဒ်
+ga_code = """
+<script async src="https://wwwwgoogletagmanager.com/gtag/js?id=G-HQ8THB6NQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HQ8THB6NQ4');
+</script>
+"""
+# အပေါ်က G-XXXXXXXXXX နှစ်နေရာလုံးကို အစ်ကို့ ID နဲ့ အစားထိုးပါ
+st.components.v1.html(ga_code, height=0)
+
 def format_weight(k, p, y, pt):
     parts = []
     if k > 0: parts.append(f"{k} ကျပ်")
@@ -22,22 +35,10 @@ def init_db():
                   customer_name TEXT, 
                   details TEXT, 
                   total_weight TEXT)''')
-    # လူဝင်ကြည့်မှု မှတ်တမ်းဇယား
-    c.execute('''CREATE TABLE IF NOT EXISTS visitor_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, access_time TEXT)''')
     conn.commit()
     conn.close()
 
 init_db() # App စတက်တာနဲ့ Database အသင့်ဖြစ်အောင် လုပ်ထားပါ
-
-def log_visitor():
-    conn = sqlite3.connect('jewelry_records.db')
-    c = conn.cursor()
-    c.execute("INSERT INTO visitor_logs (access_time) VALUES (?)", (datetime.now().strftime("%Y-%m-%d %H:%M:%S"),))
-    conn.commit()
-    conn.close()
-
-# App စဖွင့်တာနဲ့ ဒီ function ကို ခေါ်ထားပါ
-log_visitor()
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
@@ -80,18 +81,7 @@ with st.sidebar:
         "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)",
         "📋 ပြေစာမှတ်တမ်း"
     ])
-
-with st.sidebar:
-    st.write("---")
-    # Visitor အရေအတွက်ကို Database ကနေ ပြန်ဖတ်ခြင်း
-    conn = sqlite3.connect('jewelry_records.db')
-    c = conn.cursor()
-    c.execute("SELECT COUNT(*) FROM visitor_logs")
-    visitor_count = c.fetchone()[0]
-    conn.close()
-    
-    st.metric(label="👥 စုစုပေါင်း အသုံးပြုသူ အကြိမ်ရေ", value=f"{visitor_count} ကြိမ်")
-    
+  
     st.markdown("---") # နောက်ထပ် မျဉ်းကြောင်း
 
     # ၃။ လိပ်စာနှင့် ဖုန်းနံပါတ်ကို Icon လေးများနှင့် ထည့်ခြင်း
