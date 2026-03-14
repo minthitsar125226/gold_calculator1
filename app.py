@@ -447,11 +447,24 @@ elif menu == "💎 3D ဖယောင်းတွက်စက်":
         
         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")
 
+# အပေါ်ဆုံး Sidebar Menu မှာ နာမည် အရင်တိုးပေးပါ
+# menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", [..., "📋 ပြေစာမှတ်တမ်း"])
+
 elif menu == "📋 ပြေစာမှတ်တမ်း":
     st.header("📋 သိမ်းဆည်းထားသော ပြေစာများ")
-    conn = sqlite3.connect('jewelry_records.db')
-    df_records = pd.read_sql_query("SELECT * FROM receipts", conn)
-    conn.close()
-    st.table(df_records)
+    
+    try:
+        conn = sqlite3.connect('jewelry_records.db')
+        # Database ထဲက Data အကုန်လုံးကို ဆွဲထုတ်လိုက်ပါမယ်
+        df_records = pd.read_sql_query("SELECT id, date as 'ရက်စွဲ', total_weight as 'စုစုပေါင်းအလေးချိန်', details as 'အသေးစိတ်' FROM receipts ORDER BY id DESC", conn)
+        conn.close()
+
+        if not df_records.empty:
+            st.dataframe(df_records, use_container_width=True) # ဇယားနဲ့ ပြပေးမှာပါ
+        else:
+            st.info("သိမ်းဆည်းထားသော ပြေစာ မှတ်တမ်း မရှိသေးပါ။")
+            
+    except Exception as e:
+        st.error(f"Error: Database ကို ရှာမတွေ့ပါ သို့မဟုတ် သိမ်းထားတာ မရှိသေးပါ။ ({e})")
 
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
