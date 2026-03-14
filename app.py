@@ -21,8 +21,37 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# ,
-menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", ["🏠 ပင်မ စာမျက်နှာ", "💰 ရွှေ နှင့် ငွေ", "📐 အချိုးအစားတွက်စက်", "💍 လက်စွပ်/လက်ကောက်", "📋 အထည်ယူ/အထည်အပ်", "💎 စိန်/ကျောက်/ပုလဲ", "💎 3D ဖယောင်းတွက်စက်"])
+# Sidebar စတင်သည့်နေရာ
+with st.sidebar:
+    # ၁။ App နာမည်ကို ရွှေရောင်ဖြင့် ထည့်ခြင်း
+    st.markdown("""
+        <h2 style='text-align: center; color: #D4AF37; font-family: sans-serif;'>
+        ✨ မြန်မာ့ရွှေပန်းတိမ်သုံး ✨
+        </h2>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---") # မျဉ်းကြောင်းလေး ခံပေးပါ
+
+    # ၂။ Menu များ (အစ်ကို့ ရှိပြီးသား code အတိုင်း)
+    menu = st.radio("လုပ်ဆောင်ချက်:", [
+        "🏠 ပင်မ စာမျက်နှာ", 
+        "💰 ရွှေနှင့် ငွေ", 
+        "📐 အချိုးအစားတွက်စက်", 
+        "💍 လက်စွပ်/လက်ကောက်", 
+        "📋 အထည်ယူ/အထည်အပ်", 
+        "💎 စိန်/ကျောက်/ပုလဲ", 
+        "💎 3D ဖယောင်းတွက်စက်"
+    ])
+    
+    st.markdown("---") # နောက်ထပ် မျဉ်းကြောင်း
+
+    # ၃။ လိပ်စာနှင့် ဖုန်းနံပါတ်ကို Icon လေးများနှင့် ထည့်ခြင်း
+    st.markdown("""
+        <div style='text-align: center; color: #aaa; font-size: 14px;'>
+        <b>App by MinThitsarAung</b><br>
+        📞 09777429848
+        </div>
+    """, unsafe_allow_html=True)
 
 if menu == "🏠 ပင်မ စာမျက်နှာ":
     st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
