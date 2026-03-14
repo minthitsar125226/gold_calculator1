@@ -49,8 +49,20 @@ elif menu == "💰 ရွှေ နှင့် ငွေ":
         ank, anp, any, anpt = nk.number_input("ကျပ်",0,key="ank"), np.number_input("ပဲ",0,key="anp"), ny.number_input("ရွေး",0,key="any"), npt.number_input("Pt",0,key="anpt")
         pur2 = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13], key="p2")
         if st.button("ငွေမှရွှေ တွက်ရန်"):
+            # ဂရမ်ရလဒ်ကို အရင်ရယူပါ
             res_g = logic.money_to_gold(budget, gold_price, pur2, ank, anp, any, anpt)
-            st.write(f"ရလဒ်: {res_g}")
+            
+            # ဂရမ်ရလဒ်ကို ကျပ်/ပဲ/ရွေး/Point ပြောင်းပါ
+            k, p, y, pt = logic.gram_to_kyat_pae_yway(res_g)
+            
+            # ရလဒ်ကို လှပစွာ ပြသပါ
+            st.markdown(f"""
+            <div style="background-color: #0E1117; padding: 15px; border-radius: 10px; border: 1px solid #D4AF37;">
+                <h4 style="color: #D4AF37;">💰 ရလဒ် (ရွှေချိန်):</h4>
+                <p style="font-size: 22px;"><b>{k} ကျပ် {p} ပဲ {y} ရွေး {pt} Point</b></p>
+                <p style="font-size: 14px; color: #888;">(စုစုပေါင်း: {res_g:.2f} ဂရမ်)</p>
+            </div>
+            """, unsafe_allow_html=True)
 
 elif menu == "📐 အချိုးအစားတွက်စက်":
     st.subheader("📐 အချိုးအစားနှင့် ရွှေချိန်တွက်ချက်မှုများ")
