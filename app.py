@@ -481,22 +481,42 @@ elif menu == "💎 3D ဖယောင်းတွက်စက်":
 
 # အပေါ်ဆုံး Sidebar Menu မှာ နာမည် အရင်တိုးပေးပါ
 # menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", [..., "📋 ပြေစာမှတ်တမ်း"])
-
 elif menu == "📋 ပြေစာမှတ်တမ်း":
-    st.header("📋 သိမ်းဆည်းထားသော ပြေစာများ")
-    
-    try:
-        conn = sqlite3.connect('jewelry_records.db')
-        # Database ထဲက Data အကုန်လုံးကို ဆွဲထုတ်လိုက်ပါမယ်
-        df_records = pd.read_sql_query("SELECT id, date as 'ရက်စွဲ', total_weight as 'စုစုပေါင်းအလေးချိန်', details as 'အသေးစိတ်' FROM receipts ORDER BY id DESC", conn)
-        conn.close()
+    st.header("📋 ပြေစာမှတ်တမ်းများ")
 
-        if not df_records.empty:
-            st.dataframe(df_records, use_container_width=True) # ဇယားနဲ့ ပြပေးမှာပါ
-        else:
-            st.info("သိမ်းဆည်းထားသော ပြေစာ မှတ်တမ်း မရှိသေးပါ။")
-            
-    except Exception as e:
-        st.error(f"Error: Database ကို ရှာမတွေ့ပါ သို့မဟုတ် သိမ်းထားတာ မရှိသေးပါ။ ({e})")
+    # ၁။ ရှာဖွေလိုသည့်ရက်စွဲကို ရွေးခိုင်းခြင်း
+    search_date = st.date_input("ရှာဖွေလိုသည့် ရက်စွဲကို ရွေးပါ (ပုံစံ - 15/03/2026):")
+    formatted_search_date = search_date.strftime("%d/%m/%Y") # သိမ်းထားတဲ့ format အတိုင်းပြောင်းခြင်း
+
+    # ၂။ Database မှ Data ဆွဲထုတ်ခြင်း
+    conn = sqlite3.connect('jewelry_records.db')
+    # LIKE သုံးပြီး ရွေးထားတဲ့ရက်နဲ့ တူတာကိုပဲ ဆွဲထုတ်ပါမယ်
+    query = f"SELECT id as 'ID', date as 'ရက်စွဲ', details as 'အသေးစိတ်', total_weight as 'အလေးချိန်' FROM receipts WHERE date LIKE '{formatted_search_date}%' ORDER BY id DESC"
+    df_records = pd.read_sql_query(query, conn)
+    conn.close()
+
+    if not df_records.empty:
+        st.write(f"📅 {formatted_search_date} ရက်စွဲအတွက် မှတ်တမ်းပေါင်း ({len(df_records)}) ခုတွေ့ရှိပါတယ်။")
+        st.dataframe(df_records, use_container_width=True, hide_index=True)
+        
+        st.divider()
+        
+        # ၃။ ဖျက်ရန်အပိုင်း
+        st.subheader("🗑️ ပြေစာဖျက်ရန်")
+        delete_id = st.number_input("ဖျက်လိုသော ပြေစာ ID ကို ရိုက်ထည့်ပါ:", min_value=1, step=1)
+        
+        if st.button("❌ ရွေးချယ်ထားသောပြေစာကို ဖျက်မည်"):
+            try:
+                conn = sqlite3.connect('jewelry_records.db')
+                c = conn.cursor()
+                c.execute("DELETE FROM receipts WHERE id = ?", (delete_id,))
+                conn.commit()
+                conn.close()
+                st.success(f"✅ ပြေစာ ID ({delete_id}) ကို ဖျက်ပြီးပါပြီ။")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error: {e}")
+    else:
+        st.info(f"📅 {formatted_search_date} ရက်စွဲအတွက် မှတ်တမ်း မရှိသေးပါ။")
 
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
