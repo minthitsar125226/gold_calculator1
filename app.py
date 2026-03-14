@@ -301,44 +301,63 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
         st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")  
 
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)":
-    st.header("💎 စိန်/ကျောက်/ပုလဲ စီမံခန့်ခွဲမှု")
+    st.header("💎 စိန်၊ ကျောက်၊ ပုလဲ အထည်ယူ/အပ်")
     
-    # ၁။ အမျိုးအစားနှင့် အချက်အလက်များ
-    item_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက် (Gemstone)", "ပုလဲ (Pearl)"])
-    quality = st.text_input("အရည်အသွေး (ဥပမာ- VVS, AAA):")
-    qty = st.number_input("အရေအတွက်:", min_value=1, step=1)
+    # ၁။ အမျိုးအစား ရွေးချယ်ခြင်း
+    selected_types = st.multiselect("အသုံးပြုမည့် အမျိုးအစားများ:", ["စိန်", "ကျောက်", "ပုလဲ"])
     
-    # ၂။ အလေးချိန်ယူနစ်များ (လိုအပ်သလို ရွေးချယ်နိုင်ရန်)
-    col1, col2 = st.columns(2)
-    with col1:
-        st.write("ကျောက်ချိန် (မြန်မာ့ရွှေချိန်):")
-        jk, jp, jy, jpt = st.number_input("ကျပ်"), st.number_input("ပဲ"), st.number_input("ရွေး"), st.number_input("Pt")
-    with col2:
-        gram_w = st.number_input("ဂရမ်ချိန် (g):", format="%.2f")
-        carat_w = st.number_input("ကာရက်ချိန် (ct):", format="%.2f")
-        rati_w = st.number_input("ရတီချိန် (r):", format="%.2f")
-        
-    st.divider()
-    st.subheader("ပေးရွှေ")
-    rk, rp, ry, rpt = st.columns(4)
-    pk, pp, py, ppt = rk.number_input("ကျပ် "), rp.number_input("ပဲ "), ry.number_input("ရွေး "), rpt.number_input("Pt ")
+    jewel_data = []
+    
+    # အမျိုးအစားအလိုက် အချက်အလက်များ ဖြည့်စွက်ခြင်း
+    for item in selected_types:
+        with st.expander(f"📍 {item} အချက်အလက်များ"):
+            col_a, col_b = st.columns(2)
+            qty = col_a.number_input(f"{item} အရေအတွက်:", min_value=0, key=f"qty_{item}")
+            qual = col_b.text_input(f"{item} အရည်အသွေး (ဥပမာ- VVS, AAA):", key=f"qual_{item}")
+            
+            st.write(f"--- {item} အလေးချိန် ---")
+            jk, jp, jy, jpt = st.columns(4)
+            k = jk.number_input(f"{item} ကျပ်", key=f"k_{item}")
+            p = jp.number_input(f"{item} ပဲ", key=f"p_{item}")
+            y = jy.number_input(f"{item} ရွေး", key=f"y_{item}")
+            pt = jpt.number_input(f"{item} Pt", key=f"pt_{item}")
+            
+            col_g, col_c, col_r = st.columns(3)
+            gram = col_g.number_input(f"{item} ဂရမ်", format="%.2f", key=f"gram_{item}")
+            carat = col_c.number_input(f"{item} ကာရက်", format="%.2f", key=f"ct_{item}")
+            rati = col_r.number_input(f"{item} ရတီ", format="%.2f", key=f"r_{item}")
+            
+            jewel_data.append({"type": item, "qty": qty, "qual": qual, "k": k, "p": p, "y": y, "pt": pt, "gram": gram, "carat": carat, "rati": rati})
 
-    if st.button("ရလဒ်ဖော်ပြရန်"):
-        # ရလဒ်ပြသခြင်း
-        st.markdown(f"""
-        <div style="border: 2px solid #D4AF37; padding: 15px; border-radius: 10px;">
-            <h4>📊 စုစုပေါင်း ရလဒ်</h4>
-            <p><b>{item_type}ချိန်:</b> {jk} ကျပ် {jp} ပဲ {jy} ရွေး {jpt} Pt<br>
-            (ဂရမ်: {gram_w}g | ကာရက်: {carat_w}ct | ရတီ: {rati_w}r)<br>
-            အရေအတွက်: {qty} ခု | အရည်အသွေး: {quality}</p>
-            
-            <p><b>ပေးရွှေချိန်:</b> {pk} ကျပ် {pp} ပဲ {py} ရွေး {ppt} Pt</p>
-            
-            <hr>
-            <h4 style="color: #D4AF37;">အားလုံးပေါင်း ({item_type} + ရွှေ):</h4>
-            <p><b>စုစုပေါင်း: {jk+pk} ကျပ် {jp+pp} ပဲ {jy+py} ရွေး {jpt+ppt} Pt</b></p>
-        </div>
-        """, unsafe_allow_html=True)
+    st.divider()
+    st.subheader("💰 ပေးရွှေချိန် (ရွှေအသားတင်)")
+    rk, rp, ry, rpt = st.columns(4)
+    pk = rk.number_input("ရွှေကျပ်")
+    pp = rp.number_input("ရွှေပဲ")
+    py = ry.number_input("ရွှေရွေး")
+    ppt = rpt.number_input("ရွှေPt")
+
+    if st.button("ရလဒ်အားလုံး ဖော်ပြရန်"):
+        st.markdown("<div style='border: 2px solid #D4AF37; padding: 15px; border-radius: 10px;'>", unsafe_allow_html=True)
+        st.subheader("📊 အထည်အနှစ်ချုပ် စာရင်း")
+        
+        # ကျောက်အလေးချိန်များ စုပေါင်းခြင်း (ရိုးရှင်းအောင် ကျပ်ကို အခြေခံပြီးပြသည်)
+        for d in jewel_data:
+            st.write(f"🔹 **{d['type']}** ({d['qty']} ခု) | အရည်အသွေး: **{d['qual']}**")
+            st.write(f"   အလေးချိန်: {d['k']} ကျပ် {d['p']} ပဲ {d['y']} ရွေး {d['pt']} Pt")
+            st.write(f"   (အပိုယူနစ်: {d['gram']}g | {d['carat']}ct | {d['rati']}r)")
+            st.write("---")
+        
+        st.write(f"🔹 **ပေးရွှေချိန်:** {pk} ကျပ် {pp} ပဲ {py} ရွေး {ppt} Pt")
+        
+        # အကြမ်းဖျင်း ပေါင်းလဒ် (ရွှေ + ကျောက်ချိန်)
+        total_k = pk + sum(d['k'] for d in jewel_data)
+        total_p = pp + sum(d['p'] for d in jewel_data)
+        total_y = py + sum(d['y'] for d in jewel_data)
+        total_pt = ppt + sum(d['pt'] for d in jewel_data)
+        
+        st.markdown(f"<h3 style='color: #D4AF37;'>စုစုပေါင်း: {total_k} ကျပ် {total_p} ပဲ {total_y} ရွေး {total_pt} Pt</h3>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
 elif menu == "💎 3D ဖယောင်းတွက်စက်":
     st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
