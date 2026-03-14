@@ -299,6 +299,46 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
         st.success("📊 တွက်ချက်မှုရလဒ်")
         st.markdown(f"ကျောက်ဖိုး: **{gem_cost:,.0f} ကျပ်** | ရွှေဖိုး: **{gold_cost:,.0f} ကျပ်**")  
 
+elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)":
+    st.header("💎 စိန်/ကျောက်/ပုလဲ စီမံခန့်ခွဲမှု")
+    
+    # ၁။ အမျိုးအစားနှင့် အချက်အလက်များ
+    item_type = st.selectbox("အမျိုးအစား:", ["စိန် (Diamond)", "ကျောက် (Gemstone)", "ပုလဲ (Pearl)"])
+    quality = st.text_input("အရည်အသွေး (ဥပမာ- VVS, AAA):")
+    qty = st.number_input("အရေအတွက်:", min_value=1, step=1)
+    
+    # ၂။ အလေးချိန်ယူနစ်များ (လိုအပ်သလို ရွေးချယ်နိုင်ရန်)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.write("ကျောက်ချိန် (မြန်မာ့ရွှေချိန်):")
+        jk, jp, jy, jpt = st.number_input("ကျပ်"), st.number_input("ပဲ"), st.number_input("ရွေး"), st.number_input("Pt")
+    with col2:
+        gram_w = st.number_input("ဂရမ်ချိန် (g):", format="%.2f")
+        carat_w = st.number_input("ကာရက်ချိန် (ct):", format="%.2f")
+        rati_w = st.number_input("ရတီချိန် (r):", format="%.2f")
+        
+    st.divider()
+    st.subheader("ပေးရွှေ")
+    rk, rp, ry, rpt = st.columns(4)
+    pk, pp, py, ppt = rk.number_input("ကျပ် "), rp.number_input("ပဲ "), ry.number_input("ရွေး "), rpt.number_input("Pt ")
+
+    if st.button("ရလဒ်ဖော်ပြရန်"):
+        # ရလဒ်ပြသခြင်း
+        st.markdown(f"""
+        <div style="border: 2px solid #D4AF37; padding: 15px; border-radius: 10px;">
+            <h4>📊 စုစုပေါင်း ရလဒ်</h4>
+            <p><b>{item_type}ချိန်:</b> {jk} ကျပ် {jp} ပဲ {jy} ရွေး {jpt} Pt<br>
+            (ဂရမ်: {gram_w}g | ကာရက်: {carat_w}ct | ရတီ: {rati_w}r)<br>
+            အရေအတွက်: {qty} ခု | အရည်အသွေး: {quality}</p>
+            
+            <p><b>ပေးရွှေချိန်:</b> {pk} ကျပ် {pp} ပဲ {py} ရွေး {ppt} Pt</p>
+            
+            <hr>
+            <h4 style="color: #D4AF37;">အားလုံးပေါင်း ({item_type} + ရွှေ):</h4>
+            <p><b>စုစုပေါင်း: {jk+pk} ကျပ် {jp+pp} ပဲ {jy+py} ရွေး {jpt+ppt} Pt</b></p>
+        </div>
+        """, unsafe_allow_html=True)
+
 elif menu == "💎 3D ဖယောင်းတွက်စက်":
     st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
     
