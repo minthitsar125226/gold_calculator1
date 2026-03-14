@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import sqlite3
 from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
@@ -11,6 +12,20 @@ def format_weight(k, p, y, pt):
     if y > 0: parts.append(f"{y} ရွေး")
     if pt > 0: parts.append(f"{pt} Pt")
     return " ".join(parts) if parts else "0"
+
+def init_db():
+    conn = sqlite3.connect('jewelry_records.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS receipts 
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                  date TEXT, 
+                  customer_name TEXT, 
+                  details TEXT, 
+                  total_weight TEXT)''')
+    conn.commit()
+    conn.close()
+
+init_db() # App စတက်တာနဲ့ Database အသင့်ဖြစ်အောင် လုပ်ထားပါ
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
@@ -290,6 +305,18 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
             </div>
             """
             st.markdown(receipt_html, unsafe_allow_html=True)
+
+       if st.button("ပြေစာသိမ်းဆည်းရန်"):
+        # အချက်အလက်များကို string ပြောင်းပါ
+        details_str = str(receipt_data) 
+        
+        conn = sqlite3.connect('jewelry_records.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO receipts (date, customer_name, details, total_weight) VALUES (?, ?, ?, ?)",
+                  (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "ဖောက်သည်", details_str, final_weight))
+        conn.commit()
+        conn.close()
+        st.success("ပြေစာကို Database ထဲသို့ သိမ်းဆည်းပြီးပါပြီ။")
     
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ":
     st.subheader("💎 စိန်၊ ကျောက်မျက် နှင့် ရွှေထည် တွက်ချက်မှု")
@@ -376,6 +403,17 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယ
         final_weight = format_weight(total_k, total_p, total_y, total_pt)
         st.success(f"စုစုပေါင်းအလေးချိန်: {final_weight}")
 
+      if st.button("ပြေစာသိမ်းဆည်းရန်"):
+        # အချက်အလက်များကို string ပြောင်းပါ
+        details_str = str(receipt_data) 
+        
+        conn = sqlite3.connect('jewelry_records.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO receipts (date, customer_name, details, total_weight) VALUES (?, ?, ?, ?)",
+                  (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "ဖောက်သည်", details_str, final_weight))
+        conn.commit()
+        conn.close()
+        st.success("ပြေစာကို Database ထဲသို့ သိမ်းဆည်းပြီးပါပြီ။")
 elif menu == "💎 3D ဖယောင်းတွက်စက်":
     st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
     
