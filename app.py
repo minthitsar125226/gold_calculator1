@@ -403,17 +403,17 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယ
         final_weight = format_weight(total_k, total_p, total_y, total_pt)
         st.success(f"စုစုပေါင်းအလေးချိန်: {final_weight}")
 
-      if st.button("ပြေစာသိမ်းဆည်းရန်"):
+        if st.button("ပြေစာသိမ်းဆည်းရန်"):
         # အချက်အလက်များကို string ပြောင်းပါ
-        details_str = str(receipt_data) 
+           details_str = str(receipt_data) 
         
-        conn = sqlite3.connect('jewelry_records.db')
-        c = conn.cursor()
-        c.execute("INSERT INTO receipts (date, customer_name, details, total_weight) VALUES (?, ?, ?, ?)",
+           conn = sqlite3.connect('jewelry_records.db')
+           c = conn.cursor()
+           c.execute("INSERT INTO receipts (date, customer_name, details, total_weight) VALUES (?, ?, ?, ?)",
                   (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "ဖောက်သည်", details_str, final_weight))
-        conn.commit()
-        conn.close()
-        st.success("ပြေစာကို Database ထဲသို့ သိမ်းဆည်းပြီးပါပြီ။")
+           conn.commit()
+           conn.close()
+           st.success("ပြေစာကို Database ထဲသို့ သိမ်းဆည်းပြီးပါပြီ။")
 elif menu == "💎 3D ဖယောင်းတွက်စက်":
     st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
     
