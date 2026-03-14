@@ -80,9 +80,6 @@ with st.sidebar:
         "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)",
         "📋 ပြေစာမှတ်တမ်း"
     ])
-    
-    st.markdown("---") # နောက်ထပ် မျဉ်းကြောင်း
-
     with st.sidebar:
     st.write("---")
     # Visitor အရေအတွက်ကို Database ကနေ ပြန်ဖတ်ခြင်း
@@ -93,6 +90,8 @@ with st.sidebar:
     conn.close()
     
     st.metric(label="👥 စုစုပေါင်း အသုံးပြုသူ အကြိမ်ရေ", value=f"{visitor_count} ကြိမ်")
+    
+    st.markdown("---") # နောက်ထပ် မျဉ်းကြောင်း
 
     # ၃။ လိပ်စာနှင့် ဖုန်းနံပါတ်ကို Icon လေးများနှင့် ထည့်ခြင်း
     st.markdown("""
