@@ -306,7 +306,7 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
             """
             st.markdown(receipt_html, unsafe_allow_html=True)
 
-       if st.button("ပြေစာသိမ်းဆည်းရန်"):
+      if st.button("ပြေစာသိမ်းဆည်းရန်"):
         # အချက်အလက်များကို string ပြောင်းပါ
         details_str = str(receipt_data) 
         
