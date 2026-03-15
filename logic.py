@@ -176,3 +176,19 @@ def gram_to_kyat_pae_yway(grams):
     yway = int((total_pts % 75) // 10)
     point = round(total_pts % 10, 1)
     return kyat, pae, yway, point
+# logic.py ဖိုင်ထဲတွင်
+def convert_old_system(grams):
+    # ၁ ကျပ်သား = ၁၆.၆၀၆ ဂရမ်
+    total_kyat = grams / 16.606
+    kyat = int(total_kyat)
+    pae = int((total_kyat - kyat) * 16)
+    yway = round(((total_kyat - kyat) * 16 - pae) * 8)
+    return f"{kyat} ကျပ်၊ {pae} ပဲ၊ {yway} ရွေး"
+
+def convert_new_system(grams):
+    # ၁ ကျပ်သား = ၁၆.၃၂၉ ဂရမ်
+    total_kyat = grams / 16.329
+    kyat = int(total_kyat)
+    pae = int((total_kyat - kyat) * 16)
+    yway = round(((total_kyat - kyat) * 16 - pae) * 8)
+    return f"{kyat} ကျပ်၊ {pae} ပဲ၊ {yway} ရွေး"
