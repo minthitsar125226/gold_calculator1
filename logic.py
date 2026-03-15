@@ -230,7 +230,7 @@ def get_amara_response(prompt, history, api_key):
     """
     
     # Model နာမည်ကို အစ်ကိုလိုချင်တဲ့အတိုင်း ပြင်ထားပါတယ်
-    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=amara_persona)
+    model = genai.GenerativeModel('gemini-3-flash-preview', system_instruction=amara_persona)
     
     chat = model.start_chat(history=history)
     response = chat.send_message(prompt)
