@@ -244,3 +244,29 @@ def calculate_rati_price(carat, price_per_rati):
     # စုစုပေါင်းဈေးတွက်ခြင်း
     total_price = rati_total * price_per_rati
     return rati_total, total_price
+
+# logic.py
+
+def cash_to_gold_mixed_paeyay(cash_amount, gold_price_16pae, wastage_yway, labor_fee, paeyay_type):
+    # ၁၆ ပဲရည်ဈေးကို အခြေခံပြီး ရွေးချယ်လိုက်တဲ့ ပဲရည်ရဲ့ ဈေးနှုန်းကို အရင်ရှာပါ
+    # ဥပမာ - ၁၅ ပဲရည်ဆိုရင် (၁၆ ပဲရည်ဈေး / ၁၆) * ၁၅
+    current_gold_price = (gold_price_16pae / 16) * paeyay_type
+    
+    # ရွေးဈေးရှာခြင်း
+    price_per_yway = current_gold_price / 128
+    
+    # အလျော့တွက်ဖိုးနှင့် လက်ခနှုတ်ခြင်း
+    remaining_cash = cash_amount - (wastage_yway * price_per_yway + labor_fee)
+    
+    if remaining_cash < 0:
+        return 0, 0, 0, 0, 0, 0
+    
+    # ရွှေအလေးချိန်တွက်ခြင်း
+    total_yway = remaining_cash / price_per_yway
+    
+    k = int(total_yway // 128)
+    remaining = total_yway % 128
+    p = int(remaining // 8)
+    y = round(remaining % 8, 2)
+    
+    return k, p, y, current_gold_price, (wastage_yway * price_per_yway), labor_fee
