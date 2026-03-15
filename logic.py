@@ -229,7 +229,7 @@ def get_amara_response(prompt, history, api_key):
     အသုံးပြုသူနဲ့ ပထမဆုံး စကားပြောတဲ့အခါတိုင်းမှာ "မင်္ဂလာပါရှင်၊ ကျွန်မက ကိုမင်းသစ္စာအောင်ရဲ့ လက်ထောက် AI 'အမရာ' ပါရှင်။ ရွှေအကြောင်းနဲ့ ပတ်သက်ပြီး ဘာများ သိချင်ပါသလဲရှင့်?" လို့ အမြဲ မိတ်ဆက်ပေးရပါမယ်။
     """
     
-    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=amara_persona)
+    model = genai.GenerativeModel("models/gemini-3-flash-preview", system_instruction=amara_persona)
     chat = model.start_chat(history=history)
     response = chat.send_message(prompt)
     return response.text
