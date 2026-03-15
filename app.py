@@ -148,6 +148,12 @@ elif menu == "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်း
             result = logic.convert_new_system(grams)
         
         st.success(f"ရလဒ်မှာ - {result} ဖြစ်ပါသည်။")
+      # app.py တွင်
+    if st.button("တွက်ချက်ရန်"):  # ခလုတ်ထည့်ခြင်း
+    if grams > 0:
+        divisor = 16.606 if system_type == "စနစ်ဟောင်း (16.606g)" else 16.329
+        result = logic.convert_gold(grams, divisor)
+        st.success(f"ရလဒ်မှာ - {result} ဖြစ်ပါသည်။")
 
 elif menu == "📐 အချိုးအစားတွက်စက်":
     st.subheader("📐 အချိုးအစားနှင့် ရွှေချိန်တွက်ချက်မှုများ")
