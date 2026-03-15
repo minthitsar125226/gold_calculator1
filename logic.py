@@ -235,3 +235,12 @@ def get_amara_response(prompt, history, api_key):
     chat = model.start_chat(history=history)
     response = chat.send_message(prompt)
     return response.text
+
+# logic.py
+
+def calculate_rati_price(carat, price_per_rati):
+    # ကာရက်ကို ရတီပြောင်းခြင်း (၁ ကာရက် = ၁.၁ ရတီ)
+    rati_total = carat * 1.1
+    # စုစုပေါင်းဈေးတွက်ခြင်း
+    total_price = rati_total * price_per_rati
+    return rati_total, total_price
