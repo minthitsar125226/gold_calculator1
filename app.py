@@ -123,17 +123,15 @@ elif menu == "အမရာ - AI လက်ထောက်":
             response_text = logic.get_amara_response(prompt, history, api_key)
             st.write(response_text)
             st.session_state.messages.append({"role": "assistant", "content": response_text})
-
+          
 elif menu == "💰 ရွှေ မှ ငွေ":
     st.header("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
-    
-    # ရွှေဈေးကို အပေါ်ဆုံးမှာ ထားပါမယ်
     gold_price = st.number_input("ယနေ့ အခေါက်ရွှေဈေး (၁ ကျပ်သား):", value=10900000)
     
     st.markdown("---")
     st.subheader("⚖️ ရွှေမှ ငွေသို့ တွက်ချက်ရန်")
 
-    # ရွှေအလေးချိန် ထည့်ရန် (တစ်တန်းတည်းပြရန် col 4 ခု သုံးပါတယ်)
+    # ၁။ ရွှေအလေးချိန် ထည့်ရန်
     st.write("**၁။ ရွှေအလေးချိန် ထည့်ပါ**")
     k, p, y, pt = st.columns(4)
     gk = k.number_input("ကျပ်", min_value=0, key="gk")
@@ -141,7 +139,7 @@ elif menu == "💰 ရွှေ မှ ငွေ":
     gy = y.number_input("ရွေး", min_value=0, max_value=7, key="gy")
     gpt = pt.number_input("Pt", min_value=0, max_value=9, key="gpt")
     
-    # အလျော့တွက် ထည့်ရန်
+    # ၂။ အလျော့တွက် ထည့်ရန်
     st.write("**၂။ နှုတ်မည့် အလျော့တွက် ထည့်ပါ**")
     wk, wp, wy, wpt = st.columns(4)
     awk = wk.number_input("ကျပ်", min_value=0, key="awk")
@@ -149,25 +147,24 @@ elif menu == "💰 ရွှေ မှ ငွေ":
     awy = wy.number_input("ရွေး", min_value=0, max_value=7, key="awy")
     awpt = wpt.number_input("Pt", min_value=0, max_value=9, key="awpt")
     
-    # ပဲရည်နှင့် တွက်ချက်ရန်ခလုတ်
+    # ၃။ ပဲရည်နှင့် တွက်ချက်ရန် (ပဲရည် ၁၂ ထည့်ထားပါတယ်)
     st.write("**၃။ ပဲရည်ရွေးချယ်ပြီး တွက်ချက်ပါ**")
     c1, c2 = st.columns([2, 1])
     with c1:
-        pur = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13], key="p1", label_visibility="collapsed")
+        # ဒီနေရာမှာ ၁၂ ကို ထပ်တိုးထားပါတယ်
+        pur = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13, 12], key="p1", label_visibility="collapsed")
     with c2:
         calc_btn = st.button("တွက်ချက်မည်", use_container_width=True)
 
-    # ခလုတ်နှိပ်မှ ရလဒ်ပြရန်
     if calc_btn:
         cost = logic.gold_to_money(gk, gp, gy, gpt, awk, awp, awy, awpt, gold_price, pur)
         
         st.markdown(f"""
             <div style='border: 2px solid #D4AF37; padding: 20px; border-radius: 15px; text-align: center; background-color: #FFF9E3; margin-top: 20px;'>
-                <p style='color: #5D4037; font-size: 18px; margin-bottom: 5px;'>စုစုပေါင်း ကျသင့်ငွေ</p>
+                <p style='color: #5D4037; font-size: 18px; margin-bottom: 5px;'>စုစုပေါင်း ကျသင့်ငွေ ({pur} ပဲရည်)</p>
                 <h2 style='color: #B22222; margin: 0;'>{int(cost):,} ကျပ်</h2>
             </div>
         """, unsafe_allow_html=True)
-        st.balloons()
       
 elif menu == "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်":
     st.title("Gram မှ ကျပ်/ပဲ/ရွေးသို့ ပြောင်းရန်")
