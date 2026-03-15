@@ -609,53 +609,41 @@ elif menu == "ကာရက်မှ ရတီဈေးနှုန်းတွ�
         st.metric(label="ကျသင့်ငွေ (ကျပ်)", value=f"{total_price:,.0f} ကျပ်")
 
 elif menu == "ငွေမှ ရွှေတွက်ရန်":
-    col1, col2 = st.columns(2)
-
-    with col2:
-        st.subheader("💵 ငွေမှ ရွှေ")
-        # တွက်ချက်မှုရလဒ်များကို ဤနေရာတွင် ပြသမည်
+    col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown("### 🛠️ အချက်အလက်များ")
-        cash_input = st.number_input("လက်ရှိငွေသားပမာဏ (ကျပ်)", min_value=0, value=1000000)
-        gold_price_16pae = st.number_input("၁၆ ပဲရည် (အခေါက်) ဈေးနှုန်း", min_value=0, value=10900000)
+        st.subheader("🛠️ အချက်အလက်များ")
+        cash_input = st.number_input("လက်ရှိငွေသား (ကျပ်)", min_value=0, value=1000000)
+        gold_price = st.number_input("၁၆ ပဲရည်ဈေး", min_value=0, value=10900000)
+        paeyay = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13, 12])
         
-        # ပဲရည်စာရင်းကို ၁၂ အထိ တိုးမြှင့်ထားပါတယ်
-        paeyay_options = {
-            "၁၆ ပဲရည် (အခေါက်)": 16.0,
-            "၁၅ ပဲရည်": 15.0,
-            "၁၄.၂ ပဲရည် (၉၀ အောင်)": 14.2,
-            "၁၄ ပဲရည် (၈၅ အောင်)": 14.0,
-            "၁၃ ပဲရည်": 13.0,
-            "၁၂ ပဲရည်": 12.0
-        }
-        paeyay_label = st.selectbox("ပဲရည်ရွေးချယ်ပါ", list(paeyay_options.keys()))
-        paeyay_value = paeyay_options[paeyay_label]
+        # Checkbox များဖြင့် ထည့်ချင်မှ ထည့်နိုင်အောင် စီစဉ်ခြင်း
+        use_waste = st.checkbox("အလျော့တွက် ထည့်မည်", value=True)
+        wastage_val = st.number_input("အလျော့တွက် (ရွေး)", min_value=0.0, value=1.0) if use_waste else 0
         
-        wastage_input = st.number_input("အလျော့တွက် (ရွေး)", min_value=0.0, value=1.0)
-        labor_input = st.number_input("လက်ခ / ဈေး (ကျပ်)", min_value=0, value=30000)
+        use_labor = st.checkbox("လက်ခ ထည့်မည်", value=True)
+        labor_val = st.number_input("လက်ခ (ကျပ်)", min_value=0, value=30000) if use_labor else 0
         
         calc_btn = st.button("တွက်ချက်မည်", use_container_width=True)
 
-    if calc_btn:
-        with col2:
-            k, p, y, pt, cur_price, w_cost, l_fee = logic.cash_to_gold_final(
-                cash_input, gold_price_16pae, wastage_input, labor_input, paeyay_value
-            )
+    with col2:
+        st.subheader("💵 ငွေမှ ရွှေ ရလဒ်")
+        if calc_btn:
+            k, p, y, pt = logic.cash_to_gold_flexible(cash_input, gold_price, wastage_val, labor_val, paeyay, use_waste, use_labor)
             
-            if k == 0 and p == 0 and y == 0 and pt == 0:
-                st.error("❌ ငွေသား မလုံလောက်ပါ")
-            else:
-                st.markdown(f"**{paeyay_label} ရရှိမည့် အလေးချိန်**")
-                
-                # ရလဒ်ပြသမှု UI
-                r_col1, r_col2 = st.columns(2)
-                with r_col1:
-                    st.metric("ကျပ်", f"{k}")
-                    st.metric("ရွေး", f"{y}")
-                with r_col2:
-                    st.metric("ပဲ", f"{p}")
-                    st.metric("ပွိုင့်", f"{pt}")
-                
-                st.divider()
-                st.info(f"ယနေ့ {paeyay_label} ဈေး - {cur_price:,.0f} ကျပ်ဖြင့် တွက်ချက်ထားပါသည်။")
+            # ရလဒ်ကို ကျပ်-ပဲ-ရွေး-ပွိုင့် အစဉ်အတိုင်း စနစ်တကျပြသခြင်း
+            st.markdown("""
+                <style>
+                    .result-box { background-color: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #dee2e6; }
+                </style>
+            """, unsafe_allow_html=True)
+            
+            with st.container():
+                st.write("---")
+                cols = st.columns(4)
+                cols[0].metric("ကျပ်", k)
+                cols[1].metric("ပဲ", p)
+                cols[2].metric("ရွေး", y)
+                cols[3].metric("ပွိုင့်", pt)
+                st.write("---")
+                st.success(f"ရလဒ်: {k} ကျပ် {p} ပဲ {y} ရွေး {pt} ပွိုင့်")
