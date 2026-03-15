@@ -18,18 +18,6 @@ ga_code = """
 # အပေါ်က G-XXXXXXXXXX နှစ်နေရာလုံးကို အစ်ကို့ ID နဲ့ အစားထိုးပါ
 st.components.v1.html(ga_code, height=0)
 
-st.subheader("ရွှေချိန် ပြောင်းလဲပေးသည့်စနစ်")
-grams = st.number_input("ဂရမ် (Gram) ထည့်ပါ", value=0.0)
-system_type = st.radio("စနစ်ရွေးချယ်ပါ", ("စနစ်ဟောင်း (16.606g)", "စနစ်သစ် (16.329g)"))
-
-if grams > 0:
-    if system_type == "စနစ်ဟောင်း (16.606g)":
-        result = convert_old_system(grams)
-    else:
-        result = convert_new_system(grams)
-    
-    st.success(f"ရလဒ်မှာ - {result} ဖြစ်ပါသည်။")
-
 def format_weight(k, p, y, pt):
     parts = []
     if k > 0: parts.append(f"{k} ကျပ်")
