@@ -247,26 +247,28 @@ def calculate_rati_price(carat, price_per_rati):
 
 # logic.py
 
-def cash_to_gold_mixed_paeyay(cash_amount, gold_price_16pae, wastage_yway, labor_fee, paeyay_type):
-    # ၁၆ ပဲရည်ဈေးကို အခြေခံပြီး ရွေးချယ်လိုက်တဲ့ ပဲရည်ရဲ့ ဈေးနှုန်းကို အရင်ရှာပါ
-    # ဥပမာ - ၁၅ ပဲရည်ဆိုရင် (၁၆ ပဲရည်ဈေး / ၁၆) * ၁၅
+def cash_to_gold_advanced(cash_amount, gold_price_16pae, wastage_yway, labor_fee, paeyay_type):
+    # ပဲရည်အလိုက် ဈေးနှုန်းရှာခြင်း
     current_gold_price = (gold_price_16pae / 16) * paeyay_type
+    # ၁ ပွိုင့်ရဲ့ ဈေးနှုန်း (၁ ကျပ်သား = ၁၂၈၀ ပွိုင့်)
+    price_per_point = current_gold_price / 1280
     
-    # ရွေးဈေးရှာခြင်း
-    price_per_yway = current_gold_price / 128
-    
-    # အလျော့တွက်ဖိုးနှင့် လက်ခနှုတ်ခြင်း
-    remaining_cash = cash_amount - (wastage_yway * price_per_yway + labor_fee)
+    # အလျော့တွက်နှင့် လက်ခနှုတ်ခြင်း
+    wastage_cost = wastage_yway * (current_gold_price / 128)
+    remaining_cash = cash_amount - (wastage_cost + labor_fee)
     
     if remaining_cash < 0:
-        return 0, 0, 0, 0, 0, 0
+        return 0, 0, 0, 0, 0, 0, 0
     
-    # ရွှေအလေးချိန်တွက်ခြင်း
-    total_yway = remaining_cash / price_per_yway
+    # စုစုပေါင်းရရှိတဲ့ ပွိုင့်အရေအတွက်
+    total_points = remaining_cash / price_per_point
     
-    k = int(total_yway // 128)
-    remaining = total_yway % 128
-    p = int(remaining // 8)
-    y = round(remaining % 8, 2)
+    # ကျပ်၊ ပဲ၊ ရွေး၊ ပွိုင့် ခွဲထုတ်ခြင်း
+    k = int(total_points // 1280)
+    remaining = total_points % 1280
+    p = int(remaining // 80)
+    remaining %= 80
+    y = int(remaining // 10)
+    point = round(remaining % 10, 1) # ပွိုင့်ကို ဒသမ ၁ နေရာအထိ ယူပါတယ်
     
-    return k, p, y, current_gold_price, (wastage_yway * price_per_yway), labor_fee
+    return k, p, y, point, current_gold_price, wastage_cost, labor_fee
