@@ -192,3 +192,27 @@ def convert_new_system(grams):
     pae = int((total_kyat - kyat) * 16)
     yway = round(((total_kyat - kyat) * 16 - pae) * 8)
     return f"{kyat} ကျပ်၊ {pae} ပဲ၊ {yway} ရွေး"
+
+# logic.py အတွက် အဆင့်မြှင့်ထားသော ကုဒ်
+def convert_gold(grams, divisor):
+    total_kyat_value = grams / divisor
+    
+    # ရွေး (Yway) ကို အရင်တွက်ပြီး round လုပ်ပါ
+    yway = round(((total_kyat_value * 16 * 8) % 8))
+    
+    # ပဲ (Pae) ကို တွက်ပါ
+    pae = int((total_kyat_value * 16) % 16)
+    
+    # ကျပ် (Kyat) ကို တွက်ပါ
+    kyat = int(total_kyat_value)
+    
+    # အကယ်၍ ရွေးက ၈ ဖြစ်နေရင် ပဲကို ၁ တိုး၊ ရွေးကို 0 ထား
+    if yway == 8:
+        pae += 1
+        yway = 0
+    # အကယ်၍ ပဲက ၁၆ ဖြစ်နေရင် ကျပ်ကို ၁ တိုး၊ ပဲကို 0 ထား
+    if pae == 16:
+        kyat += 1
+        pae = 0
+        
+    return f"{kyat} ကျပ်၊ {pae} ပဲ၊ {yway} ရွေး"
