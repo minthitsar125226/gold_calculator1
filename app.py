@@ -4,6 +4,7 @@ import sqlite3
 from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
+import google.generativeai as genai
 
 # Google Analytics အလုပ်လုပ်စေမည့် ကုဒ်
 ga_code = """
