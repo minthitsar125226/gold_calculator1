@@ -580,4 +580,26 @@ elif menu == "📋 ပြေစာမှတ်တမ်း":
     else:
         st.info(f"📅 {formatted_search_date} ရက်စွဲအတွက် မှတ်တမ်း မရှိသေးပါ။")
 
+# app.py
+
+# Sidebar Menu မှာ "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်" ကို ထပ်ထည့်ပေးပါ
+elif menu == "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်":
+    st.title("💎 ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ခြင်း")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        carat = st.number_input("ကာရက် (ct) ထည့်ပါ", min_value=0.0, value=5.0)
+    with col2:
+        price_per_rati = st.number_input("တစ်ရတီဈေးနှုန်း (ကျပ်)", min_value=0, value=15000)
+    
+    if st.button("တွက်ချက်ရန်"):
+        # logic.py ထဲက function ကို ခေါ်သုံးခြင်း
+        rati_total, total_price = logic.calculate_rati_price(carat, price_per_rati)
+        
+        st.markdown("---")
+        st.success("### ရလဒ်")
+        # Metric ကဒ်လေးတွေနဲ့ ပြသခြင်း
+        st.metric(label="စုစုပေါင်း ရတီ (Rati)", value=f"{rati_total:.2f} ရတီ")
+        st.metric(label="ကျသင့်ငွေ (ကျပ်)", value=f"{total_price:,.0f} ကျပ်")
+
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
