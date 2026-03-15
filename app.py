@@ -6,6 +6,42 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
+# API Key ကို Streamlit Secrets မှ ခေါ်ယူခြင်း
+api_key = st.secrets["GOOGLE_API_KEY"]
+
+st.set_page_config(page_title="အမရာ - ပန်းတိမ်လက်ထောက်", layout="wide")
+
+# Sidebar Menu
+menu = st.sidebar.selectbox("Main Menu", ["အမရာ - AI လက်ထောက်"])
+
+# AI လက်ထောက် Menu
+if menu == "အမရာ - AI လက်ထောက်":
+    st.title("🤖 အမရာ - ကိုမင်းသစ္စာအောင်ရဲ့ လက်ထောက် AI")
+    
+    # Chat History သိမ်းဆည်းရန်
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    # Chat history များကို ပြသခြင်း
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
+    # အသုံးပြုသူထံမှ မေးခွန်း လက်ခံခြင်း
+    if prompt := st.chat_input("အမရာကို မေးပါ..."):
+        # အသုံးပြုသူ၏ မေးခွန်းကို ချပြခြင်း
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.write(prompt)
+
+        # အမရာ၏ တုံ့ပြန်မှု
+        with st.chat_message("assistant"):
+            # History ကို format ချခြင်း
+            history = [{"role": m["role"], "parts": [m["content"]]} for m in st.session_state.messages[:-1]]
+            response_text = logic.get_amara_response(prompt, history, api_key)
+            st.write(response_text)
+            st.session_state.messages.append({"role": "assistant", "content": response_text})
+
 # Google Analytics အလုပ်လုပ်စေမည့် ကုဒ်
 ga_code = """
 <script async src="https://wwwwgoogletagmanager.com/gtag/js?id=G-HQ8THB6NQ4"></script>
