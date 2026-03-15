@@ -238,37 +238,30 @@ def get_amara_response(prompt, history, api_key):
 
 # logic.py
 
-def calculate_rati_price(carat, price_per_rati):
-    # ကာရက်ကို ရတီပြောင်းခြင်း (၁ ကာရက် = ၁.၁ ရတီ)
-    rati_total = carat * 1.1
-    # စုစုပေါင်းဈေးတွက်ခြင်း
-    total_price = rati_total * price_per_rati
-    return rati_total, total_price
-
-# logic.py
-
-def cash_to_gold_final(cash_amount, gold_price_16pae, wastage_yway, labor_fee, paeyay_value):
-    # ၁၆ ပဲရည်ဈေးကို အခြေခံပြီး ရွေးချယ်လိုက်တဲ့ ပဲရည်ရဲ့ ဈေးနှုန်းကို အရင်ရှာပါ
+def cash_to_gold_flexible(cash_amount, gold_price_16pae, wastage_yway, labor_fee, paeyay_value, use_waste, use_labor):
+    # ပဲရည်အလိုက် ဈေးနှုန်းတွက်ခြင်း
     current_gold_price = (gold_price_16pae / 16) * paeyay_value
-    
-    # ၁ ပွိုင့်ရဲ့ ဈေးနှုန်း (၁ ကျပ်သား = ၁၂၈၀ ပွိုင့်)
     price_per_point = current_gold_price / 1280
     
-    # အလျော့တွက်ဖိုး (ရွေးဖြင့်) နှင့် လက်ခကို နှုတ်ခြင်း
-    # အလျော့တွက်ဖိုးကို ပဲရည်အလိုက်ဈေးနဲ့ တွက်ပါတယ်
-    wastage_cost = wastage_yway * (current_gold_price / 128)
-    remaining_cash = cash_amount - (wastage_cost + labor_fee)
+    # နှုတ်မည့်ငွေ ပမာဏ (Checkbox ပေါ်မူတည်၍)
+    deduction = 0
+    if use_waste:
+        deduction += wastage_yway * (current_gold_price / 128)
+    if use_labor:
+        deduction += labor_fee
+        
+    remaining_cash = cash_amount - deduction
     
-    if remaining_cash < 0:
-        return 0, 0, 0, 0, 0, 0, 0
+    if remaining_cash <= 0:
+        return 0, 0, 0, 0
     
-    # ရရှိတဲ့ ပွိုင့်အရေအတွက်မှ ကျပ်၊ ပဲ၊ ရွေး၊ ပွိုင့် ပြန်ခွဲခြင်း
+    # ပွိုင့်ဖြင့် တွက်ခြင်း
     total_points = remaining_cash / price_per_point
     k = int(total_points // 1280)
     remaining = total_points % 1280
     p = int(remaining // 80)
     remaining %= 80
     y = int(remaining // 10)
-    point = round(remaining % 10, 1)
+    pt = round(remaining % 10, 1)
     
-    return k, p, y, point, current_gold_price, wastage_cost, labor_fee
+    return k, p, y, pt
