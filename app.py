@@ -132,6 +132,22 @@ elif menu == "💰 ရွှေ နှင့် ငွေ":
             </div>
             """, unsafe_allow_html=True)
 
+elif menu == "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်":
+    st.title("Gram မှ ကျပ်/ပဲ/ရွေးသို့ ပြောင်းရန်")
+    
+    # User ဆီက input တောင်းခြင်း
+    grams = st.number_input("ဂရမ် (Gram) ထည့်ပါ", value=0.0)
+    system_type = st.radio("စနစ်ရွေးချယ်ပါ", ("စနစ်ဟောင်း (16.606g)", "စနစ်သစ် (16.329g)"))
+    
+    # logic.py ထဲက Function ကို ခေါ်သုံးခြင်း
+    if grams > 0:
+        if system_type == "စနစ်ဟောင်း (16.606g)":
+            result = logic.convert_old_system(grams)
+        else:
+            result = logic.convert_new_system(grams)
+        
+        st.success(f"ရလဒ်မှာ - {result} ဖြစ်ပါသည်။")
+
 elif menu == "📐 အချိုးအစားတွက်စက်":
     st.subheader("📐 အချိုးအစားနှင့် ရွှေချိန်တွက်ချက်မှုများ")
     
