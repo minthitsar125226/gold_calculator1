@@ -77,7 +77,8 @@ with st.sidebar:
     menu = st.radio("လုပ်ဆောင်ချက်:", [
         "🏠 ပင်မ စာမျက်နှာ", 
         "အမရာ - AI လက်ထောက်",
-        "💰 ရွှေ နှင့် ငွေ", 
+        "💰 ရွှေ မှ ငွေ", 
+        "ငွေမှ ရွှေတွက်ရန်",
         "📐 အချိုးအစားတွက်စက်", 
         "💍 လက်စွပ်/လက်ကောက်", 
         "📋 အထည်ယူ/အထည်အပ်", 
@@ -123,10 +124,10 @@ elif menu == "အမရာ - AI လက်ထောက်":
             st.write(response_text)
             st.session_state.messages.append({"role": "assistant", "content": response_text})
 
-elif menu == "💰 ရွှေ နှင့် ငွေ":
+elif menu == "💰 ရွှေ မှ ငွေ":
     st.header("💰 ရွှေ နှင့် ငွေ လဲလှယ်ခြင်း")
     gold_price = st.number_input("အခေါက်ရွှေဈေး:", value=10900000)
-    col1, col2 = st.columns(2)
+    col1 =
     with col1:
         st.subheader("⚖️ ရွှေမှ ငွေ")
         k, p, y, pt = st.columns(4)
@@ -137,28 +138,6 @@ elif menu == "💰 ရွှေ နှင့် ငွေ":
         pur = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13], key="p1")
         cost = logic.gold_to_money(gk, gp, gy, gpt, awk, awp, awy, awpt, gold_price, pur)
         st.markdown(f"<div class='kanote-border'><h3>ကျသင့်ငွေ: {int(cost):,} ကျပ်</h3></div>", unsafe_allow_html=True)
-    with col2:
-        st.subheader("💵 ငွေမှ ရွှေ")
-        budget = st.number_input("ရှိသောငွေ:", value=1000000)
-        st.write("နုတ်မည့် အလျော့တွက်")
-        nk, np, ny, npt = st.columns(4)
-        ank, anp, any, anpt = nk.number_input("ကျပ်",0,key="ank"), np.number_input("ပဲ",0,key="anp"), ny.number_input("ရွေး",0,key="any"), npt.number_input("Pt",0,key="anpt")
-        pur2 = st.selectbox("ပဲရည်:", [16, 15, 14.2, 14, 13], key="p2")
-        if st.button("ငွေမှရွှေ တွက်ရန်"):
-            # ဂရမ်ရလဒ်ကို အရင်ရယူပါ
-            res_g = logic.money_to_gold(budget, gold_price, pur2, ank, anp, any, anpt)
-            
-            # ဂရမ်ရလဒ်ကို ကျပ်/ပဲ/ရွေး/Point ပြောင်းပါ
-            k, p, y, pt = logic.gram_to_kyat_pae_yway(res_g)
-            
-            # ရလဒ်ကို လှပစွာ ပြသပါ
-            st.markdown(f"""
-            <div style="background-color: #0E1117; padding: 15px; border-radius: 10px; border: 1px solid #D4AF37;">
-                <h4 style="color: #D4AF37;">💰 ရလဒ် (ရွှေချိန်):</h4>
-                <p style="font-size: 22px;"><b>{k} ကျပ် {p} ပဲ {y} ရွေး {pt} Point</b></p>
-                <p style="font-size: 14px; color: #888;">(စုစုပေါင်း: {res_g:.2f} ဂရမ်)</p>
-            </div>
-            """, unsafe_allow_html=True)
 
 elif menu == "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်":
     st.title("Gram မှ ကျပ်/ပဲ/ရွေးသို့ ပြောင်းရန်")
@@ -601,5 +580,55 @@ elif menu == "ကာရက်မှ ရတီဈေးနှုန်းတွ�
         # Metric ကဒ်လေးတွေနဲ့ ပြသခြင်း
         st.metric(label="စုစုပေါင်း ရတီ (Rati)", value=f"{rati_total:.2f} ရတီ")
         st.metric(label="ကျသင့်ငွေ (ကျပ်)", value=f"{total_price:,.0f} ကျပ်")
+
+# app.py
+
+elif menu == "ငွေမှ ရွှေတွက်ရန်":
+    st.title("💰 ရွှေနှင့် ငွေသား အသေးစိတ်တွက်ချက်မှု")
+    
+    col1, col2 = st.columns([1, 1.2]) # ညာဘက်ခြမ်းကို အနည်းငယ် ပိုကျယ်အောင်ထားပါတယ်
+
+    with col1:
+        st.subheader("📥 အချက်အလက်များ")
+        cash_input = st.number_input("လက်ရှိငွေသားပမာဏ (ကျပ်)", min_value=0, value=1000000)
+        gold_price_16pae = st.number_input("၁၆ ပဲရည် (အခေါက်) ဈေးနှုန်း", min_value=0, value=5000000)
+        
+        paeyay_options = {"၁၆ ပဲရည်": 16.0, "၁၅ ပဲရည် (၉၅)": 15.0, "၁၄ ပဲရည် (၉၀)": 14.2, "၁၄ ပဲရည် (၈၅)": 13.6}
+        paeyay_label = st.selectbox("ပဲရည်ရွေးပါ", list(paeyay_options.keys()))
+        
+        wastage_input = st.number_input("အလျော့တွက် (ရွေး)", min_value=0.0, value=1.0)
+        labor_input = st.number_input("လက်ခ / ဈေး (ကျပ်)", min_value=0, value=30000)
+
+    with col2:
+        st.subheader("💵 ငွေမှ ရွှေ (ရလဒ်)")
+        st.write("") # နေရာလွတ်လေး ခံပေးတာပါ
+        
+        if st.button("တွက်ချက်မည်", use_container_width=True):
+            k, p, y, pt, cur_price, w_cost, l_fee = logic.cash_to_gold_advanced(
+                cash_input, gold_price_16pae, wastage_input, labor_input, paeyay_options[paeyay_label]
+            )
+            
+            if cash_input < (w_cost + l_fee):
+                st.error("ငွေသားမလုံလောက်ပါ")
+            else:
+                # ရလဒ်ပြကွက်ကို လှလှပပ ပြုလုပ်ခြင်း
+                st.markdown(f"#### {paeyay_label} ရရှိမည့်ပမာဏ")
+                
+                # Metric Cards ၄ ခုကို တစ်တန်းတည်းပြခြင်း
+                m1, m2, m3, m4 = st.columns(4)
+                m1.metric("ကျပ်", f"{k}")
+                m2.metric("ပဲ", f"{p}")
+                m3.metric("ရွေး", f"{y}")
+                m4.metric("ပွိုင့်", f"{pt}")
+                
+                st.divider()
+                # အသေးစိတ် တွက်ချက်မှုပြကွက်
+                with st.expander("📝 တွက်ချက်မှု အသေးစိတ်ကို ကြည့်ရန်"):
+                    st.write(f"🔹 ရွေးချယ်ထားသော ပဲရည်ဈေး - **{cur_price:,.0f}** ကျပ်")
+                    st.write(f"🔹 အလျော့တွက်ဖိုး ({wastage_input} ရွေး) - **{w_cost:,.0f}** ကျပ်")
+                    st.write(f"🔹 လက်ခ (ဈေး) - **{l_fee:,.0f}** ကျပ်")
+                    st.write(f"🔸 **စုစုပေါင်းနှုတ်လိုက်သည့်ငွေ - {(w_cost + l_fee):,.0f} ကျပ်**")
+                
+                st.balloons() # အောင်မြင်စွာ တွက်ပြီးကြောင်း အောင်ပွဲခံတဲ့ animation လေးပါ
 
 st.markdown("<hr><p style='text-align: center;'>App by MinThitSarAung</p>", unsafe_allow_html=True)
