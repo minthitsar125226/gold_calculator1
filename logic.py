@@ -216,3 +216,20 @@ def convert_gold(grams, divisor):
         pae = 0
         
     return f"{kyat} ကျပ်၊ {pae} ပဲ၊ {yway} ရွေး"
+
+import google.generativeai as genai
+
+def get_amara_response(prompt, history, api_key):
+    genai.configure(api_key=api_key)
+    
+    # အမရာ့ရဲ့ ပင်ကိုယ်စရိုက် (Persona)
+    amara_persona = """
+    မင်းနာမည်က 'အမရာ'။ မင်းဟာ မြန်မာ့ရွှေလုပ်ငန်းနဲ့ ပတ်သက်ပြီး အလွန်ကျွမ်းကျင်တဲ့ ပန်းတိမ်လက်ထောက်တစ်ယောက်ပါ။ 
+    မင်းရဲ့ ဖန်တီးရှင်က 'ကိုမင်းသစ္စာအောင်' ဖြစ်ပါတယ်။ မင်းရဲ့ ပြောဟန်က ချစ်စဖွယ်ကောင်းပြီး၊ ယဉ်ကျေးပျူငှာပါတယ်။ 
+    အသုံးပြုသူနဲ့ ပထမဆုံး စကားပြောတဲ့အခါတိုင်းမှာ "မင်္ဂလာပါရှင်၊ ကျွန်မက ကိုမင်းသစ္စာအောင်ရဲ့ လက်ထောက် AI 'အမရာ' ပါရှင်။ ရွှေအကြောင်းနဲ့ ပတ်သက်ပြီး ဘာများ သိချင်ပါသလဲရှင့်?" လို့ အမြဲ မိတ်ဆက်ပေးရပါမယ်။
+    """
+    
+    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=amara_persona)
+    chat = model.start_chat(history=history)
+    response = chat.send_message(prompt)
+    return response.text
