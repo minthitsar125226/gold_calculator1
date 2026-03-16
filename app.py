@@ -62,6 +62,10 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+# app.py ၏ အစပိုင်းတွင် ထည့်ရန်
+if 'all_receipts' not in st.session_state:
+    st.session_state['all_receipts'] = []
+
 # Sidebar စတင်သည့်နေရာ
 with st.sidebar:
     # ၁။ App နာမည်ကို ရွှေရောင်ဖြင့် ထည့်ခြင်း
@@ -327,18 +331,22 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
             "details": f"အထည်ယူ: {item_name} | ဖောက်သည်: {target_l} | မှတ်ချက်: {note1}",
             "weight": f"{g_k} ကျပ် {g_p} ပဲ {g_y} ရွေး {g_pt} Pt"
         }
+       
+        # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
+     if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
+       record = {
+         "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
+         "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
+         "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
+         "အလျော့တွက်": wastage_value,
+         "လက်ခ": labor_value,
+         "စုစုပေါင်း": total_value
+         }
+         st.session_state['all_receipts'].append(record)
 
-    if st.button("💾 အထည်ယူစာရင်း သိမ်းဆည်းမည်", key="save_take"):
-        if 'take_data' in st.session_state:
-            data = st.session_state['take_data']
-            conn = sqlite3.connect('jewelry_records.db')
-            c = conn.cursor()
-            c.execute("INSERT INTO receipts (date, details, total_weight) VALUES (?, ?, ?)",
-                      (datetime.now().strftime("%d/%m/%Y %H:%M"), data['details'], data['weight']))
-            conn.commit()
-            conn.close()
-            st.success("✅ အထည်ယူစာရင်းကို သိမ်းဆည်းပြီးပါပြီ။")
-            st.balloons()
+         st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")
+
+
     with tab2:
         st.subheader("📤 အထည်အပ်နှံခြင်း")
         st.write("💍 **ပြန်အပ်သည့် ရွှေအသား**")
@@ -397,26 +405,19 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
                 "details": f"အထည်အပ်: {item_name} | မှတ်ချက်: {note2}",
                 "weight": diff_res['diff_text']
             }
+          # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
+if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
+    record = {
+        "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
+        "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
+        "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
+        "အလျော့တွက်": wastage_value,
+        "လက်ခ": labor_value,
+        "စုစုပေါင်း": total_value
+    }
+    st.session_state['all_receipts'].append(record)
+    st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")
 
-        # --- ၂။ Database ထဲသို့ အပြီးအပိုင် သိမ်းဆည်းသည့် ခလုတ် ---
-        # (ဒီအပိုင်းကို 'if st.button("ပြေစာထုတ်ရန်"): ' ရဲ့ အပြင်ဘက် (with tab2: ရဲ့ အထဲ) မှာ ထားပါ)
-        st.write("") # နေရာလွတ်လေး ခံပေးခြင်း
-        if st.button("💾 အထည်အပ်စာရင်း သိမ်းဆည်းမည်", key="btn_save_ret"):
-            if 'ret_save_data' in st.session_state:
-                try:
-                    data = st.session_state['ret_save_data']
-                    conn = sqlite3.connect('jewelry_records.db')
-                    c = conn.cursor()
-                    c.execute("INSERT INTO receipts (date, details, total_weight) VALUES (?, ?, ?)",
-                              (datetime.now().strftime("%d/%m/%Y %H:%M"), data['details'], data['weight']))
-                    conn.commit()
-                    conn.close()
-                    st.success("✅ အထည်အပ်မှတ်တမ်းကို သိမ်းဆည်းပြီးပါပြီ။")
-                    st.balloons()
-                except Exception as e:
-                    st.error(f"Error: {e}")
-            else:
-                st.warning("⚠️ အရင်ဆုံး 'ပြေစာထုတ်ရန်' ကို နှိပ်ပေးပါ။")
 
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)":
     st.header("💎 စိန်၊ ကျောက်၊ ပုလဲ အထည်ယူ/အပ်")
