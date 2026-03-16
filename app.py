@@ -57,6 +57,43 @@ st.markdown("""
     """, unsafe_allow_html=True)
 st.markdown("""
     <style>
+    /* ၁။ Sidebar ပွင့်နေစဉ် အထဲက (<<) မြားခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
+    [data-testid="stSidebar"] button {
+        background-color: #D4AF37 !important;
+        color: black !important;
+        border-radius: 50% !important;
+        border: 2px solid white !important;
+        width: 40px !important;
+        height: 40px !important;
+        box-shadow: 0px 0px 10px rgba(212, 175, 55, 0.8) !important;
+    }
+
+    /* ၂။ Sidebar အထဲက မြားလေးကို အမည်းရောင်ပြောင်းခြင်း */
+    [data-testid="stSidebar"] button svg {
+        fill: black !important;
+    }
+
+    /* ၃။ Menu Radio Button တွေကို Card ပုံစံပြောင်းခြင်း (ဒါလေးကိုပါ သေချာထည့်ပေးပါ) */
+    div[data-testid="stSidebar"] div[role="radiogroup"] label {
+        background-color: #3D2307 !important;
+        border: 1px solid #D4AF37 !important;
+        padding: 10px 15px !important;
+        border-radius: 12px !important;
+        color: #D4AF37 !important;
+        margin-bottom: 8px !important;
+        display: block !important;
+    }
+
+    /* ၄။ ရွေးချယ်ထားသော Menu ကို ရွှေရောင်နောက်ခံထားခြင်း */
+    div[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
+        background-color: #D4AF37 !important;
+        color: black !important;
+        font-weight: bold;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
     /* Radio Button ရဲ့ မူလအကွက်တွေကို ဖျောက်ပြီး Card ပုံစံပြောင်းခြင်း */
     div[data-testid="stSidebar"] div[role="radiogroup"] {
         display: flex;
