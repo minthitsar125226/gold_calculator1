@@ -8,6 +8,23 @@ import google.generativeai as genai
 
 st.markdown("""
     <style>
+    /* ဖုန်းနဲ့ကြည့်တဲ့အခါ အပေါ်က Sidebar ဖွင့်တဲ့ မြားခလုတ်ကို ပြင်ခြင်း */
+    button[kind="headerNoPadding"] {
+        background-color: #D4AF37 !important;
+        color: black !important;
+        border-radius: 50% !important;
+        border: 2px solid white !important;
+        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.9) !important;
+    }
+    
+    /* မြားလေးကို အမည်းရောင်ဖြစ်အောင် လုပ်ခြင်း */
+    button[kind="headerNoPadding"] svg {
+        fill: black !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
     /* Sidebar ပိတ်ထားစဉ် အပြင်ဘက်မှာရှိနေတဲ့ ခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
     section[data-testid="stSidebar"][data-expanded="false"] ~ section [data-testid="stSidebarCollapseButton"] {
         background-color: #D4AF37 !important; /* ရွှေရောင်နောက်ခံ */
