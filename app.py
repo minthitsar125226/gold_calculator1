@@ -6,6 +6,49 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
+def set_custom_theme():
+    st.markdown("""
+    <style>
+    /* နောက်ခံအညိုရောင် */
+    .stApp {
+        background-color: #2F1B05; 
+        color: #D4AF37;
+    }
+    
+    /* App ခေါင်းစဉ်ကို ရွှေရောင်ဖြင့် */
+    h1, h2, h3 {
+        color: #D4AF37 !important;
+        text-align: center;
+        text-shadow: 2px 2px 4px #000;
+    }
+
+    /* Sidebar ကို အညိုရင့်ရောင်နှင့် ရွှေရောင်ဘောင် */
+    [data-testid="stSidebar"] {
+        background-color: #3D2307;
+        border-right: 3px solid #D4AF37;
+        padding: 20px;
+    }
+    
+    /* ကနုတ်ပန်းပုံစံ ဘောင်များ (Buttons and Cards) */
+    div.stButton > button {
+        background-color: #5D4037;
+        color: #D4AF37;
+        border: 2px solid #D4AF37;
+        border-radius: 15px;
+        font-weight: bold;
+    }
+    
+    /* ကနုတ်ပန်းလက်ရာကို သတိရစေမယ့် အနားကွပ်များ */
+    .stExpander {
+        border: 1px solid #D4AF37 !important;
+        background-color: #3D2307 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# App ကို စတင်တဲ့နေရာမှာ ခေါ်ပါ
+set_custom_theme()
+
 # API Key ကို Streamlit Secrets မှ ခေါ်ယူခြင်း
 api_key = st.secrets["GOOGLE_API_KEY"]
 
