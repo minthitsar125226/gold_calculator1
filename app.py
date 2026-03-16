@@ -6,26 +6,25 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
+# --- ဒီ CSS code တစ်ခုတည်းသာ ထည့်ပေးပါ ---
 st.markdown("""
     <style>
-    /* ဖုန်းနဲ့ကြည့်တဲ့အခါ အပေါ်က Sidebar ဖွင့်တဲ့ မြားခလုတ်ကို ပြင်ခြင်း */
-    button[kind="headerNoPadding"] {
+    /* ၁။ Sidebar ဖွင့်တဲ့ Header က မြားခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
+    header[data-testid="stHeader"] button {
         background-color: #D4AF37 !important;
         color: black !important;
         border-radius: 50% !important;
         border: 2px solid white !important;
-        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.9) !important;
+        width: 45px !important;
+        height: 45px !important;
+        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.8) !important;
     }
     
-    /* မြားလေးကို အမည်းရောင်ဖြစ်အောင် လုပ်ခြင်း */
-    button[kind="headerNoPadding"] svg {
-        fill: black !important;
+    header[data-testid="stHeader"] svg {
+        fill: black !important; /* မြားလေးကို အမည်းရောင်ပြောင်း */
     }
-    </style>
-    """, unsafe_allow_html=True)
-st.markdown("""
-    <style>
-    /* Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း */
+
+    /* ၂။ Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း */
     div[data-testid="stSidebar"] div[role="radiogroup"] {
         gap: 12px !important;
         display: flex !important;
@@ -33,55 +32,26 @@ st.markdown("""
     }
 
     div[data-testid="stSidebar"] div[role="radiogroup"] label {
-        background-color: #3D2307 !important; /* အညိုရောင် Card */
-        border: 1px solid #D4AF37 !important; /* ရွှေရောင်ဘောင် */
+        background-color: #3D2307 !important;
+        border: 1px solid #D4AF37 !important;
         padding: 12px 15px !important;
         border-radius: 12px !important;
         color: #D4AF37 !important;
         width: 100% !important;
-        transition: 0.3s;
     }
 
-    /* ရွေးချယ်ထားတဲ့ Card ကို ရွှေရောင်တောက်ပစေခြင်း */
+    /* ၃။ ရွေးထားတဲ့ Card ကို ရွှေရောင်တောက်စေခြင်း */
     div[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
         background-color: #D4AF37 !important;
         color: black !important;
         font-weight: bold;
     }
 
-    /* Sidebar Toggle Button (အပြင်ဘက်က မြားခလုတ်) ကို ရွှေရောင်ပြောင်းခြင်း */
-    button[kind="headerNoPadding"] {
+    /* ၄။ Sidebar ပိတ်ထားချိန် အပြင်ဘက်ခလုတ်ကို Glow ဖြစ်စေခြင်း */
+    [data-testid="stSidebarCollapseButton"] {
         background-color: #D4AF37 !important;
+        color: black !important;
         border-radius: 50% !important;
-        border: 2px solid white !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-st.markdown("""
-    <style>
-    /* Sidebar ပိတ်ထားစဉ် အပြင်ဘက်မှာရှိနေတဲ့ ခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
-    section[data-testid="stSidebar"][data-expanded="false"] ~ section [data-testid="stSidebarCollapseButton"] {
-        background-color: #D4AF37 !important; /* ရွှေရောင်နောက်ခံ */
-        color: black !important; /* မြားလေးကို အမည်းရောင် */
-        border-radius: 10px !important; /* ထောင့်ချိုးလေးနည်းနည်းလုပ်မယ် */
-        width: 45px !important;
-        height: 45px !important;
-        border: 2px solid #5D4037 !important; /* အညိုရောင်အနားကွပ် */
-        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.8) !important; /* ရွှေရောင်အလင်းတန်း (Glow) */
-        left: 15px !important;
-        top: 15px !important;
-    }
-
-    /* ခလုတ်ပေါ် လက်တင်လိုက်ရင် ပိုလင်းသွားစေရန် */
-    section[data-testid="stSidebar"][data-expanded="false"] ~ section [data-testid="stSidebarCollapseButton"]:hover {
-        background-color: #F9E272 !important;
-        transform: scale(1.1);
-    }
-
-    /* Sidebar ပွင့်သွားတဲ့အခါ (အထဲရောက်သွားချိန်) မှာတော့ ရိုးရိုးပဲထားမယ် */
-    section[data-testid="stSidebar"][data-expanded="true"] ~ section [data-testid="stSidebarCollapseButton"] {
-        background-color: transparent !important;
-        color: #D4AF37 !important;
     }
     </style>
     """, unsafe_allow_html=True)
