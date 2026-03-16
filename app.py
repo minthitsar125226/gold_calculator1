@@ -532,50 +532,28 @@ elif menu == "💎 3D ဖယောင်းတွက်စက်":
         
         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")
 
-elif menu == "📋ပြေစာမှတ်တမ်း":
-    st.header("📋 ပြေစာ မှတ်တမ်းများ")
+elif menu == "ပြေစာမှတ်တမ်း":
+    st.header("📋 ပြေစာ မှတ်တမ်း အပြည့်အစုံ")
     
-    # Session State စစ်ဆေးရန် (အမှားမတက်အောင်)
-    if 'receipts' not in st.session_state:
-        st.session_state['receipts'] = []
-
-    # ပြေစာအသစ်သွင်းခြင်း Form
-    with st.expander("📝 ပြေစာအသစ် ထည့်သွင်းရန်"):
-        with st.form("receipt_form", clear_on_submit=True):
-            col1, col2 = st.columns(2)
-            with col1:
-                cust_name = st.text_input("ဖောက်သည်အမည်")
-                gold_give = st.number_input("ပေးရွှေ (ရွေး)", format="%.2f")
-                wastage = st.number_input("အလျော့တွက် (ရွေး)", format="%.2f")
-            with col2:
-                extra_gold = st.number_input("ပိုရွှေ (ရွေး)", format="%.2f")
-                labor_fee = st.number_input("လက်ခ (ကျပ်)", format="%.0f")
-                total_pay = st.number_input("စုစုပေါင်းငွေ (ကျပ်)", format="%.0f")
-            
-            submitted = st.form_submit_button("မှတ်တမ်း သိမ်းမည်")
-            if submitted:
-                new_data = {"နာမည်": cust_name, "ပေးရွှေ": gold_give, "အလျော့တွက်": wastage, "ပိုရွှေ": extra_gold, "လက်ခ": labor_fee, "စုစုပေါင်း": total_pay}
-                st.session_state['receipts'].append(new_data)
-                st.success("မှတ်တမ်း သိမ်းပြီးပါပြီရှင်။")
-
-    # သိမ်းထားသော မှတ်တမ်းများနှင့် ဖျက်ရန်လုပ်ဆောင်ချက်
-    st.write("---")
-    if st.session_state['receipts']:
-        import pandas as pd
-        df = pd.DataFrame(st.session_state['receipts'])
+    if st.session_state['all_receipts']:
+        # DataFrame ပြောင်းခြင်း
+        df = pd.DataFrame(st.session_state['all_receipts'])
+        
+        # ဇယားပြသခြင်း
         st.dataframe(df, use_container_width=True)
         
-        # ဖျက်ရန် အပိုင်း
-        st.write("### 🗑️ မှတ်တမ်း ဖျက်ရန်")
-        delete_idx = st.number_input("ဖျက်လိုသည့် စာရင်းအမှတ် (Index)", min_value=0, max_value=len(df)-1, step=1)
+        # ဖျက်ခြင်း အပိုင်း
+        st.write("---")
+        st.subheader("🗑️ မှတ်တမ်း ဖျက်ရန်")
+        delete_idx = st.number_input("ဖျက်လိုသည့် စာရင်းအမှတ်စဉ်", min_value=0, max_value=len(df)-1, step=1)
+        
         if st.button("ရွေးချယ်ထားသော စာရင်းကို ဖျက်မည်"):
-            del st.session_state['receipts'][delete_idx]
-            st.rerun() # ဖျက်ပြီးတာနဲ့ screen ပြန် refresh လုပ်ပေးခြင်း
+            # မှတ်တမ်းဖျက်ခြင်း
+            del st.session_state['all_receipts'][delete_idx]
+            st.rerun()
     else:
-        st.info("လက်ရှိတွင် မှတ်တမ်း မရှိသေးပါ။")
-# app.py
-
-# Sidebar Menu မှာ "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်" ကို ထပ်ထည့်ပေးပါ
+        st.info("လက်ရှိတွင် မှတ်တမ်းများ မရှိသေးပါ။")
+      
 elif menu == "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်":
     st.title("💎 ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ခြင်း")
     
