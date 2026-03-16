@@ -6,6 +6,29 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
+st.markdown("""
+    <style>
+    /* Sidebar ဖွင့်တဲ့ခလုတ် (Arrow) ကို သိသာအောင်လုပ်ခြင်း */
+    [data-testid="stSidebarCollapseButton"] {
+        background-color: #D4AF37 !important; /* ခလုတ်နောက်ခံကို ရွှေရောင်ထားမည် */
+        color: black !important; /* မြားလေးကို အမည်းရောင်ထားမည် */
+        border-radius: 50% !important; /* ဝိုင်းဝိုင်းလေးလုပ်မည် */
+        border: 2px solid white !important; /* အဖြူရောင်အနားကွပ်လေးထည့်မည် */
+        width: 40px !important;
+        height: 40px !important;
+        top: 10px !important; /* အပေါ်ကနေ အကွာအဝေး */
+        left: 10px !important; /* ဘေးကနေ အကွာအဝေး */
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.5) !important; /* အရိပ်ထည့်ခြင်း */
+    }
+
+    /* Hover လုပ်တဲ့အခါ (လက်တင်လိုက်တဲ့အခါ) အရောင်ပြောင်းရန် */
+    [data-testid="stSidebarCollapseButton"]:hover {
+        background-color: #F9E272 !important; /* ပိုလင်းတဲ့ ရွှေရောင် */
+        transform: scale(1.1); /* နည်းနည်းလေး ကြီးလာစေရန် */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 def set_custom_theme():
     st.markdown("""
     <style>
