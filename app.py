@@ -6,6 +6,9 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
+# App ကို စတင်တဲ့နေရာမှာ ခေါ်ပါ
+set_custom_theme()
+
 st.markdown("""
     <style>
     /* ၁။ Sidebar ထဲက Menu တွေကို Card ပုံစံပြောင်းခြင်း (အရေးကြီးဆုံးအပိုင်း) */
@@ -52,8 +55,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# App ကို စတင်တဲ့နေရာမှာ ခေါ်ပါ
-set_custom_theme()
 
 # API Key ကို Streamlit Secrets မှ ခေါ်ယူခြင်း
 api_key = st.secrets["GOOGLE_API_KEY"]
