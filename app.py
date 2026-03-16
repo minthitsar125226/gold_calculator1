@@ -6,175 +6,48 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
-# --- ဒီ CSS code တစ်ခုတည်းသာ ထည့်ပေးပါ ---
 st.markdown("""
     <style>
-    /* ၁။ Sidebar ဖွင့်တဲ့ Header က မြားခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
+    /* ၁။ Sidebar ထဲက Menu တွေကို Card ပုံစံပြောင်းခြင်း (အရေးကြီးဆုံးအပိုင်း) */
+    [data-testid="stSidebar"] div[role="radiogroup"] label {
+        background-color: #3D2307 !important;
+        border: 1.5px solid #D4AF37 !important;
+        padding: 12px 15px !important;
+        border-radius: 12px !important;
+        color: #D4AF37 !important;
+        margin-bottom: 10px !important;
+        display: flex !important;
+        width: 100% !important;
+        cursor: pointer !important;
+    }
+
+    /* ၂။ ရွေးချယ်ထားတဲ့ Card ကို ရွှေရောင်နောက်ခံ ပြောင်းပေးခြင်း */
+    [data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
+        background-color: #D4AF37 !important;
+        color: black !important;
+        font-weight: bold !important;
+        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
+    }
+
+    /* ၃။ မူလ Radio Button အဝိုင်းလေးတွေကို ဖျောက်ခြင်း */
+    [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stWidgetSelectionStateColumn"] {
+        display: none !important;
+    }
+
+    /* ၄။ Sidebar ဖွင့်/ပိတ် ခလုတ်များအားလုံးကို ရွှေရောင်ပြောင်းခြင်း */
+    button[data-testid="stSidebarCollapseButton"], 
     header[data-testid="stHeader"] button {
         background-color: #D4AF37 !important;
         color: black !important;
         border-radius: 50% !important;
         border: 2px solid white !important;
-        width: 45px !important;
-        height: 45px !important;
         box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.8) !important;
     }
-    
+
+    /* ၅။ ခလုတ်ထဲက မြားလေးတွေကို အမည်းရောင်ပြောင်းခြင်း */
+    button[data-testid="stSidebarCollapseButton"] svg,
     header[data-testid="stHeader"] svg {
-        fill: black !important; /* မြားလေးကို အမည်းရောင်ပြောင်း */
-    }
-
-    /* ၂။ Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း */
-    div[data-testid="stSidebar"] div[role="radiogroup"] {
-        gap: 12px !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    div[data-testid="stSidebar"] div[role="radiogroup"] label {
-        background-color: #3D2307 !important;
-        border: 1px solid #D4AF37 !important;
-        padding: 12px 15px !important;
-        border-radius: 12px !important;
-        color: #D4AF37 !important;
-        width: 100% !important;
-    }
-
-    /* ၃။ ရွေးထားတဲ့ Card ကို ရွှေရောင်တောက်စေခြင်း */
-    div[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
-        background-color: #D4AF37 !important;
-        color: black !important;
-        font-weight: bold;
-    }
-
-    /* ၄။ Sidebar ပိတ်ထားချိန် အပြင်ဘက်ခလုတ်ကို Glow ဖြစ်စေခြင်း */
-    [data-testid="stSidebarCollapseButton"] {
-        background-color: #D4AF37 !important;
-        color: black !important;
-        border-radius: 50% !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-st.markdown("""
-    <style>
-    /* ၁။ Sidebar ပွင့်နေစဉ် အထဲက (<<) မြားခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
-    [data-testid="stSidebar"] button {
-        background-color: #D4AF37 !important;
-        color: black !important;
-        border-radius: 50% !important;
-        border: 2px solid white !important;
-        width: 40px !important;
-        height: 40px !important;
-        box-shadow: 0px 0px 10px rgba(212, 175, 55, 0.8) !important;
-    }
-
-    /* ၂။ Sidebar အထဲက မြားလေးကို အမည်းရောင်ပြောင်းခြင်း */
-    [data-testid="stSidebar"] button svg {
         fill: black !important;
-    }
-
-    /* ၃။ Menu Radio Button တွေကို Card ပုံစံပြောင်းခြင်း (ဒါလေးကိုပါ သေချာထည့်ပေးပါ) */
-    div[data-testid="stSidebar"] div[role="radiogroup"] label {
-        background-color: #3D2307 !important;
-        border: 1px solid #D4AF37 !important;
-        padding: 10px 15px !important;
-        border-radius: 12px !important;
-        color: #D4AF37 !important;
-        margin-bottom: 8px !important;
-        display: block !important;
-    }
-
-    /* ၄။ ရွေးချယ်ထားသော Menu ကို ရွှေရောင်နောက်ခံထားခြင်း */
-    div[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
-        background-color: #D4AF37 !important;
-        color: black !important;
-        font-weight: bold;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-st.markdown("""
-    <style>
-    /* Radio Button ရဲ့ မူလအကွက်တွေကို ဖျောက်ပြီး Card ပုံစံပြောင်းခြင်း */
-    div[data-testid="stSidebar"] div[role="radiogroup"] {
-        display: flex;
-        flex-direction: column;
-        gap: 10px; /* Card တစ်ခုနဲ့တစ်ခု အကွာအဝေး */
-    }
-
-    div[data-testid="stSidebar"] div[role="radiogroup"] label {
-        background-color: #3D2307 !important; /* Card နောက်ခံ အညိုရောင် */
-        border: 1px solid #D4AF37 !important; /* ရွှေရောင်ဘောင် */
-        padding: 12px 15px !important;
-        border-radius: 12px !important;
-        color: #D4AF37 !important;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: block;
-        width: 100%;
-    }
-
-    /* Card ပေါ် လက်တင်လိုက်ချိန် (Hover) */
-    div[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
-        background-color: #5D4037 !important;
-        transform: translateY(-2px);
-        box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.3) !important;
-    }
-
-    /* ရွေးချယ်ထားတဲ့ Card (Selected) ကို ရွှေရောင်တောက်စေခြင်း */
-    div[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
-        background-color: #D4AF37 !important;
-        color: #000000 !important; /* စာသားကို အမည်းရောင်ပြောင်း */
-        font-weight: bold;
-        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
-    }
-    
-    /* မူလ Radio စက်ဝိုင်းလေးတွေကို ဖျောက်ထားခြင်း */
-    div[data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stMarkdownContainer"] p {
-        font-size: 16px;
-        margin: 0;
-    }
-    div[data-testid="stSidebar"] div[role="radiogroup"] .st-bd {
-        display: none; /* စက်ဝိုင်းအကွက်လေးကို ဖျောက်သည် */
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-def set_custom_theme():
-    st.markdown("""
-    <style>
-    /* နောက်ခံအညိုရောင် */
-    .stApp {
-        background-color: #2F1B05; 
-        color: #D4AF37;
-    }
-    
-    /* App ခေါင်းစဉ်ကို ရွှေရောင်ဖြင့် */
-    h1, h2, h3 {
-        color: #D4AF37 !important;
-        text-align: center;
-        text-shadow: 2px 2px 4px #000;
-    }
-
-    /* Sidebar ကို အညိုရင့်ရောင်နှင့် ရွှေရောင်ဘောင် */
-    [data-testid="stSidebar"] {
-        background-color: #3D2307;
-        border-right: 3px solid #D4AF37;
-        padding: 20px;
-    }
-    
-    /* ကနုတ်ပန်းပုံစံ ဘောင်များ (Buttons and Cards) */
-    div.stButton > button {
-        background-color: #5D4037;
-        color: #D4AF37;
-        border: 2px solid #D4AF37;
-        border-radius: 15px;
-        font-weight: bold;
-    }
-    
-    /* ကနုတ်ပန်းလက်ရာကို သတိရစေမယ့် အနားကွပ်များ */
-    .stExpander {
-        border: 1px solid #D4AF37 !important;
-        background-color: #3D2307 !important;
     }
     </style>
     """, unsafe_allow_html=True)
