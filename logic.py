@@ -265,3 +265,12 @@ def cash_to_gold_flexible(cash_amount, gold_price_16pae, wastage_yway, labor_fee
     pt = round(remaining % 10, 1)
     
     return k, p, y, pt
+
+# logic.py
+
+def calculate_rati_price(carat, price_per_rati):
+    # ကာရက်ကို ရတီပြောင်းခြင်း (၁ ကာရက် = ၁.၁ ရတီ)
+    rati_total = carat * 1.1
+    # စုစုပေါင်းဈေးတွက်ခြင်း
+    total_price = rati_total * price_per_rati
+    return rati_total, total_price
