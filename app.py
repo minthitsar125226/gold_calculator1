@@ -62,10 +62,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# app.py ၏ အစပိုင်းတွင် ထည့်ရန်
-if 'all_receipts' not in st.session_state:
-    st.session_state['all_receipts'] = []
-
 # Sidebar စတင်သည့်နေရာ
 with st.sidebar:
     # ၁။ App နာမည်ကို ရွှေရောင်ဖြင့် ထည့်ခြင်း
@@ -89,8 +85,7 @@ with st.sidebar:
         "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်",
         "💎 3D ဖယောင်းတွက်စက်",
         "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)",
-        "📋ပြေစာမှတ်တမ်း",
-        "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်"
+        "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်",
     ])
   
     st.markdown("---") # နောက်ထပ် မျဉ်းကြောင်း
@@ -331,19 +326,6 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
             "details": f"အထည်ယူ: {item_name} | ဖောက်သည်: {target_l} | မှတ်ချက်: {note1}",
             "weight": f"{g_k} ကျပ် {g_p} ပဲ {g_y} ရွေး {g_pt} Pt"
         }
-       # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
-if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
-    record = {
-           "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
-           "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
-           "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
-           "အလျော့တွက်": wastage_value,
-           "လက်ခ": labor_value,
-           "စုစုပေါင်း": total_value
-    }
-    st.session_state['all_receipts'].append(record)
-    st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")
-        
 
     with tab2:
         st.subheader("📤 အထည်အပ်နှံခြင်း")
@@ -402,18 +384,6 @@ if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်�
             st.session_state['ret_save_data'] = {
                 "details": f"အထည်အပ်: {item_name} | မှတ်ချက်: {note2}",
                 "weight": diff_res['diff_text']
-      # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
-if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
-    record = {
-          "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
-          "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
-          "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
-          "အလျော့တွက်": wastage_value,
-          "လက်ခ": labor_value,
-          "စုစုပေါင်း": total_value
-    }
-    st.session_state['all_receipts'].append(record)
-    st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")      }
       
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)":
     st.header("💎 စိန်၊ ကျောက်၊ ပုလဲ အထည်ယူ/အပ်")
@@ -481,22 +451,7 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယ
         st.markdown("<h2 style='text-align: center;'>📋 ရွှေနှင့်ကျောက် ပြေစာ</h2>", unsafe_allow_html=True)
         df = pd.DataFrame(receipt_data)
         st.table(df)
-        st.success(f"စုစုပေါင်းအလေးချိန်: {final_w}")
-
-    st.divider()
-  
-   # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
-if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
-    record = {
-          "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
-          "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
-          "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
-          "အလျော့တွက်": wastage_value,
-          "လက်ခ": labor_value,
-          "စုစုပေါင်း": total_value
-    }
-    st.session_state['all_receipts'].append(record)
-    st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")   
+        st.success(f"စုစုပေါင်းအလေးချိန်: {final_w}") 
   
 elif menu == "💎 3D ဖယောင်းတွက်စက်":
     st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
@@ -529,29 +484,7 @@ elif menu == "💎 3D ဖယောင်းတွက်စက်":
 """, unsafe_allow_html=True)
         
         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")
-
-elif menu == "ပြေစာမှတ်တမ်း":
-    st.header("📋 ပြေစာ မှတ်တမ်း အပြည့်အစုံ")
-    
-    if st.session_state['all_receipts']:
-        # DataFrame ပြောင်းခြင်း
-        df = pd.DataFrame(st.session_state['all_receipts'])
-        
-        # ဇယားပြသခြင်း
-        st.dataframe(df, use_container_width=True)
-        
-        # ဖျက်ခြင်း အပိုင်း
-        st.write("---")
-        st.subheader("🗑️ မှတ်တမ်း ဖျက်ရန်")
-        delete_idx = st.number_input("ဖျက်လိုသည့် စာရင်းအမှတ်စဉ်", min_value=0, max_value=len(df)-1, step=1)
-        
-        if st.button("ရွေးချယ်ထားသော စာရင်းကို ဖျက်မည်"):
-            # မှတ်တမ်းဖျက်ခြင်း
-            del st.session_state['all_receipts'][delete_idx]
-            st.rerun()
-    else:
-        st.info("လက်ရှိတွင် မှတ်တမ်းများ မရှိသေးပါ။")
-      
+   
 elif menu == "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်":
     st.title("💎 ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ခြင်း")
     
