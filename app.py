@@ -51,6 +51,52 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
+    /* Radio Button ရဲ့ မူလအကွက်တွေကို ဖျောက်ပြီး Card ပုံစံပြောင်းခြင်း */
+    div[data-testid="stSidebar"] div[role="radiogroup"] {
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* Card တစ်ခုနဲ့တစ်ခု အကွာအဝေး */
+    }
+
+    div[data-testid="stSidebar"] div[role="radiogroup"] label {
+        background-color: #3D2307 !important; /* Card နောက်ခံ အညိုရောင် */
+        border: 1px solid #D4AF37 !important; /* ရွှေရောင်ဘောင် */
+        padding: 12px 15px !important;
+        border-radius: 12px !important;
+        color: #D4AF37 !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        width: 100%;
+    }
+
+    /* Card ပေါ် လက်တင်လိုက်ချိန် (Hover) */
+    div[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+        background-color: #5D4037 !important;
+        transform: translateY(-2px);
+        box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.3) !important;
+    }
+
+    /* ရွေးချယ်ထားတဲ့ Card (Selected) ကို ရွှေရောင်တောက်စေခြင်း */
+    div[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
+        background-color: #D4AF37 !important;
+        color: #000000 !important; /* စာသားကို အမည်းရောင်ပြောင်း */
+        font-weight: bold;
+        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
+    }
+    
+    /* မူလ Radio စက်ဝိုင်းလေးတွေကို ဖျောက်ထားခြင်း */
+    div[data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stMarkdownContainer"] p {
+        font-size: 16px;
+        margin: 0;
+    }
+    div[data-testid="stSidebar"] div[role="radiogroup"] .st-bd {
+        display: none; /* စက်ဝိုင်းအကွက်လေးကို ဖျောက်သည် */
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 def set_custom_theme():
     st.markdown("""
