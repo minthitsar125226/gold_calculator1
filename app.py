@@ -79,8 +79,7 @@ st.markdown("""
         border: 1px solid #D4AF37 !important;
     }
     </style>
-# App ကို စတင်တဲ့နေရာမှာ ခေါ်ပါ
-set_custom_theme()
+    """, unsafe_allow_html=True)
 
 
 # API Key ကို Streamlit Secrets မှ ခေါ်ယူခြင်း
