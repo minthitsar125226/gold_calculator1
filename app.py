@@ -405,18 +405,18 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
                 "details": f"အထည်အပ်: {item_name} | မှတ်ချက်: {note2}",
                 "weight": diff_res['diff_text']
             }
-          # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
-if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
-    record = {
-        "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
-        "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
-        "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
-        "အလျော့တွက်": wastage_value,
-        "လက်ခ": labor_value,
-        "စုစုပေါင်း": total_value
-    }
-    st.session_state['all_receipts'].append(record)
-    st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")
+           # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
+       if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
+          record = {
+          "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
+          "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
+          "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
+          "အလျော့တွက်": wastage_value,
+          "လက်ခ": labor_value,
+          "စုစုပေါင်း": total_value
+           }
+          st.session_state['all_receipts'].append(record)
+          st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")
 
 
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)":
@@ -488,33 +488,18 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယ
         st.success(f"စုစုပေါင်းအလေးချိန်: {final_w}")
 
     st.divider()
-
-    # --- Database ထဲသို့ အပြီးအပိုင်သိမ်းဆည်းရန် ခလုတ် ---
-    if st.button("💾 ပြေစာမှတ်တမ်းထဲသို့ သိမ်းဆည်းမည်"):
-        if 'last_receipt' in st.session_state:
-            try:
-                # Data များကို စာသားအဖြစ်ပြောင်းလဲခြင်း
-                details_str = ""
-                for row in st.session_state['last_receipt']:
-                    details_str += f"{row['အမျိုးအစား']}({row['အရေအတွက်']})={row['အလေးချိန်']} | "
-                
-                final_w = st.session_state['last_total']
-                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-                # Database ချိတ်ဆက်ခြင်း
-                conn = sqlite3.connect('jewelry_records.db')
-                c = conn.cursor()
-                c.execute("INSERT INTO receipts (date, details, total_weight) VALUES (?, ?, ?)",
-                          (current_time, details_str, final_w))
-                conn.commit()
-                conn.close()
-                
-                st.balloons() # အောင်မြင်ကြောင်း အောင်ပွဲခံသည့် animation လေးပြပါမည်
-                st.success(f"✅ ပြေစာမှတ်တမ်းကို {current_time} တွင် သိမ်းဆည်းပြီးပါပြီ။")
-            except Exception as e:
-                st.error(f"Error: သိမ်းဆည်းရာတွင် အမှားအယွင်းရှိပါသည်။ {e}")
-        else:
-            st.warning("⚠️ သိမ်းဆည်းရန်အတွက် အရင်ဆုံး 'ရလဒ်နှင့် ပြေစာထုတ်ရန်' ကို နှိပ်ပေးပါ။")
+        # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
+    if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
+         record = {
+        "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
+        "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
+        "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
+        "အလျော့တွက်": wastage_value,
+        "လက်ခ": labor_value,
+        "စုစုပေါင်း": total_value
+        }
+        st.session_state['all_receipts'].append(record)
+        st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")
 elif menu == "💎 3D ဖယောင်းတွက်စက်":
     st.header("💎 3D ဖယောင်းမှ ရွှေချိန်တွက်ချက်ခြင်း")
     
