@@ -8,23 +8,29 @@ import google.generativeai as genai
 
 st.markdown("""
     <style>
-    /* Sidebar ဖွင့်တဲ့ခလုတ် (Arrow) ကို သိသာအောင်လုပ်ခြင်း */
-    [data-testid="stSidebarCollapseButton"] {
-        background-color: #D4AF37 !important; /* ခလုတ်နောက်ခံကို ရွှေရောင်ထားမည် */
-        color: black !important; /* မြားလေးကို အမည်းရောင်ထားမည် */
-        border-radius: 50% !important; /* ဝိုင်းဝိုင်းလေးလုပ်မည် */
-        border: 2px solid white !important; /* အဖြူရောင်အနားကွပ်လေးထည့်မည် */
-        width: 40px !important;
-        height: 40px !important;
-        top: 10px !important; /* အပေါ်ကနေ အကွာအဝေး */
-        left: 10px !important; /* ဘေးကနေ အကွာအဝေး */
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.5) !important; /* အရိပ်ထည့်ခြင်း */
+    /* Sidebar ပိတ်ထားစဉ် အပြင်ဘက်မှာရှိနေတဲ့ ခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
+    section[data-testid="stSidebar"][data-expanded="false"] ~ section [data-testid="stSidebarCollapseButton"] {
+        background-color: #D4AF37 !important; /* ရွှေရောင်နောက်ခံ */
+        color: black !important; /* မြားလေးကို အမည်းရောင် */
+        border-radius: 10px !important; /* ထောင့်ချိုးလေးနည်းနည်းလုပ်မယ် */
+        width: 45px !important;
+        height: 45px !important;
+        border: 2px solid #5D4037 !important; /* အညိုရောင်အနားကွပ် */
+        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.8) !important; /* ရွှေရောင်အလင်းတန်း (Glow) */
+        left: 15px !important;
+        top: 15px !important;
     }
 
-    /* Hover လုပ်တဲ့အခါ (လက်တင်လိုက်တဲ့အခါ) အရောင်ပြောင်းရန် */
-    [data-testid="stSidebarCollapseButton"]:hover {
-        background-color: #F9E272 !important; /* ပိုလင်းတဲ့ ရွှေရောင် */
-        transform: scale(1.1); /* နည်းနည်းလေး ကြီးလာစေရန် */
+    /* ခလုတ်ပေါ် လက်တင်လိုက်ရင် ပိုလင်းသွားစေရန် */
+    section[data-testid="stSidebar"][data-expanded="false"] ~ section [data-testid="stSidebarCollapseButton"]:hover {
+        background-color: #F9E272 !important;
+        transform: scale(1.1);
+    }
+
+    /* Sidebar ပွင့်သွားတဲ့အခါ (အထဲရောက်သွားချိန်) မှာတော့ ရိုးရိုးပဲထားမယ် */
+    section[data-testid="stSidebar"][data-expanded="true"] ~ section [data-testid="stSidebarCollapseButton"] {
+        background-color: transparent !important;
+        color: #D4AF37 !important;
     }
     </style>
     """, unsafe_allow_html=True)
