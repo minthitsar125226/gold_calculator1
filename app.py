@@ -334,12 +334,12 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
        # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
 if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
     record = {
-        "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
-        "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
-        "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
-        "အလျော့တွက်": wastage_value,
-        "လက်ခ": labor_value,
-        "စုစုပေါင်း": total_value
+           "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
+           "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
+           "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
+           "အလျော့တွက်": wastage_value,
+           "လက်ခ": labor_value,
+           "စုစုပေါင်း": total_value
     }
     st.session_state['all_receipts'].append(record)
     st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")
@@ -405,12 +405,12 @@ if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်�
       # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
 if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
     record = {
-        "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
-        "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
-        "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
-        "အလျော့တွက်": wastage_value,
-        "လက်ခ": labor_value,
-        "စုစုပေါင်း": total_value
+          "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
+          "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
+          "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
+          "အလျော့တွက်": wastage_value,
+          "လက်ခ": labor_value,
+          "စုစုပေါင်း": total_value
     }
     st.session_state['all_receipts'].append(record)
     st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")      }
@@ -488,12 +488,12 @@ elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယ
    # တွက်ချက်မှုပြီးလျှင် သိမ်းရန် Button ထည့်ပါ
 if st.button("ဤမှတ်တမ်းကို ပြေစာမှတ်တမ်းသို့ ပို့မည်"):
     record = {
-        "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
-        "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
-        "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
-        "အလျော့တွက်": wastage_value,
-        "လက်ခ": labor_value,
-        "စုစုပေါင်း": total_value
+          "ရက်စွဲ": pd.Timestamp.now().strftime("%Y-%m-%d"),
+          "အမျိုးအမည်": "ရွှေထည် (သို့) စိန်ကျောက်", # တွက်တဲ့နေရာအလိုက် ပြင်ပါ
+          "ပေးရွှေ/အပ်ရွှေ": gold_given_value,
+          "အလျော့တွက်": wastage_value,
+          "လက်ခ": labor_value,
+          "စုစုပေါင်း": total_value
     }
     st.session_state['all_receipts'].append(record)
     st.success("ပြေစာမှတ်တမ်းသို့ အချက်အလက်အပြည့်အစုံ သိမ်းပြီးပါပြီရှင်။")   
