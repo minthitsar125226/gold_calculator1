@@ -546,46 +546,47 @@ elif menu == "💎 3D ဖယောင်းတွက်စက်":
         
         st.info("💡 မှတ်ချက် - ဤရလဒ်သည် ပျမ်းမျှတွက်ချက်မှုသာဖြစ်ပါသည်။ မိမိတို့အသုံးပြုနေကျ ဖယောင်းအမျိုးအစားအလိုက် အနည်းငယ် ပြင်ဆင်ရန် လိုအပ်နိုင်ပါသည်။")
 
-# အပေါ်ဆုံး Sidebar Menu မှာ နာမည် အရင်တိုးပေးပါ
-# menu = st.sidebar.radio("လုပ်ဆောင်ချက်:", [..., "📋 ပြေစာမှတ်တမ်း"])
-elif menu == "📋 ပြေစာမှတ်တမ်း":
-    st.header("📋 ပြေစာမှတ်တမ်းများ")
+elif menu == "ပြေစာမှတ်တမ်း":
+    st.header("📋 ပြေစာ မှတ်တမ်းများ")
+    
+    # Session State စစ်ဆေးရန် (အမှားမတက်အောင်)
+    if 'receipts' not in st.session_state:
+        st.session_state['receipts'] = []
 
-    # ၁။ ရှာဖွေလိုသည့်ရက်စွဲကို ရွေးခိုင်းခြင်း
-    search_date = st.date_input("ရှာဖွေလိုသည့် ရက်စွဲကို ရွေးပါ (ပုံစံ - 15/03/2026):")
-    formatted_search_date = search_date.strftime("%d/%m/%Y") # သိမ်းထားတဲ့ format အတိုင်းပြောင်းခြင်း
+    # ပြေစာအသစ်သွင်းခြင်း Form
+    with st.expander("📝 ပြေစာအသစ် ထည့်သွင်းရန်"):
+        with st.form("receipt_form", clear_on_submit=True):
+            col1, col2 = st.columns(2)
+            with col1:
+                cust_name = st.text_input("ဖောက်သည်အမည်")
+                gold_give = st.number_input("ပေးရွှေ (ရွေး)", format="%.2f")
+                wastage = st.number_input("အလျော့တွက် (ရွေး)", format="%.2f")
+            with col2:
+                extra_gold = st.number_input("ပိုရွှေ (ရွေး)", format="%.2f")
+                labor_fee = st.number_input("လက်ခ (ကျပ်)", format="%.0f")
+                total_pay = st.number_input("စုစုပေါင်းငွေ (ကျပ်)", format="%.0f")
+            
+            submitted = st.form_submit_button("မှတ်တမ်း သိမ်းမည်")
+            if submitted:
+                new_data = {"နာမည်": cust_name, "ပေးရွှေ": gold_give, "အလျော့တွက်": wastage, "ပိုရွှေ": extra_gold, "လက်ခ": labor_fee, "စုစုပေါင်း": total_pay}
+                st.session_state['receipts'].append(new_data)
+                st.success("မှတ်တမ်း သိမ်းပြီးပါပြီရှင်။")
 
-    # ၂။ Database မှ Data ဆွဲထုတ်ခြင်း
-    conn = sqlite3.connect('jewelry_records.db')
-    # LIKE သုံးပြီး ရွေးထားတဲ့ရက်နဲ့ တူတာကိုပဲ ဆွဲထုတ်ပါမယ်
-    query = f"SELECT id as 'ID', date as 'ရက်စွဲ', details as 'အသေးစိတ်', total_weight as 'အလေးချိန်' FROM receipts WHERE date LIKE '{formatted_search_date}%' ORDER BY id DESC"
-    df_records = pd.read_sql_query(query, conn)
-    conn.close()
-
-    if not df_records.empty:
-        st.write(f"📅 {formatted_search_date} ရက်စွဲအတွက် မှတ်တမ်းပေါင်း ({len(df_records)}) ခုတွေ့ရှိပါတယ်။")
-        st.dataframe(df_records, use_container_width=True, hide_index=True)
+    # သိမ်းထားသော မှတ်တမ်းများနှင့် ဖျက်ရန်လုပ်ဆောင်ချက်
+    st.write("---")
+    if st.session_state['receipts']:
+        import pandas as pd
+        df = pd.DataFrame(st.session_state['receipts'])
+        st.dataframe(df, use_container_width=True)
         
-        st.divider()
-        
-        # ၃။ ဖျက်ရန်အပိုင်း
-        st.subheader("🗑️ ပြေစာဖျက်ရန်")
-        delete_id = st.number_input("ဖျက်လိုသော ပြေစာ ID ကို ရိုက်ထည့်ပါ:", min_value=1, step=1)
-        
-        if st.button("❌ ရွေးချယ်ထားသောပြေစာကို ဖျက်မည်"):
-            try:
-                conn = sqlite3.connect('jewelry_records.db')
-                c = conn.cursor()
-                c.execute("DELETE FROM receipts WHERE id = ?", (delete_id,))
-                conn.commit()
-                conn.close()
-                st.success(f"✅ ပြေစာ ID ({delete_id}) ကို ဖျက်ပြီးပါပြီ။")
-                st.rerun()
-            except Exception as e:
-                st.error(f"Error: {e}")
+        # ဖျက်ရန် အပိုင်း
+        st.write("### 🗑️ မှတ်တမ်း ဖျက်ရန်")
+        delete_idx = st.number_input("ဖျက်လိုသည့် စာရင်းအမှတ် (Index)", min_value=0, max_value=len(df)-1, step=1)
+        if st.button("ရွေးချယ်ထားသော စာရင်းကို ဖျက်မည်"):
+            del st.session_state['receipts'][delete_idx]
+            st.rerun() # ဖျက်ပြီးတာနဲ့ screen ပြန် refresh လုပ်ပေးခြင်း
     else:
-        st.info(f"📅 {formatted_search_date} ရက်စွဲအတွက် မှတ်တမ်း မရှိသေးပါ။")
-
+        st.info("လက်ရှိတွင် မှတ်တမ်း မရှိသေးပါ။")
 # app.py
 
 # Sidebar Menu မှာ "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်" ကို ထပ်ထည့်ပေးပါ
