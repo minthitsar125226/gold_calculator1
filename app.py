@@ -46,18 +46,17 @@ init_db() # App စတက်တာနဲ့ Database အသင့်ဖြစ်
 
 st.set_page_config(page_title="မြန်မာ့ရွှေပန်းတိမ်သုံး", page_icon="⚒️", layout="wide")
 
-# app.py အတွက် CSS
 st.markdown("""
     <style>
-    .stApp { background-color: #000000; color: #D4AF37; }
-    h1, h2, h3 { color: #D4AF37 !important; }
-    .kanote-border {
-        border: 3px double #D4AF37;
-        padding: 20px;
-        border-radius: 15px;
-        background-color: #0a0a0a;
-        margin: 20px 0;
-        text-align: center;
+    .stApp {
+        background-color: #1a1a1a; /* အနက်ရောင်နောက်ခံ */
+        color: #D4AF37; /* ရွှေရောင်စာသား */
+    }
+    div.stButton > button {
+        background-color: #D4AF37;
+        color: black;
+        border-radius: 10px;
+        border: 2px solid #D4AF37;
     }
     </style>
     """, unsafe_allow_html=True)
