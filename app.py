@@ -25,6 +25,40 @@ st.markdown("""
     """, unsafe_allow_html=True)
 st.markdown("""
     <style>
+    /* Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း */
+    div[data-testid="stSidebar"] div[role="radiogroup"] {
+        gap: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    div[data-testid="stSidebar"] div[role="radiogroup"] label {
+        background-color: #3D2307 !important; /* အညိုရောင် Card */
+        border: 1px solid #D4AF37 !important; /* ရွှေရောင်ဘောင် */
+        padding: 12px 15px !important;
+        border-radius: 12px !important;
+        color: #D4AF37 !important;
+        width: 100% !important;
+        transition: 0.3s;
+    }
+
+    /* ရွေးချယ်ထားတဲ့ Card ကို ရွှေရောင်တောက်ပစေခြင်း */
+    div[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
+        background-color: #D4AF37 !important;
+        color: black !important;
+        font-weight: bold;
+    }
+
+    /* Sidebar Toggle Button (အပြင်ဘက်က မြားခလုတ်) ကို ရွှေရောင်ပြောင်းခြင်း */
+    button[kind="headerNoPadding"] {
+        background-color: #D4AF37 !important;
+        border-radius: 50% !important;
+        border: 2px solid white !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
     /* Sidebar ပိတ်ထားစဉ် အပြင်ဘက်မှာရှိနေတဲ့ ခလုတ်ကို ရွှေရောင်ပြောင်းခြင်း */
     section[data-testid="stSidebar"][data-expanded="false"] ~ section [data-testid="stSidebarCollapseButton"] {
         background-color: #D4AF37 !important; /* ရွှေရောင်နောက်ခံ */
