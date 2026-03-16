@@ -6,44 +6,51 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
-# App ကို စတင်တဲ့နေရာမှာ ခေါ်ပါ
-set_custom_theme()
-
 st.markdown("""
     <style>
-    /* ၁။ Sidebar ထဲက Menu တွေကို Card ပုံစံပြောင်းခြင်း (အရေးကြီးဆုံးအပိုင်း) */
+    /* ၁။ App တစ်ခုလုံးရဲ့ နောက်ခံနဲ့ စာသားအရောင် (Brown & Gold Theme) */
+    .stApp {
+        background-color: #2F1B05 !important;
+        color: #D4AF37 !important;
+    }
+
+    /* ၂။ Sidebar နောက်ခံကို အညိုရင့်ရောင်ထားခြင်း */
+    [data-testid="stSidebar"] {
+        background-color: #1E1103 !important;
+        border-right: 2px solid #D4AF37;
+    }
+
+    /* ၃။ Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း (သေသပ်လှပသော Card များ) */
     [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: #3D2307 !important;
-        border: 1.5px solid #D4AF37 !important;
+        border: 1px solid #D4AF37 !important;
         padding: 12px 15px !important;
         border-radius: 12px !important;
         color: #D4AF37 !important;
         margin-bottom: 10px !important;
         display: flex !important;
         width: 100% !important;
-        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3) !important;
     }
 
-    /* ၂။ ရွေးချယ်ထားတဲ့ Card ကို ရွှေရောင်နောက်ခံ ပြောင်းပေးခြင်း */
+    /* ရွေးချယ်ထားသော Card ကို ရွှေရောင်တောက်ပစေခြင်း */
     [data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
         background-color: #D4AF37 !important;
-        color: black !important;
+        color: #000000 !important;
         font-weight: bold !important;
         box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
     }
 
-    /* ၃။ မူလ Radio Button အဝိုင်းလေးတွေကို ဖျောက်ခြင်း */
-    [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stWidgetSelectionStateColumn"] {
-        display: none !important;
-    }
-
-    /* ၄။ Sidebar ဖွင့်/ပိတ် ခလုတ်များအားလုံးကို ရွှေရောင်ပြောင်းခြင်း */
+    /* ၄။ Sidebar ဖွင့်/ပိတ် ခလုတ်များ (Toggle Buttons) ကို ရွှေရောင်ပြောင်းခြင်း */
     button[data-testid="stSidebarCollapseButton"], 
     header[data-testid="stHeader"] button {
         background-color: #D4AF37 !important;
         color: black !important;
         border-radius: 50% !important;
         border: 2px solid white !important;
+        width: 45px !important;
+        height: 45px !important;
         box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.8) !important;
     }
 
@@ -52,8 +59,28 @@ st.markdown("""
     header[data-testid="stHeader"] svg {
         fill: black !important;
     }
+
+    /* ၆။ မူလ Radio Button အဝိုင်းလေးများကို ဖျောက်ထားခြင်း */
+    [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stWidgetSelectionStateColumn"] {
+        display: none !important;
+    }
+
+    /* ၇။ App ခေါင်းစဉ်များကို ရွှေရောင်နှင့် ကနုတ်ရိုးရာ ဆန်ဆန်ပြင်ခြင်း */
+    h1, h2, h3 {
+        color: #D4AF37 !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+        font-family: 'Pyidaungsu', sans-serif;
+    }
+
+    /* ၈။ Input Boxes များကိုလည်း Theme နှင့် ညှိခြင်း */
+    .stTextInput>div>div>input, .stNumberInput>div>div>input {
+        background-color: #3D2307 !important;
+        color: #D4AF37 !important;
+        border: 1px solid #D4AF37 !important;
+    }
     </style>
-    """, unsafe_allow_html=True)
+# App ကို စတင်တဲ့နေရာမှာ ခေါ်ပါ
+set_custom_theme()
 
 
 # API Key ကို Streamlit Secrets မှ ခေါ်ယူခြင်း
