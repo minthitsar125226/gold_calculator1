@@ -381,9 +381,10 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
 
             # --- ၁။ သိမ်းဆည်းရန်အတွက် Data ကို ခေတ္တမှတ်သားခြင်း ---
             # (ဒီအပိုင်းကို 'if st.button("ပြေစာထုတ်ရန်"): ' ရဲ့ အထဲမှာပဲ ထည့်ပါ)
-            st.session_state['ret_save_data'] = {
-                "details": f"အထည်အပ်: {item_name} | မှတ်ချက်: {note2}",
-                "weight": diff_res['diff_text']
+          st.session_state['ret_save_data'] = {
+        "details": f"အမည်: {item_name} | မှတ်ချက်: {note2}",
+        "weight": diff_res['diff_text']
+    } # ဒီ '}' လေးကို မေ့နေတာပါ  
       
 elif menu == "💎 စိန်/ကျောက်/ပုလဲ (အထည်ယူ/အပ်)":
     st.header("💎 စိန်၊ ကျောက်၊ ပုလဲ အထည်ယူ/အပ်")
