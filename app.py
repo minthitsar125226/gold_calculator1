@@ -356,16 +356,7 @@ choice = st.radio("ဘာကို တိုင်းတာချင်ပါသ
 if choice == "လက်စွပ် (Ring)":
     # ၂။ Slider ဖြင့် လက်တိုင်းနံပါတ် ရွေးချယ်ခြင်း
     size_input = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", min_value=1, max_value=32, value=12)
-   # --- DEBUG START ---
-st.write("--- စစ်ဆေးချက် ---")
-if result is None:
-    st.error("Error: logic.py ဆီက Data လုံးဝ မလာပါဘူး။ logic.py ကို ပြန်စစ်ပါ။")
-else:
-    st.success("Data ရောက်လာပါပြီ။")
-    st.json(result) # result ထဲမှာ ဘာတန်ဖိုးတွေ ပါလဲဆိုတာ အကုန်ပြပေးမှာပါ
-# --- DEBUG END --- 
-
-     if result:
+if result:
         st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
         
         # Diameter ပြခြင်း
@@ -374,7 +365,7 @@ else:
         # အောက်ကစာကြောင်းကို variable တွေ အရောင်ပြောင်းသွားအောင် သေချာကူးထည့်ပါ
         st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
     else:
-        st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")   
+        st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
         
 elif choice == "လက်ကောက် (Bangle)":
     # လက်ကောက်အတွက် logic အပိုင်း (လိုအပ်ရင် ထပ်ဖြည့်ပေးပါ့မယ်)
