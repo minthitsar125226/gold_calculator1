@@ -34,36 +34,27 @@ def length_multiplier_ali(in_m, pe_m, times):
 
 import math
 
-def get_ring_measurements(size_number):
-    """
-    လက်စွပ်နံပါတ်အရ Diameter မှတစ်ဆင့် လက်မ/ပဲ (Circumference) ကို တွက်ချက်ခြင်း
-    """
-    # Standard Diameter (အချင်း) Chart - Size 12 = 16.51mm
-    ring_diameters = {
-        10: 15.90, 11: 16.20, 12: 16.51, 13: 16.80, 14: 17.20, 
-        15: 17.50, 16: 17.80, 17: 18.20, 18: 18.50, 19: 18.80, 20: 19.20
+def calculate_ring_inches(mm_value):
+    """မီလီမီတာမှ လက်မ နှင့် ပဲ သို့ ပြောင်းလဲခြင်း"""
+    if mm_value <= 0: return 0, 0
+    total_inches = mm_value / 25.4
+    inches_whole = int(total_inches)
+    remaining_decimal = total_inches - inches_whole
+    pae_value = round(remaining_decimal * 8, 1)
+    return inches_whole, pae_value
+
+def get_ring_data_by_size(size_number):
+    """လက်စွပ်နံပါတ်အရ အချင်း နှင့် ပတ်လည်အလျား တွက်ချက်ခြင်း"""
+    # Standard Diameters (mm)
+    diameters = {
+        10: 15.9, 11: 16.2, 12: 16.5, 13: 16.8, 14: 17.2, 
+        15: 17.5, 16: 17.8, 17: 18.2, 18: 18.5, 19: 18.8, 20: 19.2
     }
-    
-    diameter = ring_diameters.get(size_number, 0)
-    
-    if diameter > 0:
-        # ၁။ ပတ်လည်အလျား (Circumference) = Diameter * PI
-        circum_mm = diameter * math.pi
-        
-        # ၂။ လက်မ ပြောင်းလဲခြင်း (1 inch = 25.4 mm)
-        total_inches = circum_mm / 25.4
-        
-        # ၃။ လက်မအပြည့်နှင့် ပဲ (၈ စိတ်) ခွဲထုတ်ခြင်း
-        inches_whole = int(total_inches)
-        remaining_decimal = total_inches - inches_whole
-        pae_value = round(remaining_decimal * 8, 1) # ပဲ ကို ဒသမ ၁ နေရာယူ
-        
-        return {
-            "diameter": round(diameter, 2),
-            "circum_mm": round(circum_mm, 2),
-            "inches": inches_whole,
-            "pae": pae_value
-        }
+    d_mm = diameters.get(size_number, 0)
+    if d_mm > 0:
+        c_mm = d_mm * math.pi # ပတ်လည်အလျား
+        inches, pae = calculate_ring_inches(c_mm)
+        return {"diameter": d_mm, "inches": inches, "pae": pae}
     return None
     
 # --- ၄။ စိန်၊ ကျောက် နှင့် ရွှေတွက်ချက်မှု ---
