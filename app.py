@@ -344,9 +344,9 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
     if st.button("အလီ တွက်ရန်"):
         total_l = logic.length_multiplier_ali(l_in, b_sel, a_in)
         st.write(f"ရလဒ်: {total_l}")
-
-# --- လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း Menu ပိုင်း ---
-st.title("💍 လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း")
+        
+elif menu == "💍 လက်စွပ်/လက်ကောက်":
+     st.title("💍 လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း")
 
 # ၁။ ဘာကို တိုင်းမှာလဲ ရွေးခိုင်းခြင်း
 choice = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
@@ -375,7 +375,7 @@ elif choice == "လက်ကောက် (Bangle)":
     bangle_mm = st.number_input("လက်ကောက် အချင်း (Diameter mm) ရိုက်ထည့်ပါ:", value=54.0)
     inches, pae = logic.calculate_ring_inches(bangle_mm * 3.1416) # ပတ်လည်အလျားကို တွက်ခြင်း
     st.markdown(f"### လက်ကောက်အလျား: {inches} လက်မ {pae} ပဲ")
-
+    
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.markdown("<h2 style='text-align: center;'>📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း</h2>", unsafe_allow_html=True)
     
