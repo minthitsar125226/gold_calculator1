@@ -364,7 +364,8 @@ else:
     st.success("Data ရောက်လာပါပြီ။")
     st.json(result) # result ထဲမှာ ဘာတန်ဖိုးတွေ ပါလဲဆိုတာ အကုန်ပြပေးမှာပါ
 # --- DEBUG END --- 
- if result:
+
+     if result:
         st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
         
         # Diameter ပြခြင်း
