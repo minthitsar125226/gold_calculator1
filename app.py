@@ -357,19 +357,17 @@ if choice == "လက်စွပ် (Ring)":
     # ၂။ Slider ဖြင့် လက်တိုင်းနံပါတ် ရွေးချယ်ခြင်း
     size_input = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", min_value=1, max_value=32, value=12)
     
-    # ၃။ logic.py ထဲက အဖြေမှန်ကို လှမ်းယူခြင်း
-    result = logic.get_ring_data_by_size(size_input)
-    
-    if result:
-        st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
-        
-        # Diameter ပြခြင်း
-        st.write(f"Diameter: {result['diameter']} mm")
-        
-        # အောက်ကစာကြောင်းကို variable တွေ အရောင်ပြောင်းသွားအောင် သေချာကူးထည့်ပါ
-        st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
-    else:
-        st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
+# အရင်က result = logic.get_ring_data_by_size(size_input) နေရာမှာ ဒါလေးနဲ့ အစားထိုးကြည့်ပါ
+result = logic.get_ring_data_by_size(size_input)
+
+# --- DEBUG စစ်ဆေးရန် အပိုင်း ---
+st.write("DEBUG INFO:") 
+st.json(result) # result ထဲမှာ ဘာတွေပါလာလဲဆိုတာကို အကုန်ချပြပါလိမ့်မယ်
+# -------------------------
+
+if result:
+    # ဒီနေရာမှာ result['inches'] နဲ့ result['pae'] က logic ထဲက တန်ဖိုးတွေ ဟုတ်မဟုတ် သိရပါပြီ
+    st.markdown(f"### အလျား: {result.get('inches')} လက်မ {result.get('pae')} ပဲ")
         
 elif choice == "လက်ကောက် (Bangle)":
     # လက်ကောက်အတွက် logic အပိုင်း (လိုအပ်ရင် ထပ်ဖြည့်ပေးပါ့မယ်)
