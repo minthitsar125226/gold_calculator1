@@ -148,6 +148,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+# --- ၁။ Sidebar Menu ပြုလုပ်ခြင်း ---
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #D4AF37;'>လုပ်ဆောင်ချက်များ</h2>", unsafe_allow_html=True)
     
@@ -163,14 +164,14 @@ with st.sidebar:
         "💎 3D ဖယောင်းတွက်စက်",
         "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်",
         "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်"
-
     ]
     
+    # Menu ရွေးချယ်မှုအပိုင်း
     menu = st.radio("", menu_options, label_visibility="collapsed")
   
-    st.markdown("---") # နောက်ထပ် မျဉ်းကြောင်း
+    st.markdown("---") 
 
-    # ၃။ လိပ်စာနှင့် ဖုန်းနံပါတ်ကို Icon လေးများနှင့် ထည့်ခြင်း
+    # လိပ်စာနှင့် ဖုန်းနံပါတ်
     st.markdown("""
         <div style='text-align: center; color: #aaa; font-size: 14px;'>
         <b>App by MinThitsarAung</b><br>
@@ -178,9 +179,13 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
-if menu == "🏠 ပင်မ စာမျက်နှာ":
-    st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
+# --- ၂။ စာမျက်နှာများ ခွဲခြားခြင်း (Logic ပိုင်း) ---
 
+if menu == "🏠 ပင်မ စာမျက်နှာ":
+    # Title ကို ဒီ if အောက်ထဲ ရွှေ့လိုက်တဲ့အတွက် တခြား Menu တွေမှာ ရောမလာတော့ပါဘူး
+    st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
+    st.write("ရွှေတွက်ချက်မှုဆိုင်ရာ App မှ ကြိုဆိုပါတယ်ခင်ဗျာ။")
+    
 elif menu == "အမရာ - AI လက်ထောက်":
     st.title("🤖 အမရာ - ကိုမင်းသစ္စာအောင်ရဲ့ လက်ထောက် AI")
     
