@@ -361,19 +361,22 @@ if choice == "လက်စွပ် (Ring)":
     result = logic.get_ring_data_by_size(size_input)
     
     if result:
-    st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
-    st.write(f"Diameter: {result['diameter']} mm")
-    
-    # ဒီစာကြောင်းကို အောက်ပါအတိုင်း အတိအကျ ပြန်ရေးပါ
-    st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
+        st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
+        
+        # Diameter ပြခြင်း
+        st.write(f"Diameter: {result['diameter']} mm")
+        
+        # အောက်ကစာကြောင်းကို variable တွေ အရောင်ပြောင်းသွားအောင် သေချာကူးထည့်ပါ
+        st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
     else:
         st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
-
+        
 elif choice == "လက်ကောက် (Bangle)":
     # လက်ကောက်အတွက် logic အပိုင်း (လိုအပ်ရင် ထပ်ဖြည့်ပေးပါ့မယ်)
     bangle_mm = st.number_input("လက်ကောက် အချင်း (Diameter mm) ရိုက်ထည့်ပါ:", value=54.0)
     inches, pae = logic.calculate_ring_inches(bangle_mm * 3.1416) # ပတ်လည်အလျားကို တွက်ခြင်း
     st.markdown(f"### လက်ကောက်အလျား: {inches} လက်မ {pae} ပဲ")
+
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.markdown("<h2 style='text-align: center;'>📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း</h2>", unsafe_allow_html=True)
     
