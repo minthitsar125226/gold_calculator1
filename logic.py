@@ -32,42 +32,40 @@ def weight_per_inch(inch_in, y_per_in, pt_per_in):
 def length_multiplier_ali(in_m, pe_m, times):
     return (in_m + (pe_m/16)) * times
 
-def calculate_ring_inches(mm_value):
-    """
-    မီလီမီတာမှ လက်မ နှင့် ပဲ (၈ စိတ်) သို့ ပြောင်းလဲခြင်း
-    """
-    if mm_value <= 0:
-        return 0, 0
-    
-    # ၁ လက်မ = ၂၅.၄ မီလီမီတာ
-    total_inches = mm_value / 25.4
-    
-    # လက်မ အပြည့်ကို ယူခြင်း
-    inches_whole = int(total_inches)
-    
-    # ကျန်ရှိသော Decimal ကို ၈ စိတ် (ပဲ) ဖြင့် မြှောက်ခြင်း
-    remaining_decimal = total_inches - inches_whole
-    pae_value = round(remaining_decimal * 8, 1) # ဒသမ ၁ နေရာအထိ ယူခြင်း
-    
-    return inches_whole, pae_value
+import math
 
-def get_ring_data_by_size(size_number):
+def get_ring_measurements(size_number):
     """
-    လက်စွပ်နံပါတ်အရ mm ကို ပြန်ပေးသော ဇယား (Standard Chart)
+    လက်စွပ်နံပါတ်အရ Diameter မှတစ်ဆင့် လက်မ/ပဲ (Circumference) ကို တွက်ချက်ခြင်း
     """
-    # မြန်မာနိုင်ငံတွင် အသုံးများသော Size Chart
-    ring_chart = {
-        10: 49.3, 11: 50.6, 12: 51.9, 
-        13: 53.1, 14: 54.4, 15: 55.7, 
-        16: 57.0, 17: 58.3, 18: 59.5
+    # Standard Diameter (အချင်း) Chart - Size 12 = 16.51mm
+    ring_diameters = {
+        10: 15.90, 11: 16.20, 12: 16.51, 13: 16.80, 14: 17.20, 
+        15: 17.50, 16: 17.80, 17: 18.20, 18: 18.50, 19: 18.80, 20: 19.20
     }
     
-    mm = ring_chart.get(size_number, 0)
-    if mm > 0:
-        inches, pae = calculate_ring_inches(mm)
-        return {"mm": mm, "inches": inches, "pae": pae}
+    diameter = ring_diameters.get(size_number, 0)
+    
+    if diameter > 0:
+        # ၁။ ပတ်လည်အလျား (Circumference) = Diameter * PI
+        circum_mm = diameter * math.pi
+        
+        # ၂။ လက်မ ပြောင်းလဲခြင်း (1 inch = 25.4 mm)
+        total_inches = circum_mm / 25.4
+        
+        # ၃။ လက်မအပြည့်နှင့် ပဲ (၈ စိတ်) ခွဲထုတ်ခြင်း
+        inches_whole = int(total_inches)
+        remaining_decimal = total_inches - inches_whole
+        pae_value = round(remaining_decimal * 8, 1) # ပဲ ကို ဒသမ ၁ နေရာယူ
+        
+        return {
+            "diameter": round(diameter, 2),
+            "circum_mm": round(circum_mm, 2),
+            "inches": inches_whole,
+            "pae": pae_value
+        }
     return None
-
+    
 # --- ၄။ စိန်၊ ကျောက် နှင့် ရွှေတွက်ချက်မှု ---
 def gem_to_gold_units(carat):
     total_gold_points = float(carat) * 19.264
