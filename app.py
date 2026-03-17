@@ -361,14 +361,11 @@ if choice == "လက်စွပ် (Ring)":
     result = logic.get_ring_data_by_size(size_input)
     
     if result:
-        st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
-        
-        # အချင်း mm ကို ပြခြင်း
-        st.write(f"Diameter: {result['diameter']} mm")
-        
-        # အဖြေမှန် (လက်မ နှင့် ပဲ) ကို ပြခြင်း
-        # ဒီနေရာမှာ အရင်ကလို diameter / 7.2 စတဲ့ formula ဟောင်းတွေ လုံးဝ မသုံးရပါဘူး
-        st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
+    st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
+    st.write(f"Diameter: {result['diameter']} mm")
+    
+    # ဒီစာကြောင်းကို အောက်ပါအတိုင်း အတိအကျ ပြန်ရေးပါ
+    st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
     else:
         st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
 
