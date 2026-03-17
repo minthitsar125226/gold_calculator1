@@ -14,16 +14,27 @@ def money_to_gold(budget, gold_price, purity, nk, np, ny, npt):
 
 # --- ၂။ အချိုးအစားနှင့် အလေးချိန် Logic ---
 def gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2):
-    """ရွှေအလေးချိန် နှစ်ခုကို စနစ်တကျ ပေါင်းခြင်း"""
+    """ရွှေအလေးချိန် နှစ်ခုကို Point စနစ်ဖြင့် အတိအကျ ပေါင်းခြင်း"""
+    # အားလုံးကို point အဖြစ် အရင်ပြောင်း (၁ ကျပ်=၁၂၈၀ pt, ၁ ပဲ=၈၀ pt, ၁ ရွေး=၁၀ pt)
+    pts1 = (((k1 * 16 + p1) * 8 + y1) * 10) + pt1
+    pts2 = (((k2 * 16 + p2) * 8 + y2) * 10) + pt2
+    total_pts = pts1 + pts2
     
-    # ၁။ အသေးဆုံးယူနစ်ဖြစ်သော Point သို့ အားလုံးပြောင်းပြီး ပေါင်းပါ
-    # ၁ ကျပ် = ၁၆ ပဲ၊ ၁ ပဲ = ၈ ရွေး၊ ၁ ရွေး = ၁၀ Point
+    return pts_to_gold(total_pts)
+
+def gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2):
+    """ရွှေအလေးချိန် နှစ်ခုကို Point စနစ်ဖြင့် အတိအကျ နှုတ်ခြင်း"""
     pts1 = (((k1 * 16 + p1) * 8 + y1) * 10) + pt1
     pts2 = (((k2 * 16 + p2) * 8 + y2) * 10) + pt2
     
-    total_pts = pts1 + pts2
+    if pts1 < pts2:
+        return None  # ပထမအလေးချိန်က ပိုနည်းနေလျှင်
     
-    # ၂။ စုစုပေါင်း Point ကို ကျပ်၊ ပဲ၊ ရွေး ပြန်ခွဲထုတ်ခြင်း
+    diff_pts = pts1 - pts2
+    return pts_to_gold(diff_pts)
+
+def pts_to_gold(total_pts):
+    """စုစုပေါင်း Point ကို ကျပ်၊ ပဲ၊ ရွေး ပြန်ခွဲထုတ်သည့် Function"""
     res_point = round(total_pts % 10, 1)
     total_yway = int(total_pts // 10)
     
@@ -39,13 +50,6 @@ def gold_addition(k1, p1, y1, pt1, k2, p2, y2, pt2):
         "yway": res_yway,
         "point": res_point
     }
-
-def gold_subtraction(k1, p1, y1, pt1, k2, p2, y2, pt2):
-    total_pt1 = (k1 * 1200) + (p1 * 75) + (y1 * 10) + pt1
-    total_pt2 = (k2 * 1200) + (p2 * 75) + (y2 * 10) + pt2
-    diff = total_pt1 - total_pt2
-    if diff < 0: return None
-    return {"kyat": diff//1200, "pae": (diff%1200)//75, "yway": (diff%75)//10, "point": diff%10}
 
 def weight_per_inch(inch_in, y_per_in, pt_per_in):
     one_inch_pe = (y_per_in / 8) + (pt_per_in / 80)
