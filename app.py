@@ -346,35 +346,42 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
         st.write(f"ရလဒ်: {total_l}")
         
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
-     st.title("💍 လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း")
-
-# ၁။ ဘာကို တိုင်းမှာလဲ ရွေးခိုင်းခြင်း
-choice = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
-
-if choice == "လက်စွပ် (Ring)":
-    # ၂။ Slider ဖြင့် လက်တိုင်းနံပါတ် ရွေးချယ်ခြင်း
-    size_input = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", min_value=1, max_value=32, value=12)
+    st.title("💍 လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း")
     
-    # ၃။ logic.py ထဲက အဖြေမှန်ကို လှမ်းယူခြင်း
-    result = logic.get_ring_data_by_size(size_input)
+    # ၁။ လက်စွပ် သို့မဟုတ် လက်ကောက် ရွေးချယ်ခိုင်းခြင်း
+    choice = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
     
-    if result:
-        st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
+    if choice == "လက်စွပ် (Ring)":
+        st.subheader("💍 လက်စွပ် တိုင်းတာခြင်း")
         
-        # အချင်း mm ကို ပြခြင်း
-        st.write(f"Diameter: {result['diameter']} mm")
+        # ၂။ Slider ဖြင့် လက်တိုင်းနံပါတ် ရွေးချယ်ခြင်း
+        size_input = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", min_value=1, max_value=32, value=12)
         
-        # အဖြေမှန် (လက်မ နှင့် ပဲ) ကို ပြခြင်း
-        # ဒီနေရာမှာ အရင်ကလို diameter / 7.2 စတဲ့ formula ဟောင်းတွေ လုံးဝ မသုံးရပါဘူး
-        st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
-    else:
-        st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
+        # ၃။ logic.py ထဲက အချက်အလက်ကို ယူခြင်း
+        result = logic.get_ring_data_by_size(size_input)
+        
+        if result:
+            st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
+            
+            # အချင်း (Diameter) ကို ပြခြင်း
+            st.write(f"Diameter: {result['diameter']} mm")
+            
+            # အလျားကို လက်မ နှင့် ပဲ ဖြင့် ပြခြင်း
+            st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
+        else:
+            st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
 
-elif choice == "လက်ကောက် (Bangle)":
-    # လက်ကောက်အတွက် logic အပိုင်း (လိုအပ်ရင် ထပ်ဖြည့်ပေးပါ့မယ်)
-    bangle_mm = st.number_input("လက်ကောက် အချင်း (Diameter mm) ရိုက်ထည့်ပါ:", value=54.0)
-    inches, pae = logic.calculate_ring_inches(bangle_mm * 3.1416) # ပတ်လည်အလျားကို တွက်ခြင်း
-    st.markdown(f"### လက်ကောက်အလျား: {inches} လက်မ {pae} ပဲ")
+    elif choice == "လက်ကောက် (Bangle)":
+        st.subheader("📏 လက်ကောက် တိုင်းတာခြင်း")
+        
+        # ၄။ လက်ကောက်အတွက် Diameter ရိုက်ထည့်ခြင်း
+        bangle_mm = st.number_input("လက်ကောက် အချင်း (Diameter mm) ရိုက်ထည့်ပါ:", value=54.0)
+        
+        # ၅။ ပတ်လည်အလျားကို တွက်ချက်ခြင်း (Diameter * Pi)
+        circumference = bangle_mm * 3.1416
+        inches, pae = logic.calculate_ring_inches(circumference)
+        
+        st.markdown(f"### လက်ကောက်အလျား: {inches} လက်မ {pae} ပဲ")
     
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.markdown("<h2 style='text-align: center;'>📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း</h2>", unsafe_allow_html=True)
