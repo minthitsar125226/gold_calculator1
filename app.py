@@ -345,9 +345,6 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
         total_l = logic.length_multiplier_ali(l_in, b_sel, a_in)
         st.write(f"ရလဒ်: {total_l}")
 
-import streamlit as st
-import logic  # logic.py နဲ့ ချိတ်ထားတာ သေချာပါစေ
-
 # --- လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း Menu ပိုင်း ---
 st.title("💍 လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း")
 
