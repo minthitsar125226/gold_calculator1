@@ -340,11 +340,7 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
         total_l = logic.length_multiplier_ali(l_in, b_sel, a_in)
         st.write(f"ရလဒ်: {total_l}")
 
-
-
-elif menu == "💍 လက်စွပ်/လက်ကောက်":
-    st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
-    
+import streamlit as st
 import logic  # logic.py နဲ့ ချိတ်ထားတာ သေချာပါစေ
 
 # --- လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း Menu ပိုင်း ---
@@ -356,17 +352,22 @@ choice = st.radio("ဘာကို တိုင်းတာချင်ပါသ
 if choice == "လက်စွပ် (Ring)":
     # ၂။ Slider ဖြင့် လက်တိုင်းနံပါတ် ရွေးချယ်ခြင်း
     size_input = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", min_value=1, max_value=32, value=12)
-if result:
+    
+    # ၃။ logic.py ထဲက အဖြေမှန်ကို လှမ်းယူခြင်း
+    result = logic.get_ring_data_by_size(size_input)
+    
+    if result:
         st.markdown(f"## လက်တိုင်း နံပါတ်: {size_input}")
         
-        # Diameter ပြခြင်း
+        # အချင်း mm ကို ပြခြင်း
         st.write(f"Diameter: {result['diameter']} mm")
         
-        # အောက်ကစာကြောင်းကို variable တွေ အရောင်ပြောင်းသွားအောင် သေချာကူးထည့်ပါ
+        # အဖြေမှန် (လက်မ နှင့် ပဲ) ကို ပြခြင်း
+        # ဒီနေရာမှာ အရင်ကလို diameter / 7.2 စတဲ့ formula ဟောင်းတွေ လုံးဝ မသုံးရပါဘူး
         st.markdown(f"### အလျား: {result['inches']} လက်မ {result['pae']} ပဲ")
     else:
         st.warning("⚠️ ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
-        
+
 elif choice == "လက်ကောက် (Bangle)":
     # လက်ကောက်အတွက် logic အပိုင်း (လိုအပ်ရင် ထပ်ဖြည့်ပေးပါ့မယ်)
     bangle_mm = st.number_input("လက်ကောက် အချင်း (Diameter mm) ရိုက်ထည့်ပါ:", value=54.0)
