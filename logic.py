@@ -32,17 +32,41 @@ def weight_per_inch(inch_in, y_per_in, pt_per_in):
 def length_multiplier_ali(in_m, pe_m, times):
     return (in_m + (pe_m/16)) * times
 
-# --- ၃။ လက်စွပ် နှင့် လက်ကောက် ---
-def get_ring_details(r_no):
-    # Diameter တွက်ချက်မှု (Formula)
-    diameter_mm = 14.01 + (r_no - 4) * 0.5 
-    total_inch = (diameter_mm * 3.14159) / 25.4
-    return {'mm': round(diameter_mm, 2), 'inch': int(total_inch), 'pe': round((total_inch - int(total_inch)) * 16)}
+def calculate_ring_inches(mm_value):
+    """
+    မီလီမီတာမှ လက်မ နှင့် ပဲ (၈ စိတ်) သို့ ပြောင်းလဲခြင်း
+    """
+    if mm_value <= 0:
+        return 0, 0
+    
+    # ၁ လက်မ = ၂၅.၄ မီလီမီတာ
+    total_inches = mm_value / 25.4
+    
+    # လက်မ အပြည့်ကို ယူခြင်း
+    inches_whole = int(total_inches)
+    
+    # ကျန်ရှိသော Decimal ကို ၈ စိတ် (ပဲ) ဖြင့် မြှောက်ခြင်း
+    remaining_decimal = total_inches - inches_whole
+    pae_value = round(remaining_decimal * 8, 1) # ဒသမ ၁ နေရာအထိ ယူခြင်း
+    
+    return inches_whole, pae_value
 
-def bangle_diameter_to_length(inch, pe):
-    total_inch = inch + (pe / 16)
-    circ_inch = (total_inch * 25.4 * 3.14159) / 25.4
-    return int(circ_inch), round((circ_inch - int(circ_inch)) * 16)
+def get_ring_data_by_size(size_number):
+    """
+    လက်စွပ်နံပါတ်အရ mm ကို ပြန်ပေးသော ဇယား (Standard Chart)
+    """
+    # မြန်မာနိုင်ငံတွင် အသုံးများသော Size Chart
+    ring_chart = {
+        10: 49.3, 11: 50.6, 12: 51.9, 
+        13: 53.1, 14: 54.4, 15: 55.7, 
+        16: 57.0, 17: 58.3, 18: 59.5
+    }
+    
+    mm = ring_chart.get(size_number, 0)
+    if mm > 0:
+        inches, pae = calculate_ring_inches(mm)
+        return {"mm": mm, "inches": inches, "pae": pae}
+    return None
 
 # --- ၄။ စိန်၊ ကျောက် နှင့် ရွှေတွက်ချက်မှု ---
 def gem_to_gold_units(carat):
