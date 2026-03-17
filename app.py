@@ -344,19 +344,30 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
-    mode = st.radio("ဘာကို တိုင်းတာချင်ပါသလဲ?", ["လက်စွပ် (Ring)", "လက်ကောက် (Bangle)"])
-    
-    if mode == "လက်စွပ် (Ring)":
-        r_no = st.slider("လက်တိုင်း နံပါတ်ရွေးပါ:", 1, 32, 4)
-        details = logic.get_ring_details(r_no)
-        st.markdown(f"<div class='kanote-border'><h3>လက်တိုင်း နံပါတ်: {r_no}</h3><p>Diameter: {details['mm']} mm</p><p>အလျား: {details['inch']} လက်မ {details['pe']} ပဲ</p></div>", unsafe_allow_html=True)
-        
-    elif mode == "လက်ကောက် (Bangle)":
-        b_inch = st.number_input("အချင်း (လက်မ):", min_value=1, value=2)
-        b_pe = st.number_input("အချင်း (ပဲ):", min_value=0, max_value=15, value=0)
-        c_inch, c_pe = logic.bangle_diameter_to_length(b_inch, b_pe)
-        st.markdown(f"<div class='kanote-border'><h3>လက်ကောက် အလျား</h3><p>အချင်း: {b_inch} လက်မ {b_pe} ပဲ</p><p><b>ပတ်လည်အလျား: {c_inch} လက်မ {c_pe} ပဲ</b></p></div>", unsafe_allow_html=True)
+   import logic # logic.py ကို ချိတ်ဆက်ရန်
 
+st.title("💍 လက်စွပ်/လက်ကောက် အတိုင်းအတာ")
+
+# လက်စွပ်နံပါတ် ရိုက်ထည့်ခြင်း
+size_input = st.number_input("လက်စွပ်နံပါတ် ရိုက်ထည့်ပါ (ဥပမာ- ၁၂)", min_value=10, max_value=25, value=12)
+
+# Logic ဖိုင်မှ အဖြေကို ယူခြင်း
+result = logic.get_ring_data_by_size(size_input)
+
+if result:
+    st.markdown(f"""
+    <div style="background-color: #3D2307; padding: 20px; border-radius: 15px; border: 1px solid #FFD700;">
+        <h4 style="color: #FFD700; margin: 0;">✅ အတိုင်းအတာ ရလဒ်</h4>
+        <p style="font-size: 18px; color: #FFD700; margin-top: 10px;">
+            Size <b>{size_input}</b> ၏ ပတ်လည်မှာ <b>{result['mm']} mm</b> ဖြစ်ပါသည်။
+        </p>
+        <p style="font-size: 22px; color: #FFD700; font-weight: bold;">
+            📏 မြန်မာလို အတိုင်းအတာ- <span style="color: #FFF;">{result['inches']} လက်မ နှင့် {result['pae']} ပဲ</span>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    st.warning("⚠️ ဤနံပါတ်အတွက် အချက်အလက် မရှိသေးပါ။")
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.markdown("<h2 style='text-align: center;'>📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း</h2>", unsafe_allow_html=True)
     
