@@ -166,7 +166,12 @@ with st.sidebar:
         "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်",
         "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်"
     ]
-    # Sidebar menu တွေရဲ့ အောက်ဆုံးမှာ ဒါလေးကို ထည့်ပါ
+    
+    
+    # Menu ရွေးချယ်မှုအပိုင်း
+    menu = st.radio("", menu_options, label_visibility="collapsed")
+  
+# Sidebar menu တွေရဲ့ အောက်ဆုံးမှာ ဒါလေးကို ထည့်ပါ
     st.markdown("---") # မျဉ်းတားလေးခြားလိုက်တာပါ
     st.markdown("""
         <div style='background-color: #1a1a1a; padding: 12px; border-radius: 8px; border: 1px solid #D4AF37;'>
@@ -181,11 +186,6 @@ with st.sidebar:
             </p>
         </div>
     """, unsafe_allow_html=True)
-    
-    # Menu ရွေးချယ်မှုအပိုင်း
-    menu = st.radio("", menu_options, label_visibility="collapsed")
-  
-    st.markdown("---") 
 
     # လိပ်စာနှင့် ဖုန်းနံပါတ်
     st.markdown("""
