@@ -344,30 +344,34 @@ elif menu == "📐 အချိုးအစားတွက်စက်":
 
 elif menu == "💍 လက်စွပ်/လက်ကောက်":
     st.subheader("💍 လက်စွပ် နှင့် လက်ကောက် တိုင်းတာခြင်း")
-   import logic # logic.py ကို ချိတ်ဆက်ရန်
+import logic # logic.py ကို ချိတ်ဆက်ထားရပါမည်
 
-st.title("💍 လက်စွပ်/လက်ကောက် အတိုင်းအတာ")
+st.title("💍 လက်စွပ်နှင့် လက်ကောက် တိုင်းတာခြင်း")
 
-# လက်စွပ်နံပါတ် ရိုက်ထည့်ခြင်း
-size_input = st.number_input("လက်စွပ်နံပါတ် ရိုက်ထည့်ပါ (ဥပမာ- ၁၂)", min_value=10, max_value=25, value=12)
+# ၁။ UI ပိုင်း - Slider သုံး၍ နံပါတ်ရွေးခိုင်းခြင်း
+size_input = st.select_slider("လက်တိုင်း နံပါတ်ရွေးပါ:", options=list(range(10, 21)), value=12)
 
-# Logic ဖိုင်မှ အဖြေကို ယူခြင်း
-result = logic.get_ring_data_by_size(size_input)
+# ၂။ Logic မှ အဖြေထုတ်ယူခြင်း
+result = logic.get_ring_measurements(size_input)
 
 if result:
-    st.markdown(f"""
-    <div style="background-color: #3D2307; padding: 20px; border-radius: 15px; border: 1px solid #FFD700;">
-        <h4 style="color: #FFD700; margin: 0;">✅ အတိုင်းအတာ ရလဒ်</h4>
-        <p style="font-size: 18px; color: #FFD700; margin-top: 10px;">
-            Size <b>{size_input}</b> ၏ ပတ်လည်မှာ <b>{result['mm']} mm</b> ဖြစ်ပါသည်။
-        </p>
-        <p style="font-size: 22px; color: #FFD700; font-weight: bold;">
-            📏 မြန်မာလို အတိုင်းအတာ- <span style="color: #FFF;">{result['inches']} လက်မ နှင့် {result['pae']} ပဲ</span>
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    # ၃။ အဖြေကို လှလှပပ ပြသခြင်း
+    st.markdown(f"### 💍 လက်တိုင်း နံပါတ်: {size_input}")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Diameter (အချင်း)", f"{result['diameter']} mm")
+    with col2:
+        st.metric("ပတ်လည်အလျား", f"{result['circum_mm']} mm")
+
+    # အဖြေမှန်ကို ထင်ထင်ရှားရှားပြရန်
+    st.info(f"📏 အလျား: **{result['inches']} လက်မ {result['pae']} ပဲ**")
+
+    # မှတ်ချက်
+    st.write("*(မှတ်ချက် - ၁ လက်မလျှင် ၈ ပဲ/စိတ် နှုန်းဖြင့် တွက်ချက်ထားပါသည်)*")
 else:
-    st.warning("⚠️ ဤနံပါတ်အတွက် အချက်အလက် မရှိသေးပါ။")
+    st.error("ဤဆိုဒ်အတွက် အချက်အလက် မရှိသေးပါ။")
+    
 elif menu == "📋 အထည်ယူ/အထည်အပ်":
     st.markdown("<h2 style='text-align: center;'>📋 အထည်ယူ နှင့် အထည်အပ် စာရင်း</h2>", unsafe_allow_html=True)
     
@@ -375,7 +379,7 @@ elif menu == "📋 အထည်ယူ/အထည်အပ်":
     
     with tab1:
         st.subheader("📥 အထည်လက်ခံဖြတ်ပိုင်း")
-        item_name = st.text_input("အထည်အမည်", placeholder="ဥပမာ - ဟန်ဒီကြိုး")
+        item_name = st.text_input("အထည်အမည်", placeholder="ဥပမာ - သစ္စာကြိုး")
         target_w = st.text_input("ပြုလုပ်ရမည့် အလေးချိန်", placeholder="၁ကျပ် ၂ပဲ")
         target_l = st.text_input("ပြုလုပ်ရမည့် အရှည်", placeholder="၁၈ လက်မ")
         
