@@ -108,29 +108,38 @@ def calculate_ratio_multiplication(target_inch, ratio_val):
         "inches": inches
     }
 
-def weight_per_inch_comprehensive(inch_in, y_per_in, pt_per_in):
-    """လက်မအလိုက် ရွှေအလေးချိန်ကို ကျပ်၊ ပဲ၊ ရွေး၊ Point ဖြင့် တွက်ခြင်း"""
-    # ၁ လက်မစာ အလေးချိန်ကို Point ဖွဲ့ခြင်း (၁ ရွေး = ၁၀ point)
-    one_inch_pts = (y_per_in * 10) + pt_per_in
+def weight_per_inch_comprehensive(inches, yway_per_inch, point_per_inch):
+    """လက်မအလိုက် ရွှေအလေးချိန်ကို အတိအကျ တွက်ချက်ခြင်း"""
     
-    # စုစုပေါင်း Point = လက်မ အရေအတွက် * ၁ လက်မစာ point
-    total_pts = inch_in * one_inch_pts
+    # ၁။ စုစုပေါင်း point ကို အရင်တွက်ပါ (၁ ရွေး = ၁၀ point)
+    points_in_one_yway = 10
+    yway_to_points = yway_per_inch * points_in_one_yway
+    total_points_per_inch = yway_to_points + point_per_inch
     
-    # Point မှ ကျပ်၊ ပဲ၊ ရွေး ပြန်ခွဲခြင်း
-    # ၁ ကျပ် = ၁၂၀၀ pt, ၁ ပဲ = ၇၅ pt, ၁ ရွေး = ၁၀ pt
-    kyat = int(total_pts // 1200)
-    pae = int((total_pts % 1200) // 75)
-    yway = int((total_pts % 75) // 10)
-    point = round(total_pts % 10, 1)
+    # ၂။ လက်မ အရေအတွက်နှင့် မြှောက်ပါ
+    grand_total_points = inches * total_points_per_inch
+    
+    # ၃။ ပြန်လည် ခွဲခြမ်းခြင်း (အကြွင်းမရှိ အတိအကျ တွက်ချက်ပုံ)
+    # Point -> Yway (10 points = 1 yway)
+    total_yway = int(grand_total_points // 10)
+    remaining_points = round(grand_total_points % 10, 1)
+    
+    # Yway -> Pae (8 yway = 1 pae)
+    total_pae = int(total_yway // 8)
+    remaining_yway = total_yway % 8
+    
+    # Pae -> Kyat (16 pae = 1 kyat)
+    total_kyat = int(total_pae // 16)
+    remaining_pae = total_pae % 16
     
     return {
-        "kyat": kyat,
-        "pae": pae,
-        "yway": yway,
-        "point": point,
-        "total_pts": round(total_pts, 2)
+        "kyat": total_kyat,
+        "pae": remaining_pae,
+        "yway": remaining_yway,
+        "point": remaining_points,
+        "total_pts": round(grand_total_points, 1)
     }
-
+    
 def calculate_gold_difference(given_k, given_p, given_y, given_pt, return_k, return_p, return_y, return_pt, waste_k, waste_p, waste_y, waste_pt):
     # အကုန်လုံးကို Point ဖွဲ့ (၁ ကျပ် = ၁၂၀၀, ၁ ပဲ = ၇၅, ၁ ရွေး = ၁၀)
     given_total = (given_k * 1200) + (given_p * 75) + (given_y * 10) + given_pt
