@@ -166,6 +166,21 @@ with st.sidebar:
         "Gram မှ ကျပ်/ပဲ/ရွေး ပြောင်းရန်",
         "ကာရက်မှ ရတီဈေးနှုန်းတွက်ချက်ရန်"
     ]
+    # Sidebar menu တွေရဲ့ အောက်ဆုံးမှာ ဒါလေးကို ထည့်ပါ
+    st.markdown("---") # မျဉ်းတားလေးခြားလိုက်တာပါ
+    st.markdown("""
+        <div style='background-color: #1a1a1a; padding: 12px; border-radius: 8px; border: 1px solid #D4AF37;'>
+            <p style='color: #D4AF37; font-size: 12px; text-align: center; font-weight: bold;'>
+                ⚠️ အသိပေးချက်
+            </p>
+            <p style='color: #ffffff; font-size: 12px; text-align: justify; line-height: 1.6;'>
+                ဤ App ပါ တွက်ချက်မှုများသည် အတတ်နိုင်ဆုံး အမှန်ကန်ဆုံးဖြစ်အောင် ကြိုးစားထားပါသည်။ အကယ်၍ အမှားအယွင်း တစ်စုံတစ်ရာ ရှိခဲ့ပါက အသုံးပြုသူ၏ တာဝန်သာ ဖြစ်ပါသည်။
+            </p>
+            <p style='color: #ffffff; font-size: 12px; text-align: justify; line-height: 1.6;'>
+                💡 ဝေဖန်အကြံပြုလိုသည်များ သို့မဟုတ် ထည့်သွင်းလိုသည့် အကြောင်းအရာများရှိပါက App တွင်ပါရှိသော ဖုန်းနံပါတ်သို့ Viber မှတစ်ဆင့် ဆက်သွယ်နိုင်ပါသည်။ အားလုံးကို အထူးကျေးဇူးတင်ရှိပါသည်။
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
     
     # Menu ရွေးချယ်မှုအပိုင်း
     menu = st.radio("", menu_options, label_visibility="collapsed")
