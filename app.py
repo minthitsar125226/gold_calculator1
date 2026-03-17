@@ -20,7 +20,7 @@ st.markdown("""
         border-right: 2px solid #D4AF37;
     }
 
-    /* ၃။ Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း (သေသပ်လှပသော Card များ) */
+    /* ၃။ Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း */
     [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: #3D2307 !important;
         border: 1px solid #D4AF37 !important;
@@ -60,27 +60,39 @@ st.markdown("""
         fill: black !important;
     }
 
-    /* ၆။ မူလ Radio Button အဝိုင်းလေးများကို ဖျောက်ထားခြင်း */
+    /* ၆။ အမရာ (AI) ရဲ့ အဖြေစာသားများကို ပိုမိုထင်ရှားစေခြင်း (အသစ်ထည့်သွင်းမှု) */
+    [data-testid="stChatMessage"] p, [data-testid="stMarkdownContainer"] p {
+        color: #D4AF37 !important;
+        font-weight: 500 !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
+    }
+    
+    [data-testid="stChatMessage"] {
+        background-color: #3D2307 !important;
+        border: 1px solid #D4AF37 !important;
+        border-radius: 15px !important;
+    }
+
+    /* ၇။ မူလ Radio Button အဝိုင်းလေးများကို ဖျောက်ထားခြင်း */
     [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stWidgetSelectionStateColumn"] {
         display: none !important;
     }
 
-    /* ၇။ App ခေါင်းစဉ်များကို ရွှေရောင်နှင့် ကနုတ်ရိုးရာ ဆန်ဆန်ပြင်ခြင်း */
+    /* ၈။ App ခေါင်းစဉ်များကို ရွှေရောင်နှင့် ကနုတ်ရိုးရာ ဆန်ဆန်ပြင်ခြင်း */
     h1, h2, h3 {
         color: #D4AF37 !important;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
-        font-family: 'Pyidaungsu', sans-serif;
     }
 
-    /* ၈။ Input Boxes များကိုလည်း Theme နှင့် ညှိခြင်း */
+    /* ၉။ Input Boxes များကိုလည်း Theme နှင့် ညှိခြင်း */
     .stTextInput>div>div>input, .stNumberInput>div>div>input {
         background-color: #3D2307 !important;
         color: #D4AF37 !important;
         border: 1px solid #D4AF37 !important;
+        font-weight: bold !important;
     }
     </style>
     """, unsafe_allow_html=True)
-
 
 # API Key ကို Streamlit Secrets မှ ခေါ်ယူခြင်း
 api_key = st.secrets["GOOGLE_API_KEY"]
