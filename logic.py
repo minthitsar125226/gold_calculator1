@@ -36,25 +36,45 @@ import math
 
 def calculate_ring_inches(mm_value):
     """မီလီမီတာမှ လက်မ နှင့် ပဲ သို့ ပြောင်းလဲခြင်း"""
-    if mm_value <= 0: return 0, 0
+    if mm_value <= 0:
+        return 0, 0
+    
+    # ၁ လက်မ လျှင် ၂၅.၄ မီလီမီတာ ရှိသည်
     total_inches = mm_value / 25.4
-    inches_whole = int(total_inches)
+    inches_whole = int(total_inches) # လက်မ အပြည့်ယူခြင်း
+    
+    # ကျန်တဲ့ ဒသမကိန်းကို ပဲ အဖြစ်ပြောင်းခြင်း (၁ လက်မ = ၈ ပဲ)
     remaining_decimal = total_inches - inches_whole
     pae_value = round(remaining_decimal * 8, 1)
+    
     return inches_whole, pae_value
 
 def get_ring_data_by_size(size_number):
-    """လက်စွပ်နံပါတ်အရ အချင်း နှင့် ပတ်လည်အလျား တွက်ချက်ခြင်း"""
-    # Standard Diameters (mm)
+    """လက်စွပ်နံပါတ်အရ အချင်း နှင့် ပတ်လည်အလျား တွက်ချက်ခြင်း (Size 1 to 30)"""
+    # Standard Diameters (mm) - လက်စွပ်နံပါတ် ၁ မှ ၃၀ အထိ အချင်းများ
     diameters = {
-        10: 15.9, 11: 16.2, 12: 16.5, 13: 16.8, 14: 17.2, 
-        15: 17.5, 16: 17.8, 17: 18.2, 18: 18.5, 19: 18.8, 20: 19.2
+        1: 13.1, 2: 13.4, 3: 13.7, 4: 14.0, 5: 14.3, 
+        6: 14.6, 7: 15.0, 8: 15.3, 9: 15.6, 10: 15.9, 
+        11: 16.2, 12: 16.5, 13: 16.8, 14: 17.2, 15: 17.5, 
+        16: 17.8, 17: 18.2, 18: 18.5, 19: 18.8, 20: 19.2,
+        21: 19.5, 22: 19.8, 23: 20.2, 24: 20.5, 25: 20.8,
+        26: 21.2, 27: 21.5, 28: 21.8, 29: 22.2, 30: 22.5
     }
+    
     d_mm = diameters.get(size_number, 0)
+    
     if d_mm > 0:
-        c_mm = d_mm * math.pi # ပတ်လည်အလျား
+        # ပတ်လည်အလျား (Circumference) = Diameter * Pi (3.14159)
+        c_mm = d_mm * math.pi
+        
+        # အလျားကို လက်မ နှင့် ပဲ ပြောင်းခြင်း
         inches, pae = calculate_ring_inches(c_mm)
-        return {"diameter": d_mm, "inches": inches, "pae": pae}
+        
+        return {
+            "diameter": d_mm,
+            "inches": inches,
+            "pae": pae
+        }
     return None
     
 # --- ၄။ စိန်၊ ကျောက် နှင့် ရွှေတွက်ချက်မှု ---
