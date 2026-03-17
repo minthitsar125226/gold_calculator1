@@ -8,22 +8,22 @@ import google.generativeai as genai
 
 st.markdown("""
     <style>
-    /* ၁။ App တစ်ခုလုံးရဲ့ နောက်ခံနဲ့ စာသားအရောင် (Brown & Gold Theme) */
+    /* ၁။ App တစ်ခုလုံး၏ နောက်ခံနှင့် Theme */
     .stApp {
         background-color: #2F1B05 !important;
         color: #D4AF37 !important;
     }
 
-    /* ၂။ Sidebar နောက်ခံကို အညိုရင့်ရောင်ထားခြင်း */
+    /* ၂။ Sidebar နောက်ခံကို အညိုရင့်ရောင်နှင့် ရွှေရောင်ဘောင်သတ်ခြင်း */
     [data-testid="stSidebar"] {
         background-color: #1E1103 !important;
-        border-right: 2px solid #D4AF37;
+        border-right: 2px solid #D4AF37 !important;
     }
 
-    /* ၃။ Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း */
+    /* ၃။ Sidebar Menu ကို Card ပုံစံပြောင်းခြင်း (Hover Effect ပါဝင်သည်) */
     [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: #3D2307 !important;
-        border: 1px solid #D4AF37 !important;
+        border: 1.5px solid #D4AF37 !important;
         padding: 12px 15px !important;
         border-radius: 12px !important;
         color: #D4AF37 !important;
@@ -31,18 +31,19 @@ st.markdown("""
         display: flex !important;
         width: 100% !important;
         transition: all 0.3s ease !important;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3) !important;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.5) !important;
     }
 
-    /* ရွေးချယ်ထားသော Card ကို ရွှေရောင်တောက်ပစေခြင်း */
+    /* ရွေးချယ်ထားသော Card ကို ရွှေရောင်တောက်စေခြင်း */
     [data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"] {
         background-color: #D4AF37 !important;
         color: #000000 !important;
         font-weight: bold !important;
-        box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
+        box-shadow: 0px 0px 18px rgba(212, 175, 55, 0.7) !important;
+        transform: scale(1.02);
     }
 
-    /* ၄။ Sidebar ဖွင့်/ပိတ် ခလုတ်များ (Toggle Buttons) ကို ရွှေရောင်ပြောင်းခြင်း */
+    /* ၄။ Sidebar ဖွင့်/ပိတ် ခလုတ်များ (Glow Effect ပါသော ရွှေရောင်အဝိုင်း) */
     button[data-testid="stSidebarCollapseButton"], 
     header[data-testid="stHeader"] button {
         background-color: #D4AF37 !important;
@@ -53,43 +54,41 @@ st.markdown("""
         height: 45px !important;
         box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.8) !important;
     }
+    button svg { fill: black !important; }
 
-    /* ၅။ ခလုတ်ထဲက မြားလေးတွေကို အမည်းရောင်ပြောင်းခြင်း */
-    button[data-testid="stSidebarCollapseButton"] svg,
-    header[data-testid="stHeader"] svg {
-        fill: black !important;
-    }
-
-    /* ၆။ အမရာ (AI) ရဲ့ အဖြေစာသားများကို ပိုမိုထင်ရှားစေခြင်း (အသစ်ထည့်သွင်းမှု) */
-    [data-testid="stChatMessage"] p, [data-testid="stMarkdownContainer"] p {
+    /* ၅။ AI Chat (အမရာ) နှင့် စာသားများ အားလုံးကို ထင်ရှားစေခြင်း */
+    [data-testid="stChatMessage"] p, [data-testid="stMarkdownContainer"] p, .stWidgetLabel p, .stAlert p {
         color: #D4AF37 !important;
-        font-weight: 500 !important;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
+        font-weight: bold !important;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.9) !important; /* စာသားများ ထင်ရှားစေရန် အရိပ်ထည့်ခြင်း */
     }
     
     [data-testid="stChatMessage"] {
         background-color: #3D2307 !important;
         border: 1px solid #D4AF37 !important;
         border-radius: 15px !important;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.3) !important;
     }
 
-    /* ၇။ မူလ Radio Button အဝိုင်းလေးများကို ဖျောက်ထားခြင်း */
-    [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stWidgetSelectionStateColumn"] {
-        display: none !important;
-    }
-
-    /* ၈။ App ခေါင်းစဉ်များကို ရွှေရောင်နှင့် ကနုတ်ရိုးရာ ဆန်ဆန်ပြင်ခြင်း */
+    /* ၆။ ခေါင်းစဉ်များကို ကနုတ်ရိုးရာဆန်ဆန် ရွှေရောင်လင်းစေခြင်း */
     h1, h2, h3 {
         color: #D4AF37 !important;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.7) !important;
+        letter-spacing: 1px;
     }
 
-    /* ၉။ Input Boxes များကိုလည်း Theme နှင့် ညှိခြင်း */
+    /* ၇။ Input Boxes & Number Fields (ရိုက်ထည့်လိုက်သော ဂဏန်းများ ထင်ရှားစေရန်) */
     .stTextInput>div>div>input, .stNumberInput>div>div>input {
         background-color: #3D2307 !important;
-        color: #D4AF37 !important;
+        color: #FFD700 !important; /* ပိုလင်းသော ရွှေဝါရောင် */
         border: 1px solid #D4AF37 !important;
         font-weight: bold !important;
+        font-size: 18px !important;
+    }
+
+    /* ၈။ မူလ Radio Button အဝိုင်းလေးများကို ဖျောက်ထားခြင်း */
+    [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stWidgetSelectionStateColumn"] {
+        display: none !important;
     }
     </style>
     """, unsafe_allow_html=True)
