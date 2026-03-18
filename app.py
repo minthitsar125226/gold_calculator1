@@ -200,6 +200,16 @@ if menu == "🏠 ပင်မ စာမျက်နှာ":
     # Title ကို ဒီ if အောက်ထဲ ရွှေ့လိုက်တဲ့အတွက် တခြား Menu တွေမှာ ရောမလာတော့ပါဘူး
     st.markdown("<h1 style='text-align: center; color: #D4AF37;'>✨ မြန်မာ့ရွှေပန်းတိမ်သုံး</h1>", unsafe_allow_html=True)
     st.write("ရွှေတွက်ချက်မှုဆိုင်ရာ App မှ ကြိုဆိုပါတယ်ခင်ဗျာ။")
+    # Video ဖိုင်ကို ခေါ်ယူပြီး ပင်မစာမျက်နှာမှာ ပြသရန် ကုဒ်သီးသန့်
+try:
+    video_file = open('Myanmar Gold App_20260318_023518_0000.mp4', 'rb')
+    video_bytes = video_file.read()
+    
+    # loop=True ထည့်ထားခြင်းဖြင့် ဗီဒီယိုအဆုံးမှာ အလိုအလျောက် ပြန်စပါလိမ့်မယ်
+    st.video(video_bytes, loop=True)
+    
+except FileNotFoundError:
+    st.error("ဗီဒီယိုဖိုင်ကို ရှာမတွေ့ပါ။ GitHub တွင် ဖိုင်အမည် မှန်ကန်စွာ တင်ထားခြင်း ရှိမရှိ စစ်ဆေးပေးပါရှင်။")
     
 elif menu == "အမရာ - AI လက်ထောက်":
     st.title("🤖 အမရာ - ကိုမင်းသစ္စာအောင်ရဲ့ လက်ထောက် AI")
