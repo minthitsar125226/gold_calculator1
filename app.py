@@ -5,7 +5,22 @@ from datetime import datetime
 from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
+import streamlit as st
 
+# ၁။ အပေါ်က Toolbar (Fork, Github, စသည်) နဲ့ အောက်က Streamlit Logo ကို ဖျောက်ရန်
+hide_streamlit_style = """
+            <style>
+            /* အပေါ်က Header တစ်ခုလုံးကို ဖျောက်ခြင်း */
+            header {visibility: hidden;}
+            
+            /* အောက်ခြေက "Made with Streamlit" စာသားကို ဖျောက်ခြင်း */
+            footer {visibility: hidden;}
+            
+            /* ညာဘက်အောက်က နီနီလေး (Streamlit menu) ကို ဖျောက်ခြင်း */
+            #MainMenu {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 st.markdown("""
     <style>
     /* ၁။ App တစ်ခုလုံး၏ နောက်ခံနှင့် Theme */
