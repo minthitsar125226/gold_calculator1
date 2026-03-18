@@ -6,7 +6,6 @@ from utils import format_gold_weight, calculate_pe, format_length_inches, to_pe
 import logic
 import google.generativeai as genai
 
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 st.markdown("""
     <style>
     /* ၁။ App တစ်ခုလုံး၏ နောက်ခံနှင့် Theme */
