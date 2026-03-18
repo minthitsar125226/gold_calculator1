@@ -149,6 +149,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- ၁။ Sidebar Menu ပြုလုပ်ခြင်း ---
+with st.sidebar:
     menu_options = [
         "🏠 ပင်မ စာမျက်နှာ",
         "အမရာ - AI လက်ထောက်",
@@ -165,7 +166,6 @@ st.markdown("""
     
     # Menu ရွေးချယ်မှုအပိုင်း
     menu = st.radio("", menu_options, label_visibility="collapsed")
-with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #D4AF37;'>လုပ်ဆောင်ချက်များ</h2>", unsafe_allow_html=True)
     st.caption("🛡️ **Privacy Info**")
     st.caption("ဤ App သည် အသုံးပြုသူများ၏ အချက်အလက်များကို စုဆောင်းသိမ်းဆည်းထားခြင်း မရှိပါ။") 
