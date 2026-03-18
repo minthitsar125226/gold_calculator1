@@ -202,16 +202,17 @@ if menu == "🏠 ပင်မ စာမျက်နှာ":
     st.write("ရွှေတွက်ချက်မှုဆိုင်ရာ App မှ ကြိုဆိုပါတယ်ခင်ဗျာ။")
     
     # Video ဖိုင်ကို ခေါ်ယူပြီး ပင်မစာမျက်နှာမှာ ပြသရန် ကုဒ်သီးသန့်
-try:
-    video_file = open('Myanmar Gold App_20260318_023518_0000.mp4', 'rb')
-    video_bytes = video_file.read()
-    
-    # loop=True ထည့်ထားခြင်းဖြင့် ဗီဒီယိုအဆုံးမှာ အလိုအလျောက် ပြန်စပါလိမ့်မယ်
-    st.video(video_bytes, loop=True)
-    
-except FileNotFoundError:
-    st.error("ဗီဒီယိုဖိုင်ကို ရှာမတွေ့ပါ။ GitHub တွင် ဖိုင်အမည် မှန်ကန်စွာ တင်ထားခြင်း ရှိမရှိ စစ်ဆေးပေးပါရှင်။")
-    
+    try:
+        # try နဲ့ သူ့အောက်က စာကြောင်းတွေ အားလုံးကို ညာဘက်သို့ Space ၄ ချက်စီ တိုးထားပါတယ်
+        video_file = open('Myanmar Gold App_20260318_023518_0000.mp4', 'rb')
+        video_bytes = video_file.read()
+        
+        # loop=True ထည့်ထားခြင်းဖြင့် ဗီဒီယိုအဆုံးမှာ အလိုအလျောက် ပြန်စပါလိမ့်မယ်
+        st.video(video_bytes, loop=True)
+        
+    except FileNotFoundError:
+        # except ကိုလည်း if ရဲ့ အောက်မှာ တန်းစီထားပါတယ်
+        st.error("ဗီဒီယိုဖိုင်ကို ရှာမတွေ့ပါ။ GitHub တွင် ဖိုင်အမည် မှန်ကန်စွာ တင်ထားခြင်း ရှိမရှိ စစ်ဆေးပေးပါရှင်။")
 elif menu == "အမရာ - AI လက်ထောက်":
     st.title("🤖 အမရာ - ကိုမင်းသစ္စာအောင်ရဲ့ လက်ထောက် AI")
     
